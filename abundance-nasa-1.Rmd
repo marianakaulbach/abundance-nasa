@@ -1,0 +1,260 @@
+---
+title: "nasa-abundance"
+output: html_document
+date: "2025-08-20"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+SWD_data<-read.csv("C:/Users/maria/OneDrive/Desktop/abundance-nasa/REAL NEW EXCEL Nunez SWD Sorting Sheet June 2024 for abundance-nasa.csv")
+```
+
+```{r}
+library(nasapower)
+library(tidyverse)
+library(magrittr)
+library(ggplot2)
+```
+
+```{r}
+SweetRoots_weather <- get_power(# choose name; get_power is function from nasapower package
+  # i think
+  community = "ag",
+    lonlat = c(44.2893745,-73.2420434),# location of data
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2022-01-01", # dates of data
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"# frequency of measurements
+)
+AdamsBerry_weather <- get_power(
+  community = "ag",
+    lonlat = c(44.29804,-73.1885194),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2022-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+FullBelly_weather <- get_power(
+  community = "ag",
+    lonlat = c(44.265172,-73.1334011),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2022-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+LastResort_weather <- get_power(
+  community = "ag",
+    lonlat = c(44.2661258,-73.1014259),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2022-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+CoveredBridge_weather <- get_power(
+  community = "ag",
+    lonlat = c(44.5147926,-72.926916),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2022-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+```
+
+```{r}
+LexingtonBluegrass_weather <- get_power(
+  community = "ag",
+    lonlat = c(38.0408,-84.6058),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2020-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+CartersMountain_weather <- get_power(
+  community = "ag",
+    lonlat = c(37.9740223,-78.5447915),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2017-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+ChilesPeachOrchard_weather <- get_power(
+  community = "ag",
+    lonlat = c( 38.0672129,-78.7471497),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2022-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+LeveringOrchard_weather <- get_power(
+  community = "ag",
+    lonlat = c(36.6500994,-80.6151617),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2022-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+CharlottesvilleAlbermarle_weather <- get_power(
+  community = "ag",
+    lonlat = c(38.0624585,-78.4638626),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2022-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+GreatCountryFarms_weather <- get_power(
+  community = "ag",
+    lonlat = c(39.1003535,-77.8162521),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2022-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+CrossKeysFarm_weather <- get_power(
+  community = "ag",
+    lonlat = c(38.3597327,-78.842056),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2022-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+```
+
+```{r}
+#Combine dataframes from all farms in VT
+AllFarmsVT_weather <-rbind(AdamsBerry_weather, CoveredBridge_weather, FullBelly_weather, LastResort_weather, SweetRoots_weather)
+```
+
+```{r}
+#Combine dataframes from all farms in KY
+AllFarmsKY_weather <-rbind(CrossKeysFarm_weather, CartersMountain_weather, GreatCountryFarms_weather, LeveringOrchard_weather, CharlottesvilleAlbermarle_weather,ChilesPeachOrchard_weather)
+```
+#switch automatic incorrect LAT and LON column names
+colnames(AllFarmsVT_weather)[2] <- "LON"
+colnames(AllFarmsVT_weather)[1] <- "LAT"
+#switch automatic incorrect LAT and LON column names
+colnames(AllFarmsKY_weather)[2] <- "LON"
+colnames(AllFarmsKY_weather)[1] <- "LAT"
+
+```{r}
+#CombineLatLon data into one variable "Coordinates". LON is placed first becuase NASA data automatically downloads with LAT and LON incorrectly labled.
+AllFarmsVT_weather$Coordinates<- paste(AllFarmsVT_weather$LON, AllFarmsVT_weather$LAT,sep=",")
+AllFarmsKY_weather$Coordinates<- paste(AllFarmsKY_weather$LON, AllFarmsKY_weather$LAT,sep=",")
+```
+
+```{r}
+AllFarmsVT_weather$LON <- NULL
+AllFarmsVT_weather$LAT <- NULL
+AllFarmsVT_weather$YEAR<-NULL
+AllFarmsVT_weather$MM<-NULL
+AllFarmsVT_weather$DD<-NULL
+AllFarmsVT_weather$DOY<-NULL
+AllFarmsKY_weather$LON <- NULL
+AllFarmsKY_weather$LAT <- NULL
+AllFarmsKY_weather$YEAR<-NULL
+AllFarmsKY_weather$MM<-NULL
+AllFarmsKY_weather$DD<-NULL
+AllFarmsKY_weather$DOY<-NULL
+#save YYYYMMDD as a date 
+AllFarmsKY_weather$YYYYMMDD <- as.Date(AllFarmsKY_weather$YYYYMMDD, format = "%Y-%m-%d")
+AllFarmsVT_weather$YYYYMMDD <- as.Date(AllFarmsVT_weather$YYYYMMDD, format = "%Y-%m-%d")
+SWD_data$YYYYMMDD <-as.Date(SWD_data$YYYYMMDD, format = "%Y-%m-%d")
+```
+
+
+```{r}
+#not working?
+AbundanceTempVT<-merge(SWD_data, AllFarmsVT_weather, by = c("Coordinates","YYYYMMDD"))
+```
+
+```{r}
+#not working?
+AbundanceTempKY<-merge(SWD_data, AllFarmsKY_weather, by = c("YYYYMMDD","Coordinates"))
+```
+
+```{r}
+AbundanceTempVT <- SWD_data %>% left_join(AllFarmsVT_weather, by=c("Coordinates","YYYYMMDD"))
+```
+
+```{r}
+AbundanceTempKY <- SWD_data %>% left_join(AllFarmsKY_weather, by=c("Coordinates","YYYYMMDD"))
+```
+
+
+```{r}
+#Ensure that variables are factor columns, rather than numeric.
+AbundanceTempVT$T2M <- as.numeric(as.character(AbundanceTempVT$T2M))
+AbundanceTempVT$N_swd<-as.numeric(as.character(AbundanceTempVT$N_swd))
+AbundanceTempKY$T2M <- as.numeric(as.character(AbundanceTempKY$T2M))
+AbundanceTempKY$N_swd<-as.numeric(as.character(AbundanceTempKY$N_swd))
+```
+
+```{r}
+#create a scatter plot of PRECTOTCORR against SWD for VT
+attach(AbundanceTempVT)
+plot(N_swd, PRECTOTCORR,
+     ylab = "Number of SWD Males",
+     xlab = "Average total precipitation at surface of Earth",
+     main = "Precipitation vs SWD Population",
+     pch = 21,
+     bg = "darkgreen",
+     col = "darkgreen",
+)
+#create a scatter plot of T2M against SWD
+attach(AbundanceTempVT)
+plot(N_swd, T2M,
+     ylab = "Number of SWD Males",
+     xlab = "Tempature (degrees C)",
+     main = "Temperature vs SWD Population",
+     pch = 21,
+     bg = "darkgreen",
+     col = "darkgreen",
+)
+#create a scatter plot of RH2M against SWD
+attach(AbundanceTempVT)
+plot(N_swd, RH2M,
+     ylab = "Number of SWD Males",
+     xlab = "Relative Humidity",
+     main = "Relative Humidity vs SWD Population",
+     pch = 21,
+     bg = "darkgreen",
+     col = "darkgreen",
+)
+```
+
+```{r}
+#create a scatter plot of PRECTOTCORR against SWD for KY
+attach(AbundanceTempKY)
+plot(N_swd, PRECTOTCORR,
+     ylab = "Number of SWD Males",
+     xlab = "Average total precipitation at surface of Earth",
+     main = "Precipitation vs SWD Population",
+     pch = 21,
+     bg = "darkred",
+     col = "darkred",
+)
+#create a scatter plot of T2M against SWD
+attach(AbundanceTempKY)
+plot(N_swd, T2M,
+     ylab = "Number of SWD Males",
+     xlab = "Tempature (degrees C)",
+     main = "Temperature vs SWD Population",
+     pch = 21,
+     bg = "darkred",
+     col = "darkred",
+)
+#create a scatter plot of RH2M against SWD
+attach(AbundanceTempKY)
+plot(N_swd, RH2M,
+     ylab = "Number of SWD Males",
+     xlab = "Relative Humidity",
+     main = "Relative Humidity vs SWD Population",
+     pch = 21,
+     bg = "darkred",
+     col = "darkred",
+)
+```
