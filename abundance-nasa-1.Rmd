@@ -124,6 +124,145 @@ CrossKeysFarm_weather <- get_power(
 )
 ```
 
+```{r}
+AlBe_weather <- get_power(
+  community = "ag",
+    lonlat = c(38.146223,-79.081904),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2021-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+KiBa_weather <- get_power(
+  community = "ag",
+    lonlat = c(37.8929361,-79.017840),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2021-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+JoNu_weather <- get_power(
+  community = "ag",
+    lonlat = c(38.0783378,-78.488982),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2021-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+FeAb_weather <- get_power(
+  community = "ag",
+    lonlat = c(37.97985,-78.48961),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2021-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+RaPo_weather <- get_power(
+  community = "ag",
+    lonlat = c(37.9778276,-78.3417122),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2021-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+WiHa_weather <- get_power(
+  community = "ag",
+    lonlat = c(38.021608,-78.631458),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2021-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+NoSh_weather <- get_power(
+  community = "ag",
+    lonlat = c(38.021608,-78.631460),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2021-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+LiBl_weather <- get_power(
+  community = "ag",
+    lonlat = c(38.0980496,-78.4915567),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2021-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+GwMe_weather <- get_power(
+  community = "ag",
+    lonlat = c(39.0444765,-77.49892),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2021-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+FrSa_weather <- get_power(
+  community = "ag",
+    lonlat = c(38.3967029,-78.8319075),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2021-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+AlBe_weather <- get_power(
+  community = "ag",
+    lonlat = c(38.146223,-79.081904),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2021-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+NaMo_weather <- get_power(
+  community = "ag",
+    lonlat = c(38.0653651,-78.5021388),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2021-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+AlBr_weather <- get_power(
+  community = "ag",
+    lonlat = c(38.036324,-78.465637),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2021-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+SiKi_weather <- get_power(
+  community = "ag",
+    lonlat = c(38.291869,-78.42491),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2021-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+LiHa_weather <- get_power(
+  community = "ag",
+    lonlat = c(37.5825066,-77.45722),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2021-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+DoSc_weather <- get_power(
+  community = "ag",
+    lonlat = c(38.06808,-78.473266),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2021-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+NaCa_weather <- get_power(
+  community = "ag",
+    lonlat = c(36.608054,-79.5244928),
+    pars = c("RH2M", "T2M", "PRECTOTCORR"),
+    dates = c("2021-01-01", 
+              paste(2025, "-08-20", sep = "")),
+    temporal_api = "daily"
+)
+```
+
 #need to redownload VA data and then create a total variable because im fucking stupid and somehow didnt save my files so i lost all my code. :| im so confused. im going to crash out.
 
 ```{r}
@@ -138,7 +277,11 @@ AllFarmsKY_weather <-rbind(CrossKeysFarm_weather, CartersMountain_weather, Great
 
 ```{r}
 #Combine dataframes from all farms in VA
-AllFarmsVA_weather <-rbind()
+AllFarmsVA_weather <-rbind(AlBe_weather,KiBa_weather,JoNu_weather,FeAb_weather,RaPo_weather,WiHa_weather,NoSh_weather,LiBl_weather,GwMe_weather,FrSa_weather,NaMo_weather,AlBr_weather,SiKi_weather,LiHa_weather,DoSc_weather,NaCa_weather)
+```
+
+```{r}
+AllFarmsTotal_weather<-rbind.data.frame(AllFarmsKY_weather, AllFarmsVT_weather, AllFarmsVA_weather)
 ```
 
 #switch automatic incorrect LAT and LON column names
@@ -153,6 +296,7 @@ colnames(AllFarmsKY_weather)[1] <- "LAT"
 AllFarmsVT_weather$Coordinates<- paste(AllFarmsVT_weather$LON, AllFarmsVT_weather$LAT,sep=",")
 AllFarmsKY_weather$Coordinates<- paste(AllFarmsKY_weather$LON, AllFarmsKY_weather$LAT,sep=",")
 AllFarmsVA_weather$Coordinates<- paste(AllFarmsVA_weather$LON, AllFarmsVA_weather$LAT,sep=",")
+AllFarmsTotal_weather$Coordinates<- paste(AllFarmsTotal_weather$LON, AllFarmsTotal_weather$LAT,sep=",")
 ```
 
 ```{r}
@@ -162,7 +306,10 @@ AllFarmsKY_weather$DD<-NULL
 AllFarmsKY_weather$DOY<-NULL
 AllFarmsVA_weather$DD<-NULL
 AllFarmsVA_weather$DOY<-NULL
+AllFarmsTotal_weather$DD<-NULL
+AllFarmsTotal_weather$DOY<-NULL
 #save YYYYMMDD as a date 
+AllFarmsTotal_weather$YYYYMMDD <- as.Date(AllFarmsTotal_weather$YYYYMMDD, format = "%Y-%m-%d")
 AllFarmsVA_weather$YYYYMMDD <- as.Date(AllFarmsVA_weather$YYYYMMDD, format = "%Y-%m-%d")
 AllFarmsKY_weather$YYYYMMDD <- as.Date(AllFarmsKY_weather$YYYYMMDD, format = "%Y-%m-%d")
 AllFarmsVT_weather$YYYYMMDD <- as.Date(AllFarmsVT_weather$YYYYMMDD, format = "%Y-%m-%d")
@@ -171,28 +318,11 @@ SWD_data$YYYYMMDD <-as.Date(SWD_data$YYYYMMDD, format = "%Y-%m-%d")
 
 
 ```{r}
-#not working?
 AbundanceTempVT<-merge(SWD_data, AllFarmsVT_weather, by = c("Coordinates","YYYYMMDD"))
-```
-
-```{r}
-#not working?
 AbundanceTempKY<-merge(SWD_data, AllFarmsKY_weather, by = c("YYYYMMDD","Coordinates"))
-```
-
-```{r}
 AbundanceTempVA<-merge(SWD_data, AllFarmsVA_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempTotal<-merge(SWD_data, AllFarmsTotal_weather, by = c("Coordinates","YYYYMMDD"))
 ```
-
-
-```{r}
-AbundanceTempVT <- SWD_data %>% left_join(AllFarmsVT_weather, by=c("Coordinates","YYYYMMDD"))
-```
-
-```{r}
-AbundanceTempKY <- SWD_data %>% left_join(AllFarmsKY_weather, by=c("Coordinates","YYYYMMDD"))
-```
-
 
 ```{r}
 #Ensure that variables are factor columns, rather than numeric.
@@ -202,12 +332,14 @@ AbundanceTempKY$T2M <- as.numeric(as.character(AbundanceTempKY$T2M))
 AbundanceTempKY$N_swd<-as.numeric(as.character(AbundanceTempKY$N_swd))
 AbundanceTempVA$T2M <- as.numeric(as.character(AbundanceTempVA$T2M))
 AbundanceTempVA$N_swd<-as.numeric(as.character(AbundanceTempVA$N_swd))
+AbundanceTempTotal$T2M <- as.numeric(as.character(AbundanceTempTotal$T2M))
+AbundanceTempTotal$N_swd<-as.numeric(as.character(AbundanceTempTotal$N_swd))
 ```
 
 ```{r}
 #create a scatter plot of PRECTOTCORR against SWD for VT
 attach(AbundanceTempVT)
-plot(N_swd, PRECTOTCORR,
+plot(PRECTOTCORR,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Average total precipitation at surface of Earth",
      main = "Precipitation vs SWD Population",
@@ -217,7 +349,7 @@ plot(N_swd, PRECTOTCORR,
 )
 #create a scatter plot of T2M against SWD
 attach(AbundanceTempVT)
-plot(N_swd, T2M,
+plot(T2M,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Tempature (degrees C)",
      main = "Temperature vs SWD Population",
@@ -227,7 +359,7 @@ plot(N_swd, T2M,
 )
 #create a scatter plot of RH2M against SWD
 attach(AbundanceTempVT)
-plot(N_swd, RH2M,
+plot(RH2M,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Relative Humidity",
      main = "Relative Humidity vs SWD Population",
@@ -240,7 +372,7 @@ plot(N_swd, RH2M,
 ```{r}
 #create a scatter plot of PRECTOTCORR against SWD for KY
 attach(AbundanceTempKY)
-plot(N_swd, PRECTOTCORR,
+plot(PRECTOTCORR,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Average total precipitation at surface of Earth",
      main = "Precipitation vs SWD Population",
@@ -250,7 +382,7 @@ plot(N_swd, PRECTOTCORR,
 )
 #create a scatter plot of T2M against SWD
 attach(AbundanceTempKY)
-plot(N_swd, T2M,
+plot(T2M,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Tempature (degrees C)",
      main = "Temperature vs SWD Population",
@@ -260,7 +392,7 @@ plot(N_swd, T2M,
 )
 #create a scatter plot of RH2M against SWD
 attach(AbundanceTempKY)
-plot(N_swd, RH2M,
+plot(RH2M,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Relative Humidity",
      main = "Relative Humidity vs SWD Population",
@@ -271,9 +403,9 @@ plot(N_swd, RH2M,
 ```
 
 ```{r}
-#create a scatter plot of PRECTOTCORR against SWD for VA
+#create a scatter plot of PRECTOTCORR against SWD for KY
 attach(AbundanceTempVA)
-plot(PRECTOTCORR, N_swd,
+plot(PRECTOTCORR,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Average total precipitation at surface of Earth",
      main = "Precipitation vs SWD Population",
@@ -293,7 +425,7 @@ plot(T2M, N_swd,
 )
 #create a scatter plot of RH2M against SWD
 attach(AbundanceTempVA)
-plot(RH2M, N_swd,
+plot(RH2M,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Relative Humidity",
      main = "Relative Humidity vs SWD Population",
