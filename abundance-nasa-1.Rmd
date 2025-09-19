@@ -1,5 +1,5 @@
 ---
-title: "nasa-abundance"
+title: "abundance-nasa1"
 output: html_document
 date: "2025-08-20"
 ---
@@ -11,7 +11,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ## R Markdown
 
 ```{r}
-SWD_data<-read.csv("C:/Users/maria/OneDrive/Desktop/abundance-nasa/REAL NEW EXCEL Nunez SWD Sorting Sheet June 2024 for abundance-nasa.csv")
+library(readr)
+SWD_data <- read_csv("C:/Users/maria/OneDrive/Desktop/abundance-nasa/NEW CLEAN EXCEL Nunez SWD Sorting Sheet June 2024 for abundance-nasa(Data).csv")
 ```
 
 ```{r}
@@ -25,245 +26,243 @@ library(ggplot2)
 SweetRoots_weather <- get_power(# choose name; get_power is function from nasapower package
   # i think
   community = "ag",
-    lonlat = c(44.2893745,-73.2420434),# location of data
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2022-01-01", # dates of data
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"# frequency of measurements
+  lonlat = c(44.2893745,-73.2420434),# location of data
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2022-01-01", # dates of data
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"# frequency of measurements
 )
 AdamsBerry_weather <- get_power(
   community = "ag",
-    lonlat = c(44.29804,-73.1885194),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2022-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(44.29804,-73.1885194),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2022-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 FullBelly_weather <- get_power(
   community = "ag",
-    lonlat = c(44.265172,-73.1334011),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2022-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(44.265172,-73.1334011),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2022-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 LastResort_weather <- get_power(
   community = "ag",
-    lonlat = c(44.2661258,-73.1014259),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2022-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(44.2661258,-73.1014259),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2022-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 CoveredBridge_weather <- get_power(
   community = "ag",
-    lonlat = c(44.5147926,-72.926916),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2022-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(44.5147926,-72.926916),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2022-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 ```
 
 ```{r}
 LexingtonBluegrass_weather <- get_power(
   community = "ag",
-    lonlat = c(38.0408,-84.6058),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2020-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(38.0408,-84.6058),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2020-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 CartersMountain_weather <- get_power(
   community = "ag",
-    lonlat = c(37.9740223,-78.5447915),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2017-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(37.9740223,-78.5447915),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2017-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 ChilesPeachOrchard_weather <- get_power(
   community = "ag",
-    lonlat = c( 38.0672129,-78.7471497),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2022-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c( 38.0672129,-78.7471497),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2022-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 LeveringOrchard_weather <- get_power(
   community = "ag",
-    lonlat = c(36.6500994,-80.6151617),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2022-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(36.6500994,-80.6151617),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2022-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 CharlottesvilleAlbermarle_weather <- get_power(
   community = "ag",
-    lonlat = c(38.0624585,-78.4638626),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2022-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(38.0624585,-78.4638626),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2022-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 GreatCountryFarms_weather <- get_power(
   community = "ag",
-    lonlat = c(39.1003535,-77.8162521),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2022-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(39.1003535,-77.8162521),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2022-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 CrossKeysFarm_weather <- get_power(
   community = "ag",
-    lonlat = c(38.3597327,-78.842056),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2022-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(38.3597327,-78.842056),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2022-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 ```
 
 ```{r}
 AlBe_weather <- get_power(
   community = "ag",
-    lonlat = c(38.146223,-79.081904),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2021-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(38.146223,-79.081904),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2021-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 KiBa_weather <- get_power(
   community = "ag",
-    lonlat = c(37.8929361,-79.017840),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2021-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(37.8929361,-79.017840),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2021-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 JoNu_weather <- get_power(
   community = "ag",
-    lonlat = c(38.0783378,-78.488982),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2021-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(38.0783378,-78.488982),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2021-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 FeAb_weather <- get_power(
   community = "ag",
-    lonlat = c(37.97985,-78.48961),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2021-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(37.97985,-78.48961),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2021-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 RaPo_weather <- get_power(
   community = "ag",
-    lonlat = c(37.9778276,-78.3417122),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2021-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(37.9778276,-78.3417122),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2021-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 WiHa_weather <- get_power(
   community = "ag",
-    lonlat = c(38.021608,-78.631458),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2021-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(38.021608,-78.631458),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2021-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 NoSh_weather <- get_power(
   community = "ag",
-    lonlat = c(38.021608,-78.631460),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2021-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(38.021608,-78.631460),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2021-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 LiBl_weather <- get_power(
   community = "ag",
-    lonlat = c(38.0980496,-78.4915567),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2021-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(38.0980496,-78.4915567),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2021-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 GwMe_weather <- get_power(
   community = "ag",
-    lonlat = c(39.0444765,-77.49892),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2021-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(39.0444765,-77.49892),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2021-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 FrSa_weather <- get_power(
   community = "ag",
-    lonlat = c(38.3967029,-78.8319075),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2021-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(38.3967029,-78.8319075),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2021-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 AlBe_weather <- get_power(
   community = "ag",
-    lonlat = c(38.146223,-79.081904),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2021-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(38.146223,-79.081904),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2021-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 NaMo_weather <- get_power(
   community = "ag",
-    lonlat = c(38.0653651,-78.5021388),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2021-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(38.0653651,-78.5021388),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2021-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 AlBr_weather <- get_power(
   community = "ag",
-    lonlat = c(38.036324,-78.465637),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2021-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(38.036324,-78.465637),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2021-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 SiKi_weather <- get_power(
   community = "ag",
-    lonlat = c(38.291869,-78.42491),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2021-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(38.291869,-78.42491),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2021-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 LiHa_weather <- get_power(
   community = "ag",
-    lonlat = c(37.5825066,-77.45722),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2021-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(37.5825066,-77.45722),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2021-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 DoSc_weather <- get_power(
   community = "ag",
-    lonlat = c(38.06808,-78.473266),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2021-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(38.06808,-78.473266),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2021-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 NaCa_weather <- get_power(
   community = "ag",
-    lonlat = c(36.608054,-79.5244928),
-    pars = c("RH2M", "T2M", "PRECTOTCORR"),
-    dates = c("2021-01-01", 
-              paste(2025, "-08-20", sep = "")),
-    temporal_api = "daily"
+  lonlat = c(36.608054,-79.5244928),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2021-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
 )
 ```
-
-#need to redownload VA data and then create a total variable because im fucking stupid and somehow didnt save my files so i lost all my code. :| im so confused. im going to crash out.
 
 ```{r}
 #Combine dataframes from all farms in VT
@@ -284,12 +283,7 @@ AllFarmsVA_weather <-rbind(AlBe_weather,KiBa_weather,JoNu_weather,FeAb_weather,R
 AllFarmsTotal_weather<-rbind.data.frame(AllFarmsKY_weather, AllFarmsVT_weather, AllFarmsVA_weather)
 ```
 
-#switch automatic incorrect LAT and LON column names
-colnames(AllFarmsVT_weather)[2] <- "LON"
-colnames(AllFarmsVT_weather)[1] <- "LAT"
-#switch automatic incorrect LAT and LON column names
-colnames(AllFarmsKY_weather)[2] <- "LON"
-colnames(AllFarmsKY_weather)[1] <- "LAT"
+#switch automatic incorrect LAT and LON column names colnames(AllFarmsVT_weather)[2] \<- "LON" colnames(AllFarmsVT_weather)[1] \<- "LAT" #switch automatic incorrect LAT and LON column names colnames(AllFarmsKY_weather)[2] \<- "LON" colnames(AllFarmsKY_weather)[1] \<- "LAT"
 
 ```{r}
 #CombineLatLon data into one variable "Coordinates". LON is placed first becuase NASA data automatically downloads with LAT and LON incorrectly labled.
@@ -315,7 +309,6 @@ AllFarmsKY_weather$YYYYMMDD <- as.Date(AllFarmsKY_weather$YYYYMMDD, format = "%Y
 AllFarmsVT_weather$YYYYMMDD <- as.Date(AllFarmsVT_weather$YYYYMMDD, format = "%Y-%m-%d")
 SWD_data$YYYYMMDD <-as.Date(SWD_data$YYYYMMDD, format = "%Y-%m-%d")
 ```
-
 
 ```{r}
 AbundanceTempVT<-merge(SWD_data, AllFarmsVT_weather, by = c("Coordinates","YYYYMMDD"))
@@ -488,4 +481,3 @@ acf(SWD_data, lag.max=NULL,
 
 ```{r}
 ```
-
