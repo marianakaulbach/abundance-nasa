@@ -16,13 +16,20 @@ SWD_data <- read_csv("C:/Users/maria/OneDrive/Desktop/abundance-nasa/NEW CLEAN E
 ```
 
 ```{r}
-#NOT WORKING
 #Create a subset of the SWD data for just VT
-SWD_dataVT<-subset(SWD_data, SWD_data$Coordinates== c("44.5147926,-72.926916", "44.265172,-73.1334011", "44.2661258,-73.1014259", "44.2893745,-73.2420434", "44.29804,-73.1885194"))
+SWD_dataVT<-SWD_data %>% 
+    dplyr::filter(Coordinates %in% c("44.5147926,-72.926916", "44.265172,-73.1334011", "44.2661258,-73.1014259", "44.2893745,-73.2420434", "44.29804,-73.1885194"))
 #Create a subset of the SWD data for just VA
-SWD_dataVA<-subset(SWD_data, SWD_data$site== c("38.0408,-84.6058","37.9740223,-78.5447915","38.0672129,-78.7471497","38.0624585,-78.4638626","36.6500994,-80.6151617","39.1003535,-77.8162521","38.3597327,-78.842056"))
-```
+SWD_dataVA<-SWD_data %>% 
+    dplyr::filter(Coordinates %in% c("38.0408,-84.6058","37.9740223,-78.5447915","38.0672129,-78.7471497","38.0624585,-78.4638626","36.6500994,-80.6151617","39.1003535,-77.8162521","38.3597327,-78.842056"))
+#Create a subset of the SWD data for just KY
+SWD_dataKY<-SWD_data %>% 
+    dplyr::filter(Coordinates %in% c("38.146223,-79.081904","37.8929361,-79.0178402","38.0783378,-78.488982","37.97985,-78.48961","37.9778276,-78.3417122","38.021608,-78.631458","38.3563214,-78.9565994","38.0980496,-78.4915567","39.0444765,-77.49892","38.3967029,-78.8319075","38.0653651,-78.5021388","38.036324,-78.465637","38.291869,-78.42491","37.5825066,-77.45722","38.06808,-78.473266","36.608054,-79.5244928","38.0783378,-78.488982"))
 
+#TESTING Create a subset of the SWD data for just FBF
+SWD_dataFBF<-SWD_data %>% 
+    dplyr::filter(Coordinates %in% c("44.265172,-73.1334011"))
+```
 
 ```{r}
 library(nasapower)
@@ -481,12 +488,47 @@ ggplot(AbundanceTempTotal, aes(x = YYYYMMDD, y = N_swd)) +
 ```
 
 ```{r}
-VTswd_interpolated<-approx(y = N_swd, x = YYYYMMDD, method = "linear", n = 50,
+#create interpolated data for full dataset
+swd_interpolated<-approx(y = N_swd, x = YYYYMMDD, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+#create interpolated data for VT flies
+swd_interpolatedVT<-approx(y = SWD_dataVT$N_swd, x = SWD_dataVT$YYYYMMDD, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+#create interpolated data for VA flies
+swd_interpolatedVA<-approx(y = SWD_dataVA$N_swd, x = SWD_dataVA$YYYYMMDD, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+#create interpolated data for KY flies
+swd_interpolatedKY<-approx(y = SWD_dataKY$N_swd, x = SWD_dataKY$YYYYMMDD, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+
+#TESTING create interpolated data for FBF flies
+swd_interpolatedFBF<-approx(y = SWD_dataFBF$N_swd, x = SWD_dataFBF$YYYYMMDD, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 ```
 
 ```{r}
-ccf(SWD_data$YYYYMMDD,VTswd_interpolated[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+#create a cross correlation for SWD pop over time for full dataset
+ccf(SWD_data$YYYYMMDD,swd_interpolated[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
     main = "SWD Population & Time cross-correlation")
+
+#create a cross correlation for SWD pop over time for VT data
+ccf(SWD_dataVT$YYYYMMDD,swd_interpolatedVT[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.fail,
+    main = "VT SWD Population & Time cross-correlation")
+
+#create a cross correlation for SWD pop over time for VA data
+ccf(SWD_dataVA$YYYYMMDD,swd_interpolatedVA[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.fail,
+    main = "VA SWD Population & Time cross-correlation")
+
+#create a cross correlation for SWD pop over time for KY data
+ccf(SWD_dataKY$YYYYMMDD,swd_interpolatedKY[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.fail,
+    main = "KY SWD Population & Time cross-correlation")
+
+#TESTING create a cross correlation for SWD pop over time for Sweet Roots data
+ccf(SWD_dataFBF$YYYYMMDD,swd_interpolatedFBF[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.fail,
+    main = "FBF SWD Population & Time cross-correlation")
 ```
