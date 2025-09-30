@@ -16,6 +16,15 @@ SWD_data <- read_csv("C:/Users/maria/OneDrive/Desktop/abundance-nasa/NEW CLEAN E
 ```
 
 ```{r}
+#NOT WORKING
+#Create a subset of the SWD data for just VT
+SWD_dataVT<-subset(SWD_data, SWD_data$Coordinates== c("44.5147926,-72.926916", "44.265172,-73.1334011", "44.2661258,-73.1014259", "44.2893745,-73.2420434", "44.29804,-73.1885194"))
+#Create a subset of the SWD data for just VA
+SWD_dataVA<-subset(SWD_data, SWD_data$site== c("38.0408,-84.6058","37.9740223,-78.5447915","38.0672129,-78.7471497","38.0624585,-78.4638626","36.6500994,-80.6151617","39.1003535,-77.8162521","38.3597327,-78.842056"))
+```
+
+
+```{r}
 library(nasapower)
 library(tidyverse)
 library(magrittr)
@@ -472,12 +481,12 @@ ggplot(AbundanceTempTotal, aes(x = YYYYMMDD, y = N_swd)) +
 ```
 
 ```{r}
-#practing autocorrelation
-acf(SWD_data, lag.max=NULL,
-    type=c("correlation", "covariance","partial"),
-    plot=TRUE,demean=TRUE)
-
+VTswd_interpolated<-approx(y = N_swd, x = YYYYMMDD, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
 ```
 
 ```{r}
+ccf(SWD_data$YYYYMMDD,VTswd_interpolated[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.fail,
+    main = "SWD Population & Time cross-correlation")
 ```
