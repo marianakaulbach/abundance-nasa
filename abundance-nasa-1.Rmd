@@ -16,22 +16,6 @@ SWD_data <- read_csv("C:/Users/maria/OneDrive/Desktop/abundance-nasa/NEW CLEAN E
 ```
 
 ```{r}
-#Create a subset of the SWD data for just VT
-SWD_dataVT<-SWD_data %>% 
-    dplyr::filter(Coordinates %in% c("44.5147926,-72.926916", "44.265172,-73.1334011", "44.2661258,-73.1014259", "44.2893745,-73.2420434", "44.29804,-73.1885194"))
-#Create a subset of the SWD data for just VA
-SWD_dataVA<-SWD_data %>% 
-    dplyr::filter(Coordinates %in% c("38.0408,-84.6058","37.9740223,-78.5447915","38.0672129,-78.7471497","38.0624585,-78.4638626","36.6500994,-80.6151617","39.1003535,-77.8162521","38.3597327,-78.842056"))
-#Create a subset of the SWD data for just KY
-SWD_dataKY<-SWD_data %>% 
-    dplyr::filter(Coordinates %in% c("38.146223,-79.081904","37.8929361,-79.0178402","38.0783378,-78.488982","37.97985,-78.48961","37.9778276,-78.3417122","38.021608,-78.631458","38.3563214,-78.9565994","38.0980496,-78.4915567","39.0444765,-77.49892","38.3967029,-78.8319075","38.0653651,-78.5021388","38.036324,-78.465637","38.291869,-78.42491","37.5825066,-77.45722","38.06808,-78.473266","36.608054,-79.5244928","38.0783378,-78.488982"))
-
-#TESTING Create a subset of the SWD data for just FBF
-SWD_dataFBF<-SWD_data %>% 
-    dplyr::filter(Coordinates %in% c("44.265172,-73.1334011"))
-```
-
-```{r}
 library(nasapower)
 library(tidyverse)
 library(magrittr)
@@ -281,22 +265,54 @@ NaCa_weather <- get_power(
 ```
 
 ```{r}
+#make all the temp data positive rather than negative (not sure why it's negative honestly)(there's totally an easier way to have done this)
+SweetRoots_weather$T2M<-abs(SweetRoots_weather$T2M)
+FullBelly_weather$T2M<-abs(FullBelly_weather$T2M)
+CoveredBridge_weather$T2M<-abs(CoveredBridge_weather$T2M)
+AdamsBerry_weather$T2M<-abs(AdamsBerry_weather$T2M)
+LastResort_weather$T2M<-abs(LastResort_weather$T2M)
+LexingtonBluegrass_weather$T2M<-abs(LexingtonBluegrass_weather$T2M)
+LeveringOrchard_weather$T2M<-abs(LeveringOrchard_weather$T2M)
+CartersMountain_weather$T2M<-abs(CartersMountain_weather$T2M)
+GreatCountryFarms_weather$T2M<-abs(GreatCountryFarms_weather$T2M)
+CharlottesvilleAlbermarle_weather$T2M<-abs(CharlottesvilleAlbermarle_weather$T2M)
+CrossKeysFarm_weather$T2M<-abs(CrossKeysFarm_weather$T2M)
+ChilesPeachOrchard_weather$T2M<-abs(ChilesPeachOrchard_weather$T2M)
+AlBe_weather$T2M<-abs(AlBe_weather$T2M)
+AlBr_weather$T2M<-abs(AlBr_weather$T2M)
+DoSc_weather$T2M<-abs(DoSc_weather$T2M)
+FeAb_weather$T2M<-abs(FeAb_weather$T2M)
+FrSa_weather$T2M<-abs(FrSa_weather$T2M)
+GwMe_weather$T2M<-abs(GwMe_weather$T2M)
+JoNu_weather$T2M<-abs(JoNu_weather$T2M)
+KiBa_weather$T2M<-abs(JoNu_weather$T2M)
+LiBl_weather$T2M<-abs(LiBl_weather$T2M)
+LiHa_weather$T2M<-abs(LiHa_weather$T2M)
+NaCa_weather$T2M<-abs(NaCa_weather$T2M)
+NaMo_weather$T2M<-abs(NaMo_weather$T2M)
+NoSh_weather$T2M<-abs(NoSh_weather$T2M)
+RaPo_weather$T2M<-abs(RaPo_weather$T2M)
+WiHa_weather$T2M<-abs(WiHa_weather$T2M)
+```
+
+
+```{r}
 #Combine dataframes from all farms in VT
 AllFarmsVT_weather <-rbind(AdamsBerry_weather, CoveredBridge_weather, FullBelly_weather, LastResort_weather, SweetRoots_weather)
-```
-
-```{r}
 #Combine dataframes from all farms in KY
-AllFarmsKY_weather <-rbind(CrossKeysFarm_weather, CartersMountain_weather, GreatCountryFarms_weather, LeveringOrchard_weather, CharlottesvilleAlbermarle_weather,ChilesPeachOrchard_weather)
-```
-
-```{r}
+AllFarmsKY_weather <-rbind(LexingtonBluegrass_weather, CrossKeysFarm_weather, CartersMountain_weather, GreatCountryFarms_weather, LeveringOrchard_weather, CharlottesvilleAlbermarle_weather,ChilesPeachOrchard_weather)
 #Combine dataframes from all farms in VA
 AllFarmsVA_weather <-rbind(AlBe_weather,KiBa_weather,JoNu_weather,FeAb_weather,RaPo_weather,WiHa_weather,NoSh_weather,LiBl_weather,GwMe_weather,FrSa_weather,NaMo_weather,AlBr_weather,SiKi_weather,LiHa_weather,DoSc_weather,NaCa_weather)
+#Combine dataframes for all farms 
+AllFarmsTotal_weather<-rbind.data.frame(AllFarmsKY_weather, AllFarmsVT_weather, AllFarmsVA_weather)
 ```
 
 ```{r}
-AllFarmsTotal_weather<-rbind.data.frame(AllFarmsKY_weather, AllFarmsVT_weather, AllFarmsVA_weather)
+#Make SURE temp data is positive
+AllFarmsTotal_weather$T2M<-abs(AllFarmsTotal_weather$T2M)
+AllFarmsKY_weather$T2M<-abs(AllFarmsKY_weather$T2M)
+AllFarmsVA_weather$T2M<-abs(AllFarmsVA_weather$T2M)
+AllFarmsVT_weather$T2M<-abs(AllFarmsVT_weather$T2M)
 ```
 
 #switch automatic incorrect LAT and LON column names colnames(AllFarmsVT_weather)[2] \<- "LON" colnames(AllFarmsVT_weather)[1] \<- "LAT" #switch automatic incorrect LAT and LON column names colnames(AllFarmsKY_weather)[2] \<- "LON" colnames(AllFarmsKY_weather)[1] \<- "LAT"
@@ -346,12 +362,38 @@ AbundanceTempTotal$N_swd<-as.numeric(as.character(AbundanceTempTotal$N_swd))
 ```
 
 ```{r}
+#Create a subset of the SWD data for just VT
+SWD_dataVT<-SWD_data %>% 
+    dplyr::filter(Coordinates %in% c("44.5147926,-72.926916", "44.265172,-73.1334011", "44.2661258,-73.1014259", "44.2893745,-73.2420434", "44.29804,-73.1885194"))
+#Create a subset of the SWD data for just VA
+SWD_dataVA<-SWD_data %>% 
+    dplyr::filter(Coordinates %in% c("38.0408,-84.6058","37.9740223,-78.5447915","38.0672129,-78.7471497","38.0624585,-78.4638626","36.6500994,-80.6151617","39.1003535,-77.8162521","38.3597327,-78.842056"))
+#Create a subset of the SWD data for just KY
+SWD_dataKY<-SWD_data %>% 
+    dplyr::filter(Coordinates %in% c("38.146223,-79.081904","37.8929361,-79.0178402","38.0783378,-78.488982","37.97985,-78.48961","37.9778276,-78.3417122","38.021608,-78.631458","38.3563214,-78.9565994","38.0980496,-78.4915567","39.0444765,-77.49892","38.3967029,-78.8319075","38.0653651,-78.5021388","38.036324,-78.465637","38.291869,-78.42491","37.5825066,-77.45722","38.06808,-78.473266","36.608054,-79.5244928","38.0783378,-78.488982"))
+
+#Create a subset of the SWD data for just the 6 farms of interest 
+SWD_dataFBF<-AbundanceTempVT %>% 
+    dplyr::filter(Coordinates %in% c("44.265172,-73.1334011"))
+SWD_dataABF<-AbundanceTempVT %>% 
+    dplyr::filter(Coordinates %in% c("44.29804,-73.1885194"))
+SWD_dataCM<-AbundanceTempKY %>% 
+    dplyr::filter(Coordinates %in% c("37.9740223,-78.5447915"))
+SWD_dataLBA<-AbundanceTempKY %>% 
+    dplyr::filter(Coordinates %in% c("38.0408,-84.6058"))
+SWD_dataAlBe<-AbundanceTempVA %>% 
+    dplyr::filter(Coordinates %in% c("38.146223,-79.081904"))
+SWD_dataFrSa<-AbundanceTempVA %>% 
+    dplyr::filter(Coordinates %in% c("38.3967029,-78.8319075"))
+```
+
+```{r}
 #create a scatter plot of PRECTOTCORR against SWD for VT
 attach(AbundanceTempVT)
 plot(PRECTOTCORR,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Average total precipitation at surface of Earth",
-     main = "Precipitation vs SWD Population",
+     main = " VT Precipitation vs SWD Population",
      pch = 21,
      bg = "darkgreen",
      col = "darkgreen",
@@ -361,7 +403,7 @@ attach(AbundanceTempVT)
 plot(T2M,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Tempature (degrees C)",
-     main = "Temperature vs SWD Population",
+     main = "VT Temperature vs SWD Population",
      pch = 21,
      bg = "darkgreen",
      col = "darkgreen",
@@ -371,7 +413,7 @@ attach(AbundanceTempVT)
 plot(RH2M,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Relative Humidity",
-     main = "Relative Humidity vs SWD Population",
+     main = "VT Relative Humidity vs SWD Population",
      pch = 21,
      bg = "darkgreen",
      col = "darkgreen",
@@ -384,7 +426,7 @@ attach(AbundanceTempKY)
 plot(PRECTOTCORR,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Average total precipitation at surface of Earth",
-     main = "Precipitation vs SWD Population",
+     main = "KY Precipitation vs SWD Population",
      pch = 21,
      bg = "darkred",
      col = "darkred",
@@ -394,7 +436,7 @@ attach(AbundanceTempKY)
 plot(T2M,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Tempature (degrees C)",
-     main = "Temperature vs SWD Population",
+     main = "KY Temperature vs SWD Population",
      pch = 21,
      bg = "darkred",
      col = "darkred",
@@ -404,7 +446,7 @@ attach(AbundanceTempKY)
 plot(RH2M,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Relative Humidity",
-     main = "Relative Humidity vs SWD Population",
+     main = "KY Relative Humidity vs SWD Population",
      pch = 21,
      bg = "darkred",
      col = "darkred",
@@ -417,7 +459,7 @@ attach(AbundanceTempVA)
 plot(PRECTOTCORR,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Average total precipitation at surface of Earth",
-     main = "Precipitation vs SWD Population",
+     main = "VA Precipitation vs SWD Population",
      pch = 21,
      bg = "orange",
      col = "orange",
@@ -427,7 +469,7 @@ attach(AbundanceTempVA)
 plot(T2M, N_swd,
      ylab = "Number of SWD Males",
      xlab = "Tempature (degrees C)",
-     main = "Temperature vs SWD Population",
+     main = "VA Temperature vs SWD Population",
      pch = 21,
      bg = "orange",
      col = "orange",
@@ -437,7 +479,7 @@ attach(AbundanceTempVA)
 plot(RH2M,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Relative Humidity",
-     main = "Relative Humidity vs SWD Population",
+     main = "VA Relative Humidity vs SWD Population",
      pch = 21,
      bg = "orange",
      col = "orange",
@@ -488,47 +530,142 @@ ggplot(AbundanceTempTotal, aes(x = YYYYMMDD, y = N_swd)) +
 ```
 
 ```{r}
+#Create a plot with both temp and abundance data for specific farms
+#FULL BELLY FARM
+coeff<-10
+ggplot(SWD_dataFBF, aes(x=YYYYMMDD)) +
+  geom_line( aes(y=N_swd), size=1, color="orange") + 
+  geom_line( aes(y=T2M/coeff), size=1, color="lightblue") +
+  scale_y_continuous(
+    # Features of the first axis
+    name = "SWD count",
+    # Add a second axis and specify its features
+    sec.axis = sec_axis(~.*coeff, name="Temperature")
+  ) + 
+  theme(
+    axis.title.y = element_text(color = "orange", size=13),
+    axis.title.y.right = element_text(color = "lightblue", size=13)
+  ) +
+  ggtitle("FBF SWD count and temperature over time")
+#ADAM'S BERRY FARM
+ggplot(SWD_dataABF, aes(x=YYYYMMDD)) +
+  geom_line( aes(y=N_swd), size=1, color="sienna") + 
+  geom_line( aes(y=T2M/coeff), size=1, color="slategray1") +
+  scale_y_continuous(
+    # Features of the first axis
+    name = "SWD count",
+    # Add a second axis and specify its features
+    sec.axis = sec_axis(~.*coeff, name="Temperature")
+  ) + 
+  theme(
+    axis.title.y = element_text(color = "sienna", size=13),
+    axis.title.y.right = element_text(color = "slategray1", size=13)
+  ) +
+  ggtitle("ABF SWD count and temperature over time")
+#CM
+ggplot(SWD_dataCM, aes(x=YYYYMMDD)) +
+  geom_line( aes(y=N_swd), size=1, color="salmon1") + 
+  geom_line( aes(y=T2M/coeff), size=1, color="lightskyblue") +
+  scale_y_continuous(
+    # Features of the first axis
+    name = "SWD count",
+    # Add a second axis and specify its features
+    sec.axis = sec_axis(~.*coeff, name="Temperature")
+  ) + 
+  theme(
+    axis.title.y = element_text(color = "salmon1", size=13),
+    axis.title.y.right = element_text(color = "lightskyblue", size=13)
+  ) +
+  ggtitle("CM SWD count and temperature over time")
+#LBA
+ggplot(SWD_dataLBA, aes(x=YYYYMMDD)) +
+  geom_line( aes(y=N_swd), size=1, color="tomato") + 
+  geom_line( aes(y=T2M/coeff), size=1, color="mediumturquoise") +
+  scale_y_continuous(
+    # Features of the first axis
+    name = "SWD count",
+    # Add a second axis and specify its features
+    sec.axis = sec_axis(~.*coeff, name="Temperature")
+  ) + 
+  theme(
+    axis.title.y = element_text(color = "tomato", size=13),
+    axis.title.y.right = element_text(color = "mediumturquoise", size=13)
+  ) +
+  ggtitle("LBA SWD count and temperature over time")
+#AlBe
+ggplot(SWD_dataAlBe, aes(x=YYYYMMDD)) +
+  geom_line( aes(y=N_swd), size=1, color="lightsalmon") + 
+  geom_line( aes(y=T2M/coeff), size=1, color="royalblue1") +
+  scale_y_continuous(
+    # Features of the first axis
+    name = "SWD count",
+    # Add a second axis and specify its features
+    sec.axis = sec_axis(~.*coeff, name="Temperature",)
+  ) + 
+  theme(
+    axis.title.y = element_text(color = "lightsalmon", size=13),
+    axis.title.y.right = element_text(color = "royalblue1", size=13)
+  ) +
+  ggtitle("AlBe SWD count and temperature over time")
+#FrSa
+ggplot(SWD_dataFrSa, aes(x=YYYYMMDD)) +
+  geom_line( aes(y=N_swd), size=1, color="chocolate1") + 
+  geom_line( aes(y=T2M/coeff), size=1, color="cadetblue") +
+  scale_y_continuous(
+    # Features of the first axis
+    name = "SWD count",
+    # Add a second axis and specify its features
+    sec.axis = sec_axis(~.*coeff, name="Temperature")
+  ) + 
+  theme(
+    axis.title.y = element_text(color = "chocolate1", size=13),
+    axis.title.y.right = element_text(color = "cadetblue", size=13)
+  ) +
+  ggtitle("FrSa SWD count and temperature over time")
+```
+
+```{r}
 #create interpolated data for full dataset
-swd_interpolated<-approx(y = N_swd, x = YYYYMMDD, method = "linear", n = 50,
+swd_interpolated<-approx(y = AbundanceTempTotal$N_swd, x = AbundanceTempTotal$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 #create interpolated data for VT flies
-swd_interpolatedVT<-approx(y = SWD_dataVT$N_swd, x = SWD_dataVT$YYYYMMDD, method = "linear", n = 50,
+swd_interpolatedVT<-approx(y = AbundanceTempVT$N_swd, x = AbundanceTempVT$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 #create interpolated data for VA flies
-swd_interpolatedVA<-approx(y = SWD_dataVA$N_swd, x = SWD_dataVA$YYYYMMDD, method = "linear", n = 50,
+swd_interpolatedVA<-approx(y = AbundanceTempVA$N_swd, x = AbundanceTempVA$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 #create interpolated data for KY flies
-swd_interpolatedKY<-approx(y = SWD_dataKY$N_swd, x = SWD_dataKY$YYYYMMDD, method = "linear", n = 50,
+swd_interpolatedKY<-approx(y = AbundanceTempKY$N_swd, x = AbundanceTempKY$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 
 #TESTING create interpolated data for FBF flies
-swd_interpolatedFBF<-approx(y = SWD_dataFBF$N_swd, x = SWD_dataFBF$YYYYMMDD, method = "linear", n = 50,
+swd_interpolatedFBF<-approx(y = SWD_dataFBF$N_swd, x = SWD_dataFBF$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 ```
 
 ```{r}
 #create a cross correlation for SWD pop over time for full dataset
-ccf(SWD_data$YYYYMMDD,swd_interpolated[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+ccf(swd_interpolated[["x"]],swd_interpolated[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
     main = "SWD Population & Time cross-correlation")
 
 #create a cross correlation for SWD pop over time for VT data
-ccf(SWD_dataVT$YYYYMMDD,swd_interpolatedVT[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+ccf(swd_interpolatedVT[["x"]],swd_interpolatedVT[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
     main = "VT SWD Population & Time cross-correlation")
 
 #create a cross correlation for SWD pop over time for VA data
-ccf(SWD_dataVA$YYYYMMDD,swd_interpolatedVA[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+ccf(swd_interpolatedVA[["x"]],swd_interpolatedVA[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
     main = "VA SWD Population & Time cross-correlation")
 
 #create a cross correlation for SWD pop over time for KY data
-ccf(SWD_dataKY$YYYYMMDD,swd_interpolatedKY[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+ccf(swd_interpolatedKY[["x"]],swd_interpolatedKY[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
     main = "KY SWD Population & Time cross-correlation")
 
-#TESTING create a cross correlation for SWD pop over time for Sweet Roots data
-ccf(SWD_dataFBF$YYYYMMDD,swd_interpolatedFBF[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+#TESTING create a cross correlation for SWD pop over time for Full Belly data
+ccf(swd_interpolatedFBF[["x"]],swd_interpolatedFBF[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
     main = "FBF SWD Population & Time cross-correlation")
 ```
