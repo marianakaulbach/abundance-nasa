@@ -26,7 +26,7 @@ library(ggplot2)
 SweetRoots_weather <- get_power(# choose name; get_power is function from nasapower package
   # i think
   community = "ag",
-  lonlat = c(44.2893745,-73.2420434),# location of data
+  lonlat = c(-73.2420434,44.2893745),# location of data
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2022-01-01", # dates of data
             paste(2025, "-08-20", sep = "")),
@@ -34,7 +34,7 @@ SweetRoots_weather <- get_power(# choose name; get_power is function from nasapo
 )
 AdamsBerry_weather <- get_power(
   community = "ag",
-  lonlat = c(44.29804,-73.1885194),
+  lonlat = c(-73.1885194,44.29804),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2022-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -42,7 +42,7 @@ AdamsBerry_weather <- get_power(
 )
 FullBelly_weather <- get_power(
   community = "ag",
-  lonlat = c(44.265172,-73.1334011),
+  lonlat = c(-73.1334011,44.265172),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2022-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -50,7 +50,7 @@ FullBelly_weather <- get_power(
 )
 LastResort_weather <- get_power(
   community = "ag",
-  lonlat = c(44.2661258,-73.1014259),
+  lonlat = c(-73.1014259,44.2661258),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2022-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -58,7 +58,7 @@ LastResort_weather <- get_power(
 )
 CoveredBridge_weather <- get_power(
   community = "ag",
-  lonlat = c(44.5147926,-72.926916),
+  lonlat = c(-72.926916,44.5147926),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2022-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -69,7 +69,7 @@ CoveredBridge_weather <- get_power(
 ```{r}
 LexingtonBluegrass_weather <- get_power(
   community = "ag",
-  lonlat = c(38.0408,-84.6058),
+  lonlat = c(-84.6058,38.0408),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2020-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -77,7 +77,7 @@ LexingtonBluegrass_weather <- get_power(
 )
 CartersMountain_weather <- get_power(
   community = "ag",
-  lonlat = c(37.9740223,-78.5447915),
+  lonlat = c(-78.5447915,37.9740223),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2017-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -85,7 +85,7 @@ CartersMountain_weather <- get_power(
 )
 ChilesPeachOrchard_weather <- get_power(
   community = "ag",
-  lonlat = c( 38.0672129,-78.7471497),
+  lonlat = c(-78.7471497,38.0672129),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2022-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -93,7 +93,7 @@ ChilesPeachOrchard_weather <- get_power(
 )
 LeveringOrchard_weather <- get_power(
   community = "ag",
-  lonlat = c(36.6500994,-80.6151617),
+  lonlat = c(-80.6151617,36.6500994),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2022-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -101,7 +101,7 @@ LeveringOrchard_weather <- get_power(
 )
 CharlottesvilleAlbermarle_weather <- get_power(
   community = "ag",
-  lonlat = c(38.0624585,-78.4638626),
+  lonlat = c(-78.4638626,38.0624585),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2022-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -109,7 +109,7 @@ CharlottesvilleAlbermarle_weather <- get_power(
 )
 GreatCountryFarms_weather <- get_power(
   community = "ag",
-  lonlat = c(39.1003535,-77.8162521),
+  lonlat = c(-77.8162521,39.1003535),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2022-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -117,7 +117,7 @@ GreatCountryFarms_weather <- get_power(
 )
 CrossKeysFarm_weather <- get_power(
   community = "ag",
-  lonlat = c(38.3597327,-78.842056),
+  lonlat = c(-78.842056,38.3597327),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2022-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -128,7 +128,7 @@ CrossKeysFarm_weather <- get_power(
 ```{r}
 AlBe_weather <- get_power(
   community = "ag",
-  lonlat = c(38.146223,-79.081904),
+  lonlat = c(-79.081904,38.146223),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2021-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -136,7 +136,7 @@ AlBe_weather <- get_power(
 )
 KiBa_weather <- get_power(
   community = "ag",
-  lonlat = c(37.8929361,-79.017840),
+  lonlat = c(-79.017840,37.8929361),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2021-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -144,7 +144,7 @@ KiBa_weather <- get_power(
 )
 JoNu_weather <- get_power(
   community = "ag",
-  lonlat = c(38.0783378,-78.488982),
+  lonlat = c(-78.488982,38.0783378),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2021-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -152,7 +152,7 @@ JoNu_weather <- get_power(
 )
 FeAb_weather <- get_power(
   community = "ag",
-  lonlat = c(37.97985,-78.48961),
+  lonlat = c(-78.48961,37.97985),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2021-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -160,7 +160,7 @@ FeAb_weather <- get_power(
 )
 RaPo_weather <- get_power(
   community = "ag",
-  lonlat = c(37.9778276,-78.3417122),
+  lonlat = c(-78.3417122,37.9778276),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2021-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -168,7 +168,7 @@ RaPo_weather <- get_power(
 )
 WiHa_weather <- get_power(
   community = "ag",
-  lonlat = c(38.021608,-78.631458),
+  lonlat = c(-78.631458,38.021608),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2021-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -176,7 +176,7 @@ WiHa_weather <- get_power(
 )
 NoSh_weather <- get_power(
   community = "ag",
-  lonlat = c(38.021608,-78.631460),
+  lonlat = c(-78.631460,38.021608),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2021-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -184,7 +184,7 @@ NoSh_weather <- get_power(
 )
 LiBl_weather <- get_power(
   community = "ag",
-  lonlat = c(38.0980496,-78.4915567),
+  lonlat = c(-78.4915567,38.0980496),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2021-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -192,7 +192,7 @@ LiBl_weather <- get_power(
 )
 GwMe_weather <- get_power(
   community = "ag",
-  lonlat = c(39.0444765,-77.49892),
+  lonlat = c(-77.49892,39.0444765),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2021-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -200,7 +200,7 @@ GwMe_weather <- get_power(
 )
 FrSa_weather <- get_power(
   community = "ag",
-  lonlat = c(38.3967029,-78.8319075),
+  lonlat = c(-78.8319075,38.3967029),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2021-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -208,7 +208,7 @@ FrSa_weather <- get_power(
 )
 AlBe_weather <- get_power(
   community = "ag",
-  lonlat = c(38.146223,-79.081904),
+  lonlat = c(-79.081904,38.146223),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2021-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -216,7 +216,7 @@ AlBe_weather <- get_power(
 )
 NaMo_weather <- get_power(
   community = "ag",
-  lonlat = c(38.0653651,-78.5021388),
+  lonlat = c(-78.5021388,38.0653651),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2021-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -224,7 +224,7 @@ NaMo_weather <- get_power(
 )
 AlBr_weather <- get_power(
   community = "ag",
-  lonlat = c(38.036324,-78.465637),
+  lonlat = c(-78.465637,38.036324),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2021-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -232,7 +232,7 @@ AlBr_weather <- get_power(
 )
 SiKi_weather <- get_power(
   community = "ag",
-  lonlat = c(38.291869,-78.42491),
+  lonlat = c(-78.42491,38.291869),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2021-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -240,7 +240,7 @@ SiKi_weather <- get_power(
 )
 LiHa_weather <- get_power(
   community = "ag",
-  lonlat = c(37.5825066,-77.45722),
+  lonlat = c(-77.45722,37.5825066),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2021-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -248,7 +248,7 @@ LiHa_weather <- get_power(
 )
 DoSc_weather <- get_power(
   community = "ag",
-  lonlat = c(38.06808,-78.473266),
+  lonlat = c(-78.473266,38.06808),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2021-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -256,7 +256,7 @@ DoSc_weather <- get_power(
 )
 NaCa_weather <- get_power(
   community = "ag",
-  lonlat = c(36.608054,-79.5244928),
+  lonlat = c(-79.5244928,36.608054),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
   dates = c("2021-01-01", 
             paste(2025, "-08-20", sep = "")),
@@ -318,11 +318,11 @@ AllFarmsVT_weather$T2M<-abs(AllFarmsVT_weather$T2M)
 #switch automatic incorrect LAT and LON column names colnames(AllFarmsVT_weather)[2] \<- "LON" colnames(AllFarmsVT_weather)[1] \<- "LAT" #switch automatic incorrect LAT and LON column names colnames(AllFarmsKY_weather)[2] \<- "LON" colnames(AllFarmsKY_weather)[1] \<- "LAT"
 
 ```{r}
-#CombineLatLon data into one variable "Coordinates". LON is placed first becuase NASA data automatically downloads with LAT and LON incorrectly labled.
-AllFarmsVT_weather$Coordinates<- paste(AllFarmsVT_weather$LON, AllFarmsVT_weather$LAT,sep=",")
-AllFarmsKY_weather$Coordinates<- paste(AllFarmsKY_weather$LON, AllFarmsKY_weather$LAT,sep=",")
-AllFarmsVA_weather$Coordinates<- paste(AllFarmsVA_weather$LON, AllFarmsVA_weather$LAT,sep=",")
-AllFarmsTotal_weather$Coordinates<- paste(AllFarmsTotal_weather$LON, AllFarmsTotal_weather$LAT,sep=",")
+#CombineLatLon data into one variable "Coordinates".
+AllFarmsVT_weather$Coordinates<- paste(AllFarmsVT_weather$LAT, AllFarmsVT_weather$LON,sep=",")
+AllFarmsKY_weather$Coordinates<- paste(AllFarmsKY_weather$LAT, AllFarmsKY_weather$LON,sep=",")
+AllFarmsVA_weather$Coordinates<- paste(AllFarmsVA_weather$LAT, AllFarmsVA_weather$LON,sep=",")
+AllFarmsTotal_weather$Coordinates<- paste(AllFarmsTotal_weather$LAT, AllFarmsTotal_weather$LON,sep=",")
 ```
 
 ```{r}
@@ -520,6 +520,7 @@ plot(RH2M, N_swd,
 ```
 
 ```{r}
+coeff <-10
 library(ggplot2)
 #make a ggplot line chart to plot population over time
 #NEED TO FIGURE OUT HOW TO REMOVE OUTLIER
@@ -531,16 +532,92 @@ ggplot(AbundanceTempTotal, aes(x = YYYYMMDD, y = N_swd)) +
 
 ```{r}
 #Create a plot with both temp and abundance data for specific farms
+install.packages("gridExtra")
+library(ggplot2)
+library(gridExtra)
 #FULL BELLY FARM
+SWDPlotFBF <- ggplot(SWD_dataFBF, aes(x=YYYYMMDD, y=N_swd)) +
+  geom_line(color = "orange") +
+  labs(title = "FBF N_swd Over Time", x = "Time", y = "Population Count") +
+  theme_minimal()
+T2MPlotFBF <- ggplot(SWD_dataFBF, aes(x=YYYYMMDD, y=T2M)) +
+  geom_line(color = "lightblue") +
+  labs(title = "FBF T2M Over Time", x = "Time", y = "Temperature") +
+  theme_minimal()
+# Stack plots vertically using patchwork
+grid.arrange(SWDPlotFBF, T2MPlotFBF, nrow = 2)
+
+#ABF
+SWDPlotABF <- ggplot(SWD_dataABF, aes(x=YYYYMMDD, y=N_swd)) +
+  geom_line(color = "orange") +
+  labs(title = "ABF N_swd Over Time", x = "Time", y = "Population Count") +
+  theme_minimal()
+T2MPlotABF <- ggplot(SWD_dataFBF, aes(x=YYYYMMDD, y=T2M)) +
+  geom_line(color = "lightblue") +
+  labs(title = "ABF T2M Over Time", x = "Time", y = "Temperature") +
+  theme_minimal()
+# Stack plots vertically using patchwork
+grid.arrange(SWDPlotABF, T2MPlotABF, nrow = 2)
+
+#CM
+SWDPlotCM <- ggplot(SWD_dataCM, aes(x=YYYYMMDD, y=N_swd)) +
+  geom_line(color = "orange") +
+  labs(title = "CM N_swd Over Time", x = "Time", y = "Population Count") +
+  theme_minimal()
+T2MPlotCM <- ggplot(SWD_dataCM, aes(x=YYYYMMDD, y=T2M)) +
+  geom_line(color = "lightblue") +
+  labs(title = "CM T2M Over Time", x = "Time", y = "Temperature") +
+  theme_minimal()
+# Stack plots vertically using patchwork
+grid.arrange(SWDPlotCM, T2MPlotCM, nrow = 2)
+
+#LBA
+SWDPlotLBA <- ggplot(SWD_dataLBA, aes(x=YYYYMMDD, y=N_swd)) +
+  geom_line(color = "orange") +
+  labs(title = "LBA N_swd Over Time", x = "Time", y = "Population Count") +
+  theme_minimal()
+T2MPlotLBA <- ggplot(SWD_dataLBA, aes(x=YYYYMMDD, y=T2M)) +
+  geom_line(color = "lightblue") +
+  labs(title = "LBA T2M Over Time", x = "Time", y = "Temperature") +
+  theme_minimal()
+# Stack plots vertically using patchwork
+grid.arrange(SWDPlotLBA, T2MPlotLBA, nrow = 2)
+
+#AlBe
+SWDPlotAlBe <- ggplot(SWD_dataAlBe, aes(x=YYYYMMDD, y=N_swd)) +
+  geom_line(color = "orange") +
+  labs(title = "AlBe N_swd Over Time", x = "Time", y = "Population Count") +
+  theme_minimal()
+T2MPlotAlBe<- ggplot(SWD_dataAlBe, aes(x=YYYYMMDD, y=T2M)) +
+  geom_line(color = "lightblue") +
+  labs(title = "AlBe T2M Over Time", x = "Time", y = "Temperature") +
+  theme_minimal()
+# Stack plots vertically using patchwork
+grid.arrange(SWDPlotAlBe, T2MPlotAlBe, nrow = 2)
+
+#FrSa
+SWDPlotFrSa <- ggplot(SWD_dataFrSa, aes(x=YYYYMMDD, y=N_swd)) +
+  geom_line(color = "orange") +
+  labs(title = "FrSa N_swd Over Time", x = "Time", y = "Population Count") +
+  theme_minimal()
+T2MPlotFrSa <- ggplot(SWD_dataFrSa, aes(x=YYYYMMDD, y=T2M)) +
+  geom_line(color = "lightblue") +
+  labs(title = "FrSa T2M Over Time", x = "Time", y = "Temperature") +
+  theme_minimal()
+# Stack plots vertically using patchwork
+grid.arrange(SWDPlotFrSa, T2MPlotFrSa, nrow = 2)
+
+```
+more code im not using. this one is to make temp and swd on one plot 
 coeff<-10
 ggplot(SWD_dataFBF, aes(x=YYYYMMDD)) +
   geom_line( aes(y=N_swd), size=1, color="orange") + 
-  geom_line( aes(y=T2M/coeff), size=1, color="lightblue") +
+  geom_line( aes(y=T2M*15), size=1, color="lightblue") +
   scale_y_continuous(
     # Features of the first axis
     name = "SWD count",
     # Add a second axis and specify its features
-    sec.axis = sec_axis(~.*coeff, name="Temperature")
+    sec.axis = sec_axis(~./15, name="Temperature")
   ) + 
   theme(
     axis.title.y = element_text(color = "orange", size=13),
@@ -550,12 +627,12 @@ ggplot(SWD_dataFBF, aes(x=YYYYMMDD)) +
 #ADAM'S BERRY FARM
 ggplot(SWD_dataABF, aes(x=YYYYMMDD)) +
   geom_line( aes(y=N_swd), size=1, color="sienna") + 
-  geom_line( aes(y=T2M/coeff), size=1, color="slategray1") +
+  geom_line( aes(y=T2M*3), size=1, color="slategray1") +
   scale_y_continuous(
     # Features of the first axis
     name = "SWD count",
     # Add a second axis and specify its features
-    sec.axis = sec_axis(~.*coeff, name="Temperature")
+    sec.axis = sec_axis(~./3, name="Temperature")
   ) + 
   theme(
     axis.title.y = element_text(color = "sienna", size=13),
@@ -565,12 +642,12 @@ ggplot(SWD_dataABF, aes(x=YYYYMMDD)) +
 #CM
 ggplot(SWD_dataCM, aes(x=YYYYMMDD)) +
   geom_line( aes(y=N_swd), size=1, color="salmon1") + 
-  geom_line( aes(y=T2M/coeff), size=1, color="lightskyblue") +
+  geom_line( aes(y=T2M*5), size=1, color="lightskyblue") +
   scale_y_continuous(
     # Features of the first axis
     name = "SWD count",
     # Add a second axis and specify its features
-    sec.axis = sec_axis(~.*coeff, name="Temperature")
+    sec.axis = sec_axis(~./5, name="Temperature")
   ) + 
   theme(
     axis.title.y = element_text(color = "salmon1", size=13),
@@ -580,12 +657,12 @@ ggplot(SWD_dataCM, aes(x=YYYYMMDD)) +
 #LBA
 ggplot(SWD_dataLBA, aes(x=YYYYMMDD)) +
   geom_line( aes(y=N_swd), size=1, color="tomato") + 
-  geom_line( aes(y=T2M/coeff), size=1, color="mediumturquoise") +
+  geom_line( aes(y=T2M*50), size=1, color="mediumturquoise") +
   scale_y_continuous(
     # Features of the first axis
     name = "SWD count",
     # Add a second axis and specify its features
-    sec.axis = sec_axis(~.*coeff, name="Temperature")
+    sec.axis = sec_axis(~./50, name="Temperature")
   ) + 
   theme(
     axis.title.y = element_text(color = "tomato", size=13),
@@ -595,12 +672,12 @@ ggplot(SWD_dataLBA, aes(x=YYYYMMDD)) +
 #AlBe
 ggplot(SWD_dataAlBe, aes(x=YYYYMMDD)) +
   geom_line( aes(y=N_swd), size=1, color="lightsalmon") + 
-  geom_line( aes(y=T2M/coeff), size=1, color="royalblue1") +
+  geom_line( aes(y=T2M*10), size=1, color="royalblue1") +
   scale_y_continuous(
     # Features of the first axis
     name = "SWD count",
     # Add a second axis and specify its features
-    sec.axis = sec_axis(~.*coeff, name="Temperature",)
+    sec.axis = sec_axis(~./10, name="Temperature",)
   ) + 
   theme(
     axis.title.y = element_text(color = "lightsalmon", size=13),
@@ -610,12 +687,12 @@ ggplot(SWD_dataAlBe, aes(x=YYYYMMDD)) +
 #FrSa
 ggplot(SWD_dataFrSa, aes(x=YYYYMMDD)) +
   geom_line( aes(y=N_swd), size=1, color="chocolate1") + 
-  geom_line( aes(y=T2M/coeff), size=1, color="cadetblue") +
+  geom_line( aes(y=T2M), size=1, color="cadetblue") +
   scale_y_continuous(
     # Features of the first axis
     name = "SWD count",
     # Add a second axis and specify its features
-    sec.axis = sec_axis(~.*coeff, name="Temperature")
+    sec.axis = sec_axis(~.*1, name="Temperature")
   ) + 
   theme(
     axis.title.y = element_text(color = "chocolate1", size=13),
@@ -623,6 +700,67 @@ ggplot(SWD_dataFrSa, aes(x=YYYYMMDD)) +
   ) +
   ggtitle("FrSa SWD count and temperature over time")
 ```
+
+THIS IS STUFF I TRIED AND NO LONGER AM USING BUT AM KEEPING JUST IN CASE <3
+#create a plot of temp and count for fbf
+ggplot(SWD_dataFBF, aes(x = YYYYMMDD)) +
+  geom_line(aes(y = N_swd/10), color = "lightblue") + # Primary line
+  geom_line(aes(y = T2M), color = "orange") + # Secondary line with scaled data
+  scale_y_continuous(
+    name = "N_swd",
+    sec.axis = sec_axis(~ . * coeff, name = "Temperature") # Inverse transformation for secondary axis labels
+  ) +
+  theme_minimal()
+
+
+library(latticeExtra)
+#trying more of this because I cant figure it out
+plot(YYYYMMDD, N_swd, pch=16, axes=FALSE, ylim=c(0,3500), xlab="", ylab="", 
+   type="b",col="sienna", main="Mike's test data")
+axis(2, ylim=c(0,1),col="sienna",las=1)  ## las=1 makes horizontal labels
+mtext("N_swd",side=2,line=3)
+box()
+
+## Allow a second plot on the same graph
+par(new=TRUE)
+
+## Plot the second plot and put axis scale on right
+plot(YYYYMMDD, T2M, pch=15,  xlab="", ylab="", ylim=c(0,60), 
+    axes=FALSE, type="b", col="royalblue")
+## a little farther out (line=4) to make room for labels
+mtext("Temperature",side=4,col="royalblue",line=3) 
+axis(4, ylim=c(0,7000), col="royalblue",col.axis="royalblue",las=1)
+
+## Draw the time axis
+axis(1,pretty(range(YYYYMMDD),10))
+mtext("Time",side=1,col="sienna",line=2.5)  
+
+## Add Legend
+legend("topleft",legend=c("N_swd","T2M"),
+  text.col=c("sienna","royalblue"),pch=c(16,15),col=c("sienna","royalblue"))
+
+
+
+
+#create a plot of t2m and n_swd for all swd data 
+par(mar = c(5, 4, 4, 4) + 0.3)              # Additional space for second y-axis
+plot(YYYYMMDD, N_swd, pch = 20, col = 2)   # Create first plot
+par(new = TRUE)                             # Add new plot
+plot(YYYYMMDD,T2M, pch = 20, col = 3,              # Create second plot without axes
+     axes = FALSE, xlab = "", ylab = "")
+axis(side = 4, at = pretty(range(T2M)))      # Add second axis
+mtext("Temperature", side = 4, line = 3) # Add second axis label
+
+
+#create a plot of t2m and n_swd for all fbf swd data
+par(mar = c(5, 4, 4, 4) + 0.3)              # Additional space for second y-axis
+plot(SWD_dataFBF$YYYYMMDD, SWD_dataFBF$N_swd, pch = 16, col = 2)              # Create first plot
+par(new = TRUE)                             # Add new plot
+plot(SWD_dataFBF$YYYYMMDD,SWD_dataFBF$T2M, pch = 17, col = 3,              # Create second plot without axes
+     axes = FALSE, xlab = "", ylab = "SWD Count")
+axis(side = 4, at = pretty(range(T2M)))      # Add second axis
+mtext("Temperature", side = 4, line = 3)              # Add second axis label
+
 
 ```{r}
 #create interpolated data for full dataset
@@ -641,31 +779,65 @@ swd_interpolatedKY<-approx(y = AbundanceTempKY$N_swd, x = AbundanceTempKY$T2M, m
 #TESTING create interpolated data for FBF flies
 swd_interpolatedFBF<-approx(y = SWD_dataFBF$N_swd, x = SWD_dataFBF$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
+# create interpolated data for ABF flies
+swd_interpolatedABF<-approx(y = SWD_dataABF$N_swd, x = SWD_dataABF$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+# create interpolated data for CM flies
+swd_interpolatedCM<-approx(y = SWD_dataCM$N_swd, x = SWD_dataCM$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+# create interpolated data for LBA flies
+swd_interpolatedLBA<-approx(y = SWD_dataLBA$N_swd, x = SWD_dataLBA$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+# create interpolated data for AlBe flies
+swd_interpolatedAlBe<-approx(y = SWD_dataAlBe$N_swd, x = SWD_dataAlBe$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+# create interpolated data for FrSa flies
+swd_interpolatedFrSa<-approx(y = SWD_dataFrSa$N_swd, x = SWD_dataFrSa$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
 ```
 
 ```{r}
-#create a cross correlation for SWD pop over time for full dataset
-ccf(swd_interpolated[["x"]],swd_interpolated[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+#create a cross correlation for SWD pop over time for FrSa
+ccf(swd_interpolatedFrSa[["x"]],swd_interpolatedFrSa[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
-    main = "SWD Population & Time cross-correlation")
+    main = "FrSa Population & Temperature cross-correlation")
 
-#create a cross correlation for SWD pop over time for VT data
-ccf(swd_interpolatedVT[["x"]],swd_interpolatedVT[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+#create a cross correlation for SWD pop over time for Albe
+ccf(swd_interpolatedAlBe[["x"]],swd_interpolatedAlBe[["y"]],ylim = c(-0.5, .5), lag.max = NULL, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
-    main = "VT SWD Population & Time cross-correlation")
+    main = "AlBe Population & Temperature cross-correlation")
 
-#create a cross correlation for SWD pop over time for VA data
-ccf(swd_interpolatedVA[["x"]],swd_interpolatedVA[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+#create a cross correlation for SWD pop over time for LBA
+ccf(swd_interpolatedLBA[["x"]],swd_interpolatedLBA[["y"]],ylim = c(-0.5, .5), lag.max = NULL, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
-    main = "VA SWD Population & Time cross-correlation")
+    main = "LBA SWD Population & Temperature cross-correlation")
 
-#create a cross correlation for SWD pop over time for KY data
-ccf(swd_interpolatedKY[["x"]],swd_interpolatedKY[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+#create a cross correlation for SWD pop over time for CM
+ccf(swd_interpolatedCM[["x"]],swd_interpolatedCM[["y"]],ylim = c(-0.5, .5), lag.max = NULL, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
-    main = "KY SWD Population & Time cross-correlation")
+    main = "CM SWD Population & Temperature cross-correlation")
+
+#create a cross correlation for SWD pop over time for ABF data
+ccf(swd_interpolatedABF[["x"]],swd_interpolatedABF[["y"]], ylim = c(-0.5, .5),lag.max = NULL, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.fail,
+    main = "ABF SWD Population & Temperature cross-correlation")
 
 #TESTING create a cross correlation for SWD pop over time for Full Belly data
-ccf(swd_interpolatedFBF[["x"]],swd_interpolatedFBF[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+ccf(swd_interpolatedFBF[["x"]],swd_interpolatedFBF[["y"]], ylim = c(-0.5, .5), lag.max = NULL, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
-    main = "FBF SWD Population & Time cross-correlation")
+    main = "FBF SWD Population & Temperature cross-correlation")
 ```
+
+```{r}
+# If X was temp and Y was Drosh
+cor(SWD_dataABF$T2M[1:18],SWD_dataABF$N_swd[11:28]) #lag of +10 (temp today vs. Dros in 10 days)
+
+#this method is easier for me to work out
+ABFcor<-cor(SWD_dataABF$N_swd, lag(SWD_dataABF$T2M, 10), use = "complete.obs")
+FBFcor<-cor(SWD_dataFBF$N_swd, lag(SWD_dataFBF$T2M, 10), use = "complete.obs")
+LBAcor<-cor(SWD_dataLBA$N_swd, lag(SWD_dataLBA$T2M, 10), use = "complete.obs")
+CMcor<-cor(SWD_dataCM$N_swd, lag(SWD_dataCM$T2M, 10), use = "complete.obs")
+FrSacor<-cor(SWD_dataFrSa$N_swd, lag(SWD_dataFrSa$T2M, 10), use = "complete.obs")
+AlBecor<-cor(SWD_dataAlBe$N_swd, lag(SWD_dataAlBe$T2M, 10), use = "complete.obs")
+```
+
