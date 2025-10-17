@@ -265,38 +265,6 @@ NaCa_weather <- get_power(
 ```
 
 ```{r}
-#make all the temp data positive rather than negative (not sure why it's negative honestly)(there's totally an easier way to have done this)
-SweetRoots_weather$T2M<-abs(SweetRoots_weather$T2M)
-FullBelly_weather$T2M<-abs(FullBelly_weather$T2M)
-CoveredBridge_weather$T2M<-abs(CoveredBridge_weather$T2M)
-AdamsBerry_weather$T2M<-abs(AdamsBerry_weather$T2M)
-LastResort_weather$T2M<-abs(LastResort_weather$T2M)
-LexingtonBluegrass_weather$T2M<-abs(LexingtonBluegrass_weather$T2M)
-LeveringOrchard_weather$T2M<-abs(LeveringOrchard_weather$T2M)
-CartersMountain_weather$T2M<-abs(CartersMountain_weather$T2M)
-GreatCountryFarms_weather$T2M<-abs(GreatCountryFarms_weather$T2M)
-CharlottesvilleAlbermarle_weather$T2M<-abs(CharlottesvilleAlbermarle_weather$T2M)
-CrossKeysFarm_weather$T2M<-abs(CrossKeysFarm_weather$T2M)
-ChilesPeachOrchard_weather$T2M<-abs(ChilesPeachOrchard_weather$T2M)
-AlBe_weather$T2M<-abs(AlBe_weather$T2M)
-AlBr_weather$T2M<-abs(AlBr_weather$T2M)
-DoSc_weather$T2M<-abs(DoSc_weather$T2M)
-FeAb_weather$T2M<-abs(FeAb_weather$T2M)
-FrSa_weather$T2M<-abs(FrSa_weather$T2M)
-GwMe_weather$T2M<-abs(GwMe_weather$T2M)
-JoNu_weather$T2M<-abs(JoNu_weather$T2M)
-KiBa_weather$T2M<-abs(JoNu_weather$T2M)
-LiBl_weather$T2M<-abs(LiBl_weather$T2M)
-LiHa_weather$T2M<-abs(LiHa_weather$T2M)
-NaCa_weather$T2M<-abs(NaCa_weather$T2M)
-NaMo_weather$T2M<-abs(NaMo_weather$T2M)
-NoSh_weather$T2M<-abs(NoSh_weather$T2M)
-RaPo_weather$T2M<-abs(RaPo_weather$T2M)
-WiHa_weather$T2M<-abs(WiHa_weather$T2M)
-```
-
-
-```{r}
 #Combine dataframes from all farms in VT
 AllFarmsVT_weather <-rbind(AdamsBerry_weather, CoveredBridge_weather, FullBelly_weather, LastResort_weather, SweetRoots_weather)
 #Combine dataframes from all farms in KY
@@ -306,16 +274,6 @@ AllFarmsVA_weather <-rbind(AlBe_weather,KiBa_weather,JoNu_weather,FeAb_weather,R
 #Combine dataframes for all farms 
 AllFarmsTotal_weather<-rbind.data.frame(AllFarmsKY_weather, AllFarmsVT_weather, AllFarmsVA_weather)
 ```
-
-```{r}
-#Make SURE temp data is positive
-AllFarmsTotal_weather$T2M<-abs(AllFarmsTotal_weather$T2M)
-AllFarmsKY_weather$T2M<-abs(AllFarmsKY_weather$T2M)
-AllFarmsVA_weather$T2M<-abs(AllFarmsVA_weather$T2M)
-AllFarmsVT_weather$T2M<-abs(AllFarmsVT_weather$T2M)
-```
-
-#switch automatic incorrect LAT and LON column names colnames(AllFarmsVT_weather)[2] \<- "LON" colnames(AllFarmsVT_weather)[1] \<- "LAT" #switch automatic incorrect LAT and LON column names colnames(AllFarmsKY_weather)[2] \<- "LON" colnames(AllFarmsKY_weather)[1] \<- "LAT"
 
 ```{r}
 #CombineLatLon data into one variable "Coordinates".
@@ -840,4 +798,3 @@ CMcor<-cor(SWD_dataCM$N_swd, lag(SWD_dataCM$T2M, 10), use = "complete.obs")
 FrSacor<-cor(SWD_dataFrSa$N_swd, lag(SWD_dataFrSa$T2M, 10), use = "complete.obs")
 AlBecor<-cor(SWD_dataAlBe$N_swd, lag(SWD_dataAlBe$T2M, 10), use = "complete.obs")
 ```
-
