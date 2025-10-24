@@ -496,11 +496,11 @@ library(gridExtra)
 #FULL BELLY FARM
 SWDPlotFBF<-ggplot(data = SWD_dataFBF, aes(x = YYYYMMDD, y = N_swd)) +
   geom_point(color = "orange", size = 3, shape =16, alpha = 0.7) +
-  labs(title = "FBF N_swd Over Time", x = "Time", y = "Population Count") +
+  labs(title = "Full Belly Farm SWD Count Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
 T2MPlotFBF <- ggplot(SWD_dataFBF, aes(x=YYYYMMDD, y=T2M)) +
   geom_line(color = "lightblue") +
-  labs(title = "FBF T2M Over Time", x = "Time", y = "Temperature") +
+  labs(title = "Full Belly Farm Temperature Over Time", x = "Time", y = "Temperature (C)") +
   theme_minimal()
 # Stack plots vertically using patchwork
 grid.arrange(SWDPlotFBF, T2MPlotFBF, nrow = 2)
@@ -508,11 +508,11 @@ grid.arrange(SWDPlotFBF, T2MPlotFBF, nrow = 2)
 #ABF
 SWDPlotABF<-ggplot(data = SWD_dataABF, aes(x = YYYYMMDD, y = N_swd)) +
   geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
-  labs(title = "ABF N_swd Over Time", x = "Time", y = "Population Count") +
+  labs(title = "Adam's Berry Farm SWD Count Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
 T2MPlotABF <- ggplot(SWD_dataFBF, aes(x=YYYYMMDD, y=T2M)) +
   geom_line(color = "lightblue") +
-  labs(title = "ABF T2M Over Time", x = "Time", y = "Temperature") +
+  labs(title = "Adam's Berry Farm Temperature Over Time", x = "Time", y = "Temperature(C)") +
   theme_minimal()
 # Stack plots vertically using patchwork
 grid.arrange(SWDPlotABF, T2MPlotABF, nrow = 2)
@@ -520,11 +520,11 @@ grid.arrange(SWDPlotABF, T2MPlotABF, nrow = 2)
 #CM
 SWDPlotCM<-ggplot(data = SWD_dataCM, aes(x = YYYYMMDD, y = N_swd)) +
   geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
-  labs(title = "CM N_swd Over Time", x = "Time", y = "Population Count") +
+  labs(title = "Carter's Mountain SWD Count Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
 T2MPlotCM <- ggplot(SWD_dataCM, aes(x=YYYYMMDD, y=T2M)) +
   geom_line(color = "lightblue") +
-  labs(title = "CM T2M Over Time", x = "Time", y = "Temperature") +
+  labs(title = "Carter's Mountain Temperature Over Time", x = "Time", y = "Temperature (C)") +
   theme_minimal()
 # Stack plots vertically using patchwork
 grid.arrange(SWDPlotCM, T2MPlotCM, nrow = 2)
@@ -532,11 +532,11 @@ grid.arrange(SWDPlotCM, T2MPlotCM, nrow = 2)
 #LBA
 SWDPlotLBA<-ggplot(data = SWD_dataLBA, aes(x = YYYYMMDD, y = N_swd)) +
   geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
-  labs(title = "LBA N_swd Over Time", x = "Time", y = "Population Count") +
+  labs(title = "Lexington Bluegrass Airport SWD Count Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
 T2MPlotLBA <- ggplot(SWD_dataLBA, aes(x=YYYYMMDD, y=T2M)) +
   geom_line(color = "lightblue") +
-  labs(title = "LBA T2M Over Time", x = "Time", y = "Temperature") +
+  labs(title = "Lexington Bluegrass Airport Temperature Over Time", x = "Time", y = "Temperature (C)") +
   theme_minimal()
 # Stack plots vertically using patchwork
 grid.arrange(SWDPlotLBA, T2MPlotLBA, nrow = 2)
@@ -544,11 +544,11 @@ grid.arrange(SWDPlotLBA, T2MPlotLBA, nrow = 2)
 #AlBe
 SWDPlotAlBe<-ggplot(data = SWD_dataAlBe, aes(x = YYYYMMDD, y = N_swd)) +
   geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
-  labs(title = "AlBe N_swd Over Time", x = "Time", y = "Population Count") +
+  labs(title = "AlBe SWD Count Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
 T2MPlotAlBe<- ggplot(SWD_dataAlBe, aes(x=YYYYMMDD, y=T2M)) +
   geom_line(color = "lightblue") +
-  labs(title = "AlBe T2M Over Time", x = "Time", y = "Temperature") +
+  labs(title = "AlBe Temperature Over Time", x = "Time", y = "Temperature (C)") +
   theme_minimal()
 # Stack plots vertically using patchwork
 grid.arrange(SWDPlotAlBe, T2MPlotAlBe, nrow = 2)
@@ -556,11 +556,11 @@ grid.arrange(SWDPlotAlBe, T2MPlotAlBe, nrow = 2)
 #FrSa
 SWDPlotFrSa<-ggplot(data = SWD_dataFrSa, aes(x = YYYYMMDD, y = N_swd)) +
   geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
-  labs(title = "FrSa N_swd Over Time", x = "Time", y = "Population Count") +
+  labs(title = "FrSa SWD Count Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
 T2MPlotFrSa <- ggplot(SWD_dataFrSa, aes(x=YYYYMMDD, y=T2M)) +
   geom_line(color = "lightblue") +
-  labs(title = "FrSa T2M Over Time", x = "Time", y = "Temperature") +
+  labs(title = "FrSa Temperature Over Time", x = "Time", y = "Temperature (C)") +
   theme_minimal()
 # Stack plots vertically using patchwork
 grid.arrange(SWDPlotFrSa, T2MPlotFrSa, nrow = 2)
