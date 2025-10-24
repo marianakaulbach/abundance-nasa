@@ -301,10 +301,10 @@ SWD_data$YYYYMMDD <-as.Date(SWD_data$YYYYMMDD, format = "%Y-%m-%d")
 ```
 
 ```{r}
-AbundanceTempVT<-merge(SWD_data, AllFarmsVT_weather, by = c("Coordinates","YYYYMMDD"))
-AbundanceTempKY<-merge(SWD_data, AllFarmsKY_weather, by = c("YYYYMMDD","Coordinates"))
-AbundanceTempVA<-merge(SWD_data, AllFarmsVA_weather, by = c("Coordinates","YYYYMMDD"))
-AbundanceTempTotal<-merge(SWD_data, AllFarmsTotal_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempVT<-right_join(SWD_data, AllFarmsVT_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempKY<-right_join(SWD_data, AllFarmsKY_weather, by = c("YYYYMMDD","Coordinates"))
+AbundanceTempVA<-right_join(SWD_data, AllFarmsVA_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempTotal<-right_join(SWD_data, AllFarmsTotal_weather, by = c("Coordinates","YYYYMMDD"))
 ```
 
 ```{r}
@@ -488,6 +488,13 @@ ggplot(AbundanceTempTotal, aes(x = YYYYMMDD, y = N_swd)) +
   theme_minimal()
 ```
 
+
+AbundanceAllTempVT<-right_join(SWD_data, AllFarmsVT_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceAllTempKY<-right_join(SWD_data, AllFarmsKY_weather, by = c("YYYYMMDD","Coordinates"))
+AbundanceAllTempVA<-right_join(SWD_data, AllFarmsVA_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceAllTempTotal<-right_join(SWD_data, AllFarmsTotal_weather, by = c("Coordinates","YYYYMMDD"))
+
+
 ```{r}
 #Create a plot with both temp and abundance data for specific farms
 install.packages("gridExtra")
@@ -495,7 +502,7 @@ library(ggplot2)
 library(gridExtra)
 #FULL BELLY FARM
 SWDPlotFBF<-ggplot(data = SWD_dataFBF, aes(x = YYYYMMDD, y = N_swd)) +
-  geom_point(color = "orange", size = 3, shape =16, alpha = 0.7) +
+  geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
   labs(title = "Full Belly Farm SWD Count Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
 T2MPlotFBF <- ggplot(SWD_dataFBF, aes(x=YYYYMMDD, y=T2M)) +
@@ -566,6 +573,87 @@ T2MPlotFrSa <- ggplot(SWD_dataFrSa, aes(x=YYYYMMDD, y=T2M)) +
 grid.arrange(SWDPlotFrSa, T2MPlotFrSa, nrow = 2)
 
 ```
+
+
+```{r}
+#create interpolated data for full dataset
+swd_interpolated<-approx(y = AbundanceTempTotal$N_swd, x = AbundanceTempTotal$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+#create interpolated data for VT flies
+swd_interpolatedVT<-approx(y = AbundanceTempVT$N_swd, x = AbundanceTempVT$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+#create interpolated data for VA flies
+swd_interpolatedVA<-approx(y = AbundanceTempVA$N_swd, x = AbundanceTempVA$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+#create interpolated data for KY flies
+swd_interpolatedKY<-approx(y = AbundanceTempKY$N_swd, x = AbundanceTempKY$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+
+#TESTING create interpolated data for FBF flies
+swd_interpolatedFBF<-approx(y = SWD_dataFBF$N_swd, x = SWD_dataFBF$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+# create interpolated data for ABF flies
+swd_interpolatedABF<-approx(y = SWD_dataABF$N_swd, x = SWD_dataABF$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+# create interpolated data for CM flies
+swd_interpolatedCM<-approx(y = SWD_dataCM$N_swd, x = SWD_dataCM$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+# create interpolated data for LBA flies
+swd_interpolatedLBA<-approx(y = SWD_dataLBA$N_swd, x = SWD_dataLBA$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+# create interpolated data for AlBe flies
+swd_interpolatedAlBe<-approx(y = SWD_dataAlBe$N_swd, x = SWD_dataAlBe$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+# create interpolated data for FrSa flies
+swd_interpolatedFrSa<-approx(y = SWD_dataFrSa$N_swd, x = SWD_dataFrSa$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+```
+
+```{r}
+#create a cross correlation for SWD pop over time for FrSa
+ccf(swd_interpolatedFrSa[["x"]],swd_interpolatedFrSa[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.fail,
+    main = "FrSa Population & Temperature cross-correlation")
+
+#create a cross correlation for SWD pop over time for Albe
+ccf(swd_interpolatedAlBe[["x"]],swd_interpolatedAlBe[["y"]],ylim = c(-0.5, .5), lag.max = NULL, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.fail,
+    main = "AlBe Population & Temperature cross-correlation")
+
+#create a cross correlation for SWD pop over time for LBA
+ccf(swd_interpolatedLBA[["x"]],swd_interpolatedLBA[["y"]],ylim = c(-0.5, .5), lag.max = NULL, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.fail,
+    main = "LBA SWD Population & Temperature cross-correlation")
+
+#create a cross correlation for SWD pop over time for CM
+ccf(swd_interpolatedCM[["x"]],swd_interpolatedCM[["y"]],ylim = c(-0.5, .5), lag.max = NULL, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.fail,
+    main = "CM SWD Population & Temperature cross-correlation")
+
+#create a cross correlation for SWD pop over time for ABF data
+ccf(swd_interpolatedABF[["x"]],swd_interpolatedABF[["y"]], ylim = c(-0.5, .5),lag.max = NULL, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.fail,
+    main = "ABF SWD Population & Temperature cross-correlation")
+
+#TESTING create a cross correlation for SWD pop over time for Full Belly data
+ccf(swd_interpolatedFBF[["x"]],swd_interpolatedFBF[["y"]], ylim = c(-0.5, .5), lag.max = NULL, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.fail,
+    main = "FBF SWD Population & Temperature cross-correlation")
+```
+
+```{r}
+# If X was temp and Y was Drosh
+cor(SWD_dataABF$T2M[1:18],SWD_dataABF$N_swd[11:28]) #lag of +10 (temp today vs. Dros in 10 days)
+
+#this method is easier for me to work out
+ABFcor<-cor(SWD_dataABF$N_swd, lag(SWD_dataABF$T2M, 10), use = "complete.obs")
+FBFcor<-cor(SWD_dataFBF$N_swd, lag(SWD_dataFBF$T2M, 10), use = "complete.obs")
+LBAcor<-cor(SWD_dataLBA$N_swd, lag(SWD_dataLBA$T2M, 10), use = "complete.obs")
+CMcor<-cor(SWD_dataCM$N_swd, lag(SWD_dataCM$T2M, 10), use = "complete.obs")
+FrSacor<-cor(SWD_dataFrSa$N_swd, lag(SWD_dataFrSa$T2M, 10), use = "complete.obs")
+AlBecor<-cor(SWD_dataAlBe$N_swd, lag(SWD_dataAlBe$T2M, 10), use = "complete.obs")
+```
+
 more code im not using. this one is to make temp and swd on one plot 
 coeff<-10
 ggplot(SWD_dataFBF, aes(x=YYYYMMDD)) +
@@ -718,83 +806,3 @@ plot(SWD_dataFBF$YYYYMMDD,SWD_dataFBF$T2M, pch = 17, col = 3,              # Cre
      axes = FALSE, xlab = "", ylab = "SWD Count")
 axis(side = 4, at = pretty(range(T2M)))      # Add second axis
 mtext("Temperature", side = 4, line = 3)              # Add second axis label
-
-
-```{r}
-#create interpolated data for full dataset
-swd_interpolated<-approx(y = AbundanceTempTotal$N_swd, x = AbundanceTempTotal$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-#create interpolated data for VT flies
-swd_interpolatedVT<-approx(y = AbundanceTempVT$N_swd, x = AbundanceTempVT$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-#create interpolated data for VA flies
-swd_interpolatedVA<-approx(y = AbundanceTempVA$N_swd, x = AbundanceTempVA$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-#create interpolated data for KY flies
-swd_interpolatedKY<-approx(y = AbundanceTempKY$N_swd, x = AbundanceTempKY$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-
-#TESTING create interpolated data for FBF flies
-swd_interpolatedFBF<-approx(y = SWD_dataFBF$N_swd, x = SWD_dataFBF$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-# create interpolated data for ABF flies
-swd_interpolatedABF<-approx(y = SWD_dataABF$N_swd, x = SWD_dataABF$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-# create interpolated data for CM flies
-swd_interpolatedCM<-approx(y = SWD_dataCM$N_swd, x = SWD_dataCM$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-# create interpolated data for LBA flies
-swd_interpolatedLBA<-approx(y = SWD_dataLBA$N_swd, x = SWD_dataLBA$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-# create interpolated data for AlBe flies
-swd_interpolatedAlBe<-approx(y = SWD_dataAlBe$N_swd, x = SWD_dataAlBe$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-# create interpolated data for FrSa flies
-swd_interpolatedFrSa<-approx(y = SWD_dataFrSa$N_swd, x = SWD_dataFrSa$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-```
-
-```{r}
-#create a cross correlation for SWD pop over time for FrSa
-ccf(swd_interpolatedFrSa[["x"]],swd_interpolatedFrSa[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
-    main = "FrSa Population & Temperature cross-correlation")
-
-#create a cross correlation for SWD pop over time for Albe
-ccf(swd_interpolatedAlBe[["x"]],swd_interpolatedAlBe[["y"]],ylim = c(-0.5, .5), lag.max = NULL, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
-    main = "AlBe Population & Temperature cross-correlation")
-
-#create a cross correlation for SWD pop over time for LBA
-ccf(swd_interpolatedLBA[["x"]],swd_interpolatedLBA[["y"]],ylim = c(-0.5, .5), lag.max = NULL, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
-    main = "LBA SWD Population & Temperature cross-correlation")
-
-#create a cross correlation for SWD pop over time for CM
-ccf(swd_interpolatedCM[["x"]],swd_interpolatedCM[["y"]],ylim = c(-0.5, .5), lag.max = NULL, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
-    main = "CM SWD Population & Temperature cross-correlation")
-
-#create a cross correlation for SWD pop over time for ABF data
-ccf(swd_interpolatedABF[["x"]],swd_interpolatedABF[["y"]], ylim = c(-0.5, .5),lag.max = NULL, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
-    main = "ABF SWD Population & Temperature cross-correlation")
-
-#TESTING create a cross correlation for SWD pop over time for Full Belly data
-ccf(swd_interpolatedFBF[["x"]],swd_interpolatedFBF[["y"]], ylim = c(-0.5, .5), lag.max = NULL, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
-    main = "FBF SWD Population & Temperature cross-correlation")
-```
-
-```{r}
-# If X was temp and Y was Drosh
-cor(SWD_dataABF$T2M[1:18],SWD_dataABF$N_swd[11:28]) #lag of +10 (temp today vs. Dros in 10 days)
-
-#this method is easier for me to work out
-ABFcor<-cor(SWD_dataABF$N_swd, lag(SWD_dataABF$T2M, 10), use = "complete.obs")
-FBFcor<-cor(SWD_dataFBF$N_swd, lag(SWD_dataFBF$T2M, 10), use = "complete.obs")
-LBAcor<-cor(SWD_dataLBA$N_swd, lag(SWD_dataLBA$T2M, 10), use = "complete.obs")
-CMcor<-cor(SWD_dataCM$N_swd, lag(SWD_dataCM$T2M, 10), use = "complete.obs")
-FrSacor<-cor(SWD_dataFrSa$N_swd, lag(SWD_dataFrSa$T2M, 10), use = "complete.obs")
-AlBecor<-cor(SWD_dataAlBe$N_swd, lag(SWD_dataAlBe$T2M, 10), use = "complete.obs")
-```
