@@ -494,8 +494,8 @@ install.packages("gridExtra")
 library(ggplot2)
 library(gridExtra)
 #FULL BELLY FARM
-SWDPlotFBF <- ggplot(SWD_dataFBF, aes(x=YYYYMMDD, y=N_swd)) +
-  geom_line(color = "orange") +
+SWDPlotFBF<-ggplot(data = SWD_dataFBF, aes(x = YYYYMMDD, y = N_swd)) +
+  geom_point(color = "orange", size = 3, shape =16, alpha = 0.7) +
   labs(title = "FBF N_swd Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
 T2MPlotFBF <- ggplot(SWD_dataFBF, aes(x=YYYYMMDD, y=T2M)) +
@@ -506,8 +506,8 @@ T2MPlotFBF <- ggplot(SWD_dataFBF, aes(x=YYYYMMDD, y=T2M)) +
 grid.arrange(SWDPlotFBF, T2MPlotFBF, nrow = 2)
 
 #ABF
-SWDPlotABF <- ggplot(SWD_dataABF, aes(x=YYYYMMDD, y=N_swd)) +
-  geom_line(color = "orange") +
+SWDPlotABF<-ggplot(data = SWD_dataABF, aes(x = YYYYMMDD, y = N_swd)) +
+  geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
   labs(title = "ABF N_swd Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
 T2MPlotABF <- ggplot(SWD_dataFBF, aes(x=YYYYMMDD, y=T2M)) +
@@ -518,8 +518,8 @@ T2MPlotABF <- ggplot(SWD_dataFBF, aes(x=YYYYMMDD, y=T2M)) +
 grid.arrange(SWDPlotABF, T2MPlotABF, nrow = 2)
 
 #CM
-SWDPlotCM <- ggplot(SWD_dataCM, aes(x=YYYYMMDD, y=N_swd)) +
-  geom_line(color = "orange") +
+SWDPlotCM<-ggplot(data = SWD_dataCM, aes(x = YYYYMMDD, y = N_swd)) +
+  geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
   labs(title = "CM N_swd Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
 T2MPlotCM <- ggplot(SWD_dataCM, aes(x=YYYYMMDD, y=T2M)) +
@@ -530,8 +530,8 @@ T2MPlotCM <- ggplot(SWD_dataCM, aes(x=YYYYMMDD, y=T2M)) +
 grid.arrange(SWDPlotCM, T2MPlotCM, nrow = 2)
 
 #LBA
-SWDPlotLBA <- ggplot(SWD_dataLBA, aes(x=YYYYMMDD, y=N_swd)) +
-  geom_line(color = "orange") +
+SWDPlotLBA<-ggplot(data = SWD_dataLBA, aes(x = YYYYMMDD, y = N_swd)) +
+  geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
   labs(title = "LBA N_swd Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
 T2MPlotLBA <- ggplot(SWD_dataLBA, aes(x=YYYYMMDD, y=T2M)) +
@@ -542,8 +542,8 @@ T2MPlotLBA <- ggplot(SWD_dataLBA, aes(x=YYYYMMDD, y=T2M)) +
 grid.arrange(SWDPlotLBA, T2MPlotLBA, nrow = 2)
 
 #AlBe
-SWDPlotAlBe <- ggplot(SWD_dataAlBe, aes(x=YYYYMMDD, y=N_swd)) +
-  geom_line(color = "orange") +
+SWDPlotAlBe<-ggplot(data = SWD_dataAlBe, aes(x = YYYYMMDD, y = N_swd)) +
+  geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
   labs(title = "AlBe N_swd Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
 T2MPlotAlBe<- ggplot(SWD_dataAlBe, aes(x=YYYYMMDD, y=T2M)) +
@@ -554,8 +554,8 @@ T2MPlotAlBe<- ggplot(SWD_dataAlBe, aes(x=YYYYMMDD, y=T2M)) +
 grid.arrange(SWDPlotAlBe, T2MPlotAlBe, nrow = 2)
 
 #FrSa
-SWDPlotFrSa <- ggplot(SWD_dataFrSa, aes(x=YYYYMMDD, y=N_swd)) +
-  geom_line(color = "orange") +
+SWDPlotFrSa<-ggplot(data = SWD_dataFrSa, aes(x = YYYYMMDD, y = N_swd)) +
+  geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
   labs(title = "FrSa N_swd Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
 T2MPlotFrSa <- ggplot(SWD_dataFrSa, aes(x=YYYYMMDD, y=T2M)) +
