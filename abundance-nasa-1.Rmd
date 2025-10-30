@@ -1,6 +1,8 @@
 ---
 title: "abundance-nasa1"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 date: "2025-08-20"
 ---
 
@@ -304,7 +306,7 @@ SWD_data$YYYYMMDD <-as.Date(SWD_data$YYYYMMDD, format = "%Y-%m-%d")
 AbundanceTempVT<-right_join(SWD_data, AllFarmsVT_weather, by = c("Coordinates","YYYYMMDD"))
 AbundanceTempKY<-right_join(SWD_data, AllFarmsKY_weather, by = c("YYYYMMDD","Coordinates"))
 AbundanceTempVA<-right_join(SWD_data, AllFarmsVA_weather, by = c("Coordinates","YYYYMMDD"))
-AbundanceTempTotal<-right_join(SWD_data, AllFarmsTotal_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempTotal<-merge(SWD_data, AllFarmsTotal_weather, by = c("Coordinates","YYYYMMDD"))
 ```
 
 ```{r}
