@@ -306,7 +306,7 @@ SWD_data$YYYYMMDD <-as.Date(SWD_data$YYYYMMDD, format = "%Y-%m-%d")
 AbundanceTempVT<-right_join(SWD_data, AllFarmsVT_weather, by = c("Coordinates","YYYYMMDD"))
 AbundanceTempKY<-right_join(SWD_data, AllFarmsKY_weather, by = c("YYYYMMDD","Coordinates"))
 AbundanceTempVA<-right_join(SWD_data, AllFarmsVA_weather, by = c("Coordinates","YYYYMMDD"))
-AbundanceTempTotal<-merge(SWD_data, AllFarmsTotal_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempTotal<-right_join(SWD_data, AllFarmsTotal_weather, by = c("Coordinates","YYYYMMDD"))
 ```
 
 ```{r}
@@ -578,9 +578,37 @@ grid.arrange(SWDPlotFrSa, T2MPlotFrSa, nrow = 2)
 
 
 ```{r}
+library(dplyr)
+library(zoo)
+
 #create interpolated data for full dataset
-swd_interpolated<-approx(y = AbundanceTempTotal$N_swd, x = AbundanceTempTotal$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+N_swd_interpolated <- na.approx(AbundanceTempTotal$N_swd, AbundanceTempTotal$YYYYMMDD, na.rm = TRUE, rule=2)
+date <- AbundanceTempTotal$YYYYMMDD
+# this code finds dates that have N_swd values that are not NA
+#date <- AbundanceTempTotal[which(na.approx(AbundanceTempTotal$N_swd, AbundanceTempTotal$YYYYMMDD, na.rm = TRUE) %in% AbundanceTempTotal$N_swd),"YYYYMMDD"]
+
+swd_interpolated2 <-data.frame(N_swd_interpolated = N_swd_interpolated, YYYYMMDD = date)
+
+swd_interpolated2<-na.omit(swd_interpolated2)
+
+#i want 45181 values of na
+
+
+swd_interpolated<-(approx(y = AbundanceTempTotal$N_swd, x = AbundanceTempTotal$N_swd,xout=AbundanceTempTotal$YYYYMMDD, method = "linear",
+                         rule = 1, f = 0, ties = mean, na.rm = TRUE))
+swd_interpolated_df <- data.frame(YYYYMMDD = as.Date(swd_interpolated$x), N_swd = swd_interpolated$y)
+
+
+
+
+
+library(dplyr)
+swd_interpolated_df <- swd_interpolated_df %>%
+        mutate(N_swd = na.approx(N_swd))
+
+
+
+
 #create interpolated data for VT flies
 swd_interpolatedVT<-approx(y = AbundanceTempVT$N_swd, x = AbundanceTempVT$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
