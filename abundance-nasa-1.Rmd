@@ -580,93 +580,179 @@ grid.arrange(SWDPlotFrSa, T2MPlotFrSa, nrow = 2)
 ```{r}
 library(dplyr)
 library(zoo)
-
-#create interpolated data for full dataset
-N_swd_interpolated <- na.approx(AbundanceTempTotal$N_swd, AbundanceTempTotal$YYYYMMDD, na.rm = TRUE, rule=2)
+#i want to fill 45181 values of NA with interpolated data, then remove it in the sampling gaps
+#create interpolated data for full dataset, filling in gaps and renaming the swd column to be "N_swd" for later merging 
+N_swd_interpolated <- na.approx(AbundanceTempTotal$N_swd, na.rm = TRUE, rule=2,maxgap=60)
 date <- AbundanceTempTotal$YYYYMMDD
-# this code finds dates that have N_swd values that are not NA
-#date <- AbundanceTempTotal[which(na.approx(AbundanceTempTotal$N_swd, AbundanceTempTotal$YYYYMMDD, na.rm = TRUE) %in% AbundanceTempTotal$N_swd),"YYYYMMDD"]
 
 swd_interpolated2 <-data.frame(N_swd_interpolated = N_swd_interpolated, YYYYMMDD = date)
-
+colnames(swd_interpolated2VT)[colnames(swd_interpolated2VT) == "N_swd_interpolatedVT"] <- "N_swd"
 swd_interpolated2<-na.omit(swd_interpolated2)
 
-#i want 45181 values of na
+#create interpolated data for VT flies, filling in gaps
+N_swd_interpolatedVT <- na.approx(AbundanceTempVT$N_swd, na.rm = TRUE, rule=2,maxgap=60)
+date <- AbundanceTempVT$YYYYMMDD
 
+swd_interpolated2VT <-data.frame(N_swd_interpolatedVT = N_swd_interpolatedVT, YYYYMMDD = date)
+colnames(swd_interpolated2VT)[colnames(swd_interpolated2VT) == "N_swd_interpolatedVT"] <- "N_swd"
+swd_interpolated2VT<-na.omit(swd_interpolated2VT)
 
-swd_interpolated<-(approx(y = AbundanceTempTotal$N_swd, x = AbundanceTempTotal$N_swd,xout=AbundanceTempTotal$YYYYMMDD, method = "linear",
-                         rule = 1, f = 0, ties = mean, na.rm = TRUE))
-swd_interpolated_df <- data.frame(YYYYMMDD = as.Date(swd_interpolated$x), N_swd = swd_interpolated$y)
+#create interpolated data for KY flies, filling in gaps
+N_swd_interpolatedKY <- na.approx(AbundanceTempKY$N_swd, na.rm = TRUE, rule=2,maxgap=60)
+date <- AbundanceTempKY$YYYYMMDD
 
+swd_interpolated2KY <-data.frame(N_swd_interpolatedKY = N_swd_interpolatedKY, YYYYMMDD = date)
+colnames(swd_interpolated2KY)[colnames(swd_interpolated2KY) == "N_swd_interpolatedKY"] <- "N_swd"
+swd_interpolated2KY<-na.omit(swd_interpolated2KY)
 
+#create interpolated data for VA flies, filling in gaps
+N_swd_interpolatedVA <- na.approx(AbundanceTempVA$N_swd, na.rm = TRUE, rule=2,maxgap=60)
+date <- AbundanceTempVA$YYYYMMDD
 
+swd_interpolated2VA <-data.frame(N_swd_interpolatedVA = N_swd_interpolatedVA, YYYYMMDD = date)
+colnames(swd_interpolated2VA)[colnames(swd_interpolated2VA) == "N_swd_interpolatedVA"] <- "N_swd"
+swd_interpolated2VA<-na.omit(swd_interpolated2VA)
 
+#create interpolated data for FBF flies, filling in gaps
+N_swd_interpolatedFBF <- na.approx(SWD_dataFBF$N_swd, na.rm = TRUE, rule=2,maxgap=60)
+date <- SWD_dataFBF$YYYYMMDD
 
-library(dplyr)
-swd_interpolated_df <- swd_interpolated_df %>%
-        mutate(N_swd = na.approx(N_swd))
+swd_interpolated2FBF <-data.frame(N_swd_interpolatedFBF = N_swd_interpolatedFBF, YYYYMMDD = date)
+colnames(swd_interpolated2FBF)[colnames(swd_interpolated2FBF) == "N_swd_interpolatedFBF"] <- "N_swd"
+swd_interpolated2FBF<-na.omit(swd_interpolated2FBF)
 
+#create interpolated data for ABF flies, filling in gaps
+N_swd_interpolatedABF <- na.approx(SWD_dataABF$N_swd, na.rm = TRUE, rule=2,maxgap=60)
+date <- SWD_dataABF$YYYYMMDD
 
+swd_interpolated2ABF <-data.frame(N_swd_interpolatedABF = N_swd_interpolatedABF, YYYYMMDD = date)
+colnames(swd_interpolated2ABF)[colnames(swd_interpolated2ABF) == "N_swd_interpolatedABF"] <- "N_swd"
+swd_interpolated2ABF<-na.omit(swd_interpolated2ABF)
 
+#create interpolated data for CM flies, filling in gaps
+N_swd_interpolatedCM <- na.approx(SWD_dataCM$N_swd, na.rm = TRUE, rule=2,maxgap=60)
+date <- SWD_dataCM$YYYYMMDD
 
-#create interpolated data for VT flies
-swd_interpolatedVT<-approx(y = AbundanceTempVT$N_swd, x = AbundanceTempVT$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-#create interpolated data for VA flies
-swd_interpolatedVA<-approx(y = AbundanceTempVA$N_swd, x = AbundanceTempVA$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-#create interpolated data for KY flies
-swd_interpolatedKY<-approx(y = AbundanceTempKY$N_swd, x = AbundanceTempKY$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+swd_interpolated2CM <-data.frame(N_swd_interpolatedCM = N_swd_interpolatedCM, YYYYMMDD = date)
+colnames(swd_interpolated2CM)[colnames(swd_interpolated2CM) == "N_swd_interpolatedCM"] <- "N_swd"
+swd_interpolated2CM<-na.omit(swd_interpolated2CM)
 
-#TESTING create interpolated data for FBF flies
-swd_interpolatedFBF<-approx(y = SWD_dataFBF$N_swd, x = SWD_dataFBF$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-# create interpolated data for ABF flies
-swd_interpolatedABF<-approx(y = SWD_dataABF$N_swd, x = SWD_dataABF$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-# create interpolated data for CM flies
-swd_interpolatedCM<-approx(y = SWD_dataCM$N_swd, x = SWD_dataCM$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-# create interpolated data for LBA flies
-swd_interpolatedLBA<-approx(y = SWD_dataLBA$N_swd, x = SWD_dataLBA$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-# create interpolated data for AlBe flies
-swd_interpolatedAlBe<-approx(y = SWD_dataAlBe$N_swd, x = SWD_dataAlBe$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-# create interpolated data for FrSa flies
-swd_interpolatedFrSa<-approx(y = SWD_dataFrSa$N_swd, x = SWD_dataFrSa$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+#create interpolated data for LBA flies, filling in gaps
+N_swd_interpolatedLBA <- na.approx(SWD_dataLBA$N_swd, na.rm = TRUE, rule=2,maxgap=60)
+date <- SWD_dataLBA$YYYYMMDD
+
+swd_interpolated2LBA <-data.frame(N_swd_interpolatedLBA = N_swd_interpolatedLBA, YYYYMMDD = date)
+colnames(swd_interpolated2LBA)[colnames(swd_interpolated2LBA) == "N_swd_interpolatedLBA"] <- "N_swd"
+swd_interpolated2LBA<-na.omit(swd_interpolated2LBA)
+
+#create interpolated data for AlBe flies, filling in gaps
+N_swd_interpolatedAlBe <- na.approx(SWD_dataAlBe$N_swd, na.rm = TRUE, rule=2,maxgap=60)
+date <- SWD_dataAlBe$YYYYMMDD
+
+swd_interpolated2AlBe <-data.frame(N_swd_interpolatedAlBe = N_swd_interpolatedAlBe, YYYYMMDD = date)
+colnames(swd_interpolated2AlBe)[colnames(swd_interpolated2AlBe) == "N_swd_interpolatedAlBe"] <- "N_swd"
+swd_interpolated2AlBe<-na.omit(swd_interpolated2AlBe)
+
+#create interpolated data for FrSa flies, filling in gaps
+N_swd_interpolatedFrSa <- na.approx(SWD_dataFrSa$N_swd, na.rm = TRUE, rule=2,maxgap=60)
+date <- SWD_dataFrSa$YYYYMMDD
+
+swd_interpolated2FrSa <-data.frame(N_swd_interpolatedFrSa = N_swd_interpolatedFrSa, YYYYMMDD = date)
+colnames(swd_interpolated2FrSa)[colnames(swd_interpolated2FrSa) == "N_swd_interpolatedFrSa"] <- "N_swd"
+swd_interpolated2FrSa<-na.omit(swd_interpolated2FrSa)
+
 ```
 
 ```{r}
+InterpolatedAbundanceTempFBF<-merge(SWD_dataFBF, swd_interpolated2FBF, by = c("YYYYMMDD"),all.x=TRUE)
+
+AbundanceTempKY<-right_join(SWD_data, AllFarmsKY_weather, by = c("YYYYMMDD","Coordinates"))
+AbundanceTempVA<-right_join(SWD_data, AllFarmsVA_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempTotal<-right_join(SWD_data, AllFarmsTotal_weather, by = c("Coordinates","YYYYMMDD"))
+```
+
+
+```{r}
+#create 50 points of interpolated data for full dataset 
+swd_interpolatedTotal<-approx(y = AbundanceTempTotal$N_swd, x = AbundanceTempTotal$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+swd_interpolatedTotal<-data.frame(swd_interpolatedTotal)
+#create 50 points of interpolated data for VT flies 
+swd_interpolatedVT<-approx(y = AbundanceTempVT$N_swd, x = AbundanceTempVT$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+swd_interpolatedVT<-data.frame(swd_interpolatedVT)
+#create 50 points of interpolated data for VA flies
+swd_interpolatedVA<-approx(y = AbundanceTempVA$N_swd, x = AbundanceTempVA$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+swd_interpolatedVA<-data.frame(swd_interpolatedVA)
+#create 50 points of interpolated data for KY flies
+swd_interpolatedKY<-approx(y = AbundanceTempKY$N_swd, x = AbundanceTempKY$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+swd_interpolatedKY<-data.frame(swd_interpolatedKY)
+# create 50 points of interpolated data for FBF flies
+swd_interpolatedFBF<-approx(y = SWD_dataFBF$N_swd, x = SWD_dataFBF$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+swd_interpolatedFBF<-data.frame(swd_interpolatedFBF)
+# create 50 points of interpolated data for ABF flies
+swd_interpolatedABF<-approx(y = SWD_dataABF$N_swd, x = SWD_dataABF$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+swd_interpolatedABF<-data.frame(swd_interpolatedABF)
+# create 50 points of interpolated data for CM flies
+swd_interpolatedCM<-approx(y = SWD_dataCM$N_swd, x = SWD_dataCM$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+swd_interpolatedCM<-data.frame(swd_interpolatedCM)
+# create 50 points of interpolated data for LBA flies
+swd_interpolatedLBA<-approx(y = SWD_dataLBA$N_swd, x = SWD_dataLBA$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+swd_interpolatedLBA<-data.frame(swd_interpolatedLBA)
+# create 50 points of interpolated data for AlBe flies
+swd_interpolatedAlBe<-approx(y = SWD_dataAlBe$N_swd, x = SWD_dataAlBe$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+swd_interpolatedAlBe<-data.frame(swd_interpolatedAlBe)
+# create 50 points of interpolated data for FrSa flies
+swd_interpolatedFrSa<-approx(y = SWD_dataFrSa$N_swd, x = SWD_dataFrSa$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+swd_interpolatedFrSa<-data.frame(swd_interpolatedFrSa)
+```
+
+
+
+# from camille: (not really using but keeping just in case) code finds dates that have N_swd values that are not NA
+#date <- AbundanceTempTotal[which(na.approx(AbundanceTempTotal$N_swd, AbundanceTempTotal$YYYYMMDD, na.rm = TRUE) %in% AbundanceTempTotal$N_swd),"YYYYMMDD"]
+
+#this is code I'm not using but wrote. I dont think approx is what I want here but keep it just in case
+#swd_interpolated<-(approx(y = AbundanceTempTotal$N_swd, x = AbundanceTempTotal$N_swd,xout=AbundanceTempTotal$YYYYMMDD, method = "linear",
+#                         rule = 1, f = 0, ties = mean, na.rm = TRUE))
+#swd_interpolated_df <- data.frame(YYYYMMDD = as.Date(swd_interpolated$x), N_swd = swd_interpolated$y)
+
+```{r}
 #create a cross correlation for SWD pop over time for FrSa
-ccf(swd_interpolatedFrSa[["x"]],swd_interpolatedFrSa[["y"]], lag.max = NULL, type = c("correlation", "covariance"),
+ccf(swd_interpolatedFrSa[["y"]],swd_interpolatedFrSa[["x"]], ylim = c(-0.5, .5), lag.max = 30, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
     main = "FrSa Population & Temperature cross-correlation")
 
 #create a cross correlation for SWD pop over time for Albe
-ccf(swd_interpolatedAlBe[["x"]],swd_interpolatedAlBe[["y"]],ylim = c(-0.5, .5), lag.max = NULL, type = c("correlation", "covariance"),
+ccf(swd_interpolatedAlBe[["y"]],swd_interpolatedAlBe[["x"]],ylim = c(-0.5, .5), lag.max = 30, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
     main = "AlBe Population & Temperature cross-correlation")
 
 #create a cross correlation for SWD pop over time for LBA
-ccf(swd_interpolatedLBA[["x"]],swd_interpolatedLBA[["y"]],ylim = c(-0.5, .5), lag.max = NULL, type = c("correlation", "covariance"),
+ccf(swd_interpolatedLBA[["y"]],swd_interpolatedLBA[["x"]],ylim = c(-0.5, .5), lag.max = 30, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
     main = "LBA SWD Population & Temperature cross-correlation")
 
 #create a cross correlation for SWD pop over time for CM
-ccf(swd_interpolatedCM[["x"]],swd_interpolatedCM[["y"]],ylim = c(-0.5, .5), lag.max = NULL, type = c("correlation", "covariance"),
+ccf(swd_interpolatedCM[["y"]],swd_interpolatedCM[["x"]],ylim = c(-0.5, .5), lag.max = 30, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
     main = "CM SWD Population & Temperature cross-correlation")
 
 #create a cross correlation for SWD pop over time for ABF data
-ccf(swd_interpolatedABF[["x"]],swd_interpolatedABF[["y"]], ylim = c(-0.5, .5),lag.max = NULL, type = c("correlation", "covariance"),
+ccf(swd_interpolatedABF[["y"]],swd_interpolatedABF[["x"]], ylim = c(-0.5, .5),lag.max = 60, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
     main = "ABF SWD Population & Temperature cross-correlation")
 
 #TESTING create a cross correlation for SWD pop over time for Full Belly data
-ccf(swd_interpolatedFBF[["x"]],swd_interpolatedFBF[["y"]], ylim = c(-0.5, .5), lag.max = NULL, type = c("correlation", "covariance"),
+ccf(swd_interpolatedFBF[["y"]],swd_interpolatedFBF[["x"]], ylim = c(-0.5, .5), lag.max = 30, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
     main = "FBF SWD Population & Temperature cross-correlation")
 ```
