@@ -586,16 +586,16 @@ N_swd_interpolated <- na.approx(AbundanceTempTotal$N_swd, na.rm = TRUE, rule=2,m
 date <- AbundanceTempTotal$YYYYMMDD
 
 swd_interpolated2 <-data.frame(N_swd_interpolated = N_swd_interpolated, YYYYMMDD = date)
-colnames(swd_interpolated2VT)[colnames(swd_interpolated2VT) == "N_swd_interpolatedVT"] <- "N_swd"
+colnames(swd_interpolated2)[colnames(swd_interpolated2) == "N_swd_interpolatedVT"] <- "N_swd"
 swd_interpolated2<-na.omit(swd_interpolated2)
 
 #create interpolated data for VT flies, filling in gaps
-N_swd_interpolatedVT <- na.approx(AbundanceTempVT$N_swd, na.rm = TRUE, rule=2,maxgap=60)
+swd_interpolated2VT <- na.approx(AbundanceTempVT$N_swd, na.rm = TRUE, rule=2,maxgap=60)
 date <- AbundanceTempVT$YYYYMMDD
 
-swd_interpolated2VT <-data.frame(N_swd_interpolatedVT = N_swd_interpolatedVT, YYYYMMDD = date)
-colnames(swd_interpolated2VT)[colnames(swd_interpolated2VT) == "N_swd_interpolatedVT"] <- "N_swd"
-swd_interpolated2VT<-na.omit(swd_interpolated2VT)
+N_swd_interpolated2VT <-data.frame(N_swd_interpolatedVT = N_swd_interpolatedVT, YYYYMMDD = date)
+colnames(N_swd_interpolated2VT)[colnames(N_swd_interpolated2VT) == "N_swd_interpolatedVT"] <- "N_swd"
+swd_interpolated2VT<-na.omit(N_swd_interpolated2VT)
 
 #create interpolated data for KY flies, filling in gaps
 N_swd_interpolatedKY <- na.approx(AbundanceTempKY$N_swd, na.rm = TRUE, rule=2,maxgap=60)
@@ -677,42 +677,62 @@ AbundanceTempTotal<-right_join(SWD_data, AllFarmsTotal_weather, by = c("Coordina
 swd_interpolatedTotal<-approx(y = AbundanceTempTotal$N_swd, x = AbundanceTempTotal$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 swd_interpolatedTotal<-data.frame(swd_interpolatedTotal)
+colnames(swd_interpolatedTotal)[colnames(swd_interpolatedTotal) == "x"] <- "T2M" 
+colnames(swd_interpolatedTotal)[colnames(swd_interpolatedTotal) == "y"] <- "N_swd"
 #create 50 points of interpolated data for VT flies 
 swd_interpolatedVT<-approx(y = AbundanceTempVT$N_swd, x = AbundanceTempVT$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 swd_interpolatedVT<-data.frame(swd_interpolatedVT)
+colnames(swd_interpolatedVT)[colnames(swd_interpolatedVT) == "x"] <- "T2M" 
+colnames(swd_interpolatedVT)[colnames(swd_interpolatedVT) == "y"] <- "N_swd"
 #create 50 points of interpolated data for VA flies
 swd_interpolatedVA<-approx(y = AbundanceTempVA$N_swd, x = AbundanceTempVA$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 swd_interpolatedVA<-data.frame(swd_interpolatedVA)
+colnames(swd_interpolatedVA)[colnames(swd_interpolatedVA) == "x"] <- "T2M" 
+colnames(swd_interpolatedVA)[colnames(swd_interpolatedVA) == "y"] <- "N_swd"
 #create 50 points of interpolated data for KY flies
 swd_interpolatedKY<-approx(y = AbundanceTempKY$N_swd, x = AbundanceTempKY$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 swd_interpolatedKY<-data.frame(swd_interpolatedKY)
+colnames(swd_interpolatedKY)[colnames(swd_interpolatedKY) == "x"] <- "T2M" 
+colnames(swd_interpolatedKY)[colnames(swd_interpolatedKY) == "y"] <- "N_swd"
 # create 50 points of interpolated data for FBF flies
 swd_interpolatedFBF<-approx(y = SWD_dataFBF$N_swd, x = SWD_dataFBF$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 swd_interpolatedFBF<-data.frame(swd_interpolatedFBF)
+colnames(swd_interpolatedFBF)[colnames(swd_interpolatedFBF) == "x"] <- "T2M" 
+colnames(swd_interpolatedFBF)[colnames(swd_interpolatedFBF) == "y"] <- "N_swd"
 # create 50 points of interpolated data for ABF flies
 swd_interpolatedABF<-approx(y = SWD_dataABF$N_swd, x = SWD_dataABF$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 swd_interpolatedABF<-data.frame(swd_interpolatedABF)
+colnames(swd_interpolatedABF)[colnames(swd_interpolatedABF) == "x"] <- "T2M" 
+colnames(swd_interpolatedABF)[colnames(swd_interpolatedABF) == "y"] <- "N_swd"
 # create 50 points of interpolated data for CM flies
 swd_interpolatedCM<-approx(y = SWD_dataCM$N_swd, x = SWD_dataCM$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 swd_interpolatedCM<-data.frame(swd_interpolatedCM)
+colnames(swd_interpolatedCM)[colnames(swd_interpolatedCM) == "x"] <- "T2M" 
+colnames(swd_interpolatedCM)[colnames(swd_interpolatedCM) == "y"] <- "N_swd"
 # create 50 points of interpolated data for LBA flies
 swd_interpolatedLBA<-approx(y = SWD_dataLBA$N_swd, x = SWD_dataLBA$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 swd_interpolatedLBA<-data.frame(swd_interpolatedLBA)
+colnames(swd_interpolatedLBA)[colnames(swd_interpolatedLBA) == "x"] <- "T2M" 
+colnames(swd_interpolatedLBA)[colnames(swd_interpolatedLBA) == "y"] <- "N_swd"
 # create 50 points of interpolated data for AlBe flies
 swd_interpolatedAlBe<-approx(y = SWD_dataAlBe$N_swd, x = SWD_dataAlBe$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 swd_interpolatedAlBe<-data.frame(swd_interpolatedAlBe)
+colnames(swd_interpolatedAlBe)[colnames(swd_interpolatedAlBe) == "x"] <- "T2M" 
+colnames(swd_interpolatedAlBe)[colnames(swd_interpolatedAlBe) == "y"] <- "N_swd"
 # create 50 points of interpolated data for FrSa flies
 swd_interpolatedFrSa<-approx(y = SWD_dataFrSa$N_swd, x = SWD_dataFrSa$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 swd_interpolatedFrSa<-data.frame(swd_interpolatedFrSa)
+colnames(swd_interpolatedFrSa)[colnames(swd_interpolatedFrSa) == "x"] <- "T2M" 
+colnames(swd_interpolatedFrSa)[colnames(swd_interpolatedFrSa) == "y"] <- "N_swd"
 ```
 
 
