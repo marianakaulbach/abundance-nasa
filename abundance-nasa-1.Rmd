@@ -757,7 +757,7 @@ ccf(swd_interpolatedAlBe[["N_swd"]],swd_interpolatedAlBe[["T2M"]],ylim = c(-0.5,
     main = "AlBe Population & Temperature cross-correlation")
 
 #create a cross correlation for SWD pop over time for LBA
-ccf(swd_interpolatedLBA[["N_swd"]],swd_interpolatedLBA[["T2M"]],ylim = c(-0.5, .5), lag.max = 30, type = c("correlation", "covariance"),
+ccf(swd_interpolatedLBA[["N_swd"]],swd_interpolatedLBA[["T2M"]],ylim = c(-0.5, .5), lag.max = 160, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
     main = "LBA SWD Population & Temperature cross-correlation")
 
