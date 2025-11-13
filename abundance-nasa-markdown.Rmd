@@ -32,7 +32,7 @@ library(forecast)
 #Download NASA data on Temperature (T2M) for locations of interest by using farm coordinates.
 ```{r}
 #VT Farms
-AdamsBerry_weather <- get_power(
+ABF_weather <- get_power(
   community = "ag",
   lonlat = c(-73.1885194,44.29804),
   pars = c("T2M"),
@@ -40,7 +40,7 @@ AdamsBerry_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
-FullBelly_weather <- get_power(
+FBF_weather <- get_power(
   community = "ag",
   lonlat = c(-73.1334011,44.265172),
   pars = c("T2M"),
@@ -49,7 +49,7 @@ FullBelly_weather <- get_power(
   temporal_api = "daily"
 )
 #KY farms
-LexingtonBluegrass_weather <- get_power(
+LBA_weather <- get_power(
   community = "ag",
   lonlat = c(-84.6058,38.0408),
   pars = c("T2M"),
@@ -57,7 +57,7 @@ LexingtonBluegrass_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
-CartersMountain_weather <- get_power(
+CM_weather <- get_power(
   community = "ag",
   lonlat = c(-78.5447915,37.9740223),
   pars = c("T2M"),
@@ -85,110 +85,105 @@ FrSa_weather <- get_power(
 )
 ```
 
-```{r}
-#Combine dataframes from all farms in VT
-AllFarmsVT_weather <-rbind(AdamsBerry_weather, FullBelly_weather)
-#Combine dataframes from all farms in KY
-AllFarmsKY_weather <-rbind(LexingtonBluegrass_weather,CartersMountain_weather)
-#Combine dataframes from all farms in VA
-AllFarmsVA_weather <-rbind(AlBe_weather,FrSa_weather)
-#Combine dataframes for all farms 
-AllFarmsTotal_weather<-rbind.data.frame(AllFarmsKY_weather, AllFarmsVT_weather, AllFarmsVA_weather)
-```
 
 ```{r}
 #CombineLatLon data into one variable "Coordinates".
-AllFarmsVT_weather$Coordinates<- paste(AllFarmsVT_weather$LAT, AllFarmsVT_weather$LON,sep=",")
-AllFarmsKY_weather$Coordinates<- paste(AllFarmsKY_weather$LAT, AllFarmsKY_weather$LON,sep=",")
-AllFarmsVA_weather$Coordinates<- paste(AllFarmsVA_weather$LAT, AllFarmsVA_weather$LON,sep=",")
-AllFarmsTotal_weather$Coordinates<- paste(AllFarmsTotal_weather$LAT, AllFarmsTotal_weather$LON,sep=",")
+
+FBF_weather$Coordinates<- paste(FBF_weather$LAT, FBF_weather$LON,sep=",")
+ABF_weather$Coordinates<- paste(ABF_weather$LAT, ABF_weather$LON,sep=",")
+LBA_weather$Coordinates<- paste(LBA_weather$LAT, LBA_weather$LON,sep=",")
+CM_weather$Coordinates<- paste(CM_weather$LAT, CM_weather$LON,sep=",")
+FrSa_weather$Coordinates<- paste(FrSa_weather$LAT, FrSa_weather$LON,sep=",")
+AlBe_weather$Coordinates<- paste(AlBe_weather$LAT, AlBe_weather$LON,sep=",")
 ```
 
 ```{r}
-AllFarmsVT_weather$DD<-NULL
-AllFarmsVT_weather$DOY<-NULL
-AllFarmsKY_weather$DD<-NULL
-AllFarmsKY_weather$DOY<-NULL
-AllFarmsVA_weather$DD<-NULL
-AllFarmsVA_weather$DOY<-NULL
-AllFarmsTotal_weather$DD<-NULL
-AllFarmsTotal_weather$DOY<-NULL
+
+FBF_weather$DD<-NULL
+FBF_weather$DOY<-NULL
+ABF_weather$DD<-NULL
+ABF_weather$DOY<-NULL
+FrSa_weather$DD<-NULL
+FrSa_weather$DOY<-NULL
+AlBe_weather$DD<-NULL
+AlBe_weather$DOY<-NULL
+LBA_weather$DD<-NULL
+LBA_weather$DOY<-NULL
+CM_weather$DD<-NULL
+CM_weather$DOY<-NULL
 #save YYYYMMDD as a date 
-AllFarmsTotal_weather$YYYYMMDD <- as.Date(AllFarmsTotal_weather$YYYYMMDD, format = "%Y-%m-%d")
-AllFarmsVA_weather$YYYYMMDD <- as.Date(AllFarmsVA_weather$YYYYMMDD, format = "%Y-%m-%d")
-AllFarmsKY_weather$YYYYMMDD <- as.Date(AllFarmsKY_weather$YYYYMMDD, format = "%Y-%m-%d")
-AllFarmsVT_weather$YYYYMMDD <- as.Date(AllFarmsVT_weather$YYYYMMDD, format = "%Y-%m-%d")
 SWD_data$YYYYMMDD <-as.Date(SWD_data$YYYYMMDD, format = "%Y-%m-%d")
+ABF_weather$YYYYMMDD <- as.Date(ABF_weather$YYYYMMDD, format = "%Y-%m-%d")
+FBF_weather$YYYYMMDD <- as.Date(FBF_weather$YYYYMMDD, format = "%Y-%m-%d")
+CM_weather$YYYYMMDD <- as.Date(CM_weather$YYYYMMDD, format = "%Y-%m-%d")
+LBA_weather$YYYYMMDD <- as.Date(LBA_weather$YYYYMMDD, format = "%Y-%m-%d")
+FrSa_weather$YYYYMMDD <- as.Date(FrSa_weather$YYYYMMDD, format = "%Y-%m-%d")
+AlBe_weather$YYYYMMDD <- as.Date(AlBe_weather$YYYYMMDD, format = "%Y-%m-%d")
 ```
 
 ```{r}
-AbundanceTempVT<-right_join(SWD_data, AllFarmsVT_weather, by = c("Coordinates","YYYYMMDD"))
-AbundanceTempKY<-right_join(SWD_data, AllFarmsKY_weather, by = c("YYYYMMDD","Coordinates"))
-AbundanceTempVA<-right_join(SWD_data, AllFarmsVA_weather, by = c("Coordinates","YYYYMMDD"))
-AbundanceTempTotal<-right_join(SWD_data, AllFarmsTotal_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempFBF<-right_join(SWD_data, FBF_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempABF<-right_join(SWD_data, ABF_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempCM<-right_join(SWD_data, CM_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempLBA<-right_join(SWD_data, LBA_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempFrSa<-right_join(SWD_data, FrSa_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempAlBe<-right_join(SWD_data, AlBe_weather, by = c("Coordinates","YYYYMMDD"))
 ```
 
 ```{r}
 #Ensure that variables are factor columns, rather than numeric.
-AbundanceTempVT$T2M <- as.numeric(as.character(AbundanceTempVT$T2M))
-AbundanceTempVT$N_swd<-as.numeric(as.character(AbundanceTempVT$N_swd))
-AbundanceTempKY$T2M <- as.numeric(as.character(AbundanceTempKY$T2M))
-AbundanceTempKY$N_swd<-as.numeric(as.character(AbundanceTempKY$N_swd))
-AbundanceTempVA$T2M <- as.numeric(as.character(AbundanceTempVA$T2M))
-AbundanceTempVA$N_swd<-as.numeric(as.character(AbundanceTempVA$N_swd))
-AbundanceTempTotal$T2M <- as.numeric(as.character(AbundanceTempTotal$T2M))
-AbundanceTempTotal$N_swd<-as.numeric(as.character(AbundanceTempTotal$N_swd))
-```
-
-```{r}
-#Create a subset of the SWD data for just the 6 farms of interest 
-SWD_dataFBF<-AbundanceTempVT %>% 
-    dplyr::filter(Coordinates %in% c("44.265172,-73.1334011"))
-SWD_dataABF<-AbundanceTempVT %>% 
-    dplyr::filter(Coordinates %in% c("44.29804,-73.1885194"))
-SWD_dataCM<-AbundanceTempKY %>% 
-    dplyr::filter(Coordinates %in% c("37.9740223,-78.5447915"))
-SWD_dataLBA<-AbundanceTempKY %>% 
-    dplyr::filter(Coordinates %in% c("38.0408,-84.6058"))
-SWD_dataAlBe<-AbundanceTempVA %>% 
-    dplyr::filter(Coordinates %in% c("38.146223,-79.081904"))
-SWD_dataFrSa<-AbundanceTempVA %>% 
-    dplyr::filter(Coordinates %in% c("38.3967029,-78.8319075"))
+AbundanceTempFBF$T2M <- as.numeric(as.character(AbundanceTempFBF$T2M))
+AbundanceTempFBF$N_swd<-as.numeric(as.character(AbundanceTempFBF$N_swd))
+AbundanceTempABF$T2M <- as.numeric(as.character(AbundanceTempABF$T2M))
+AbundanceTempABF$N_swd<-as.numeric(as.character(AbundanceTempABF$N_swd))
+AbundanceTempLBA$T2M <- as.numeric(as.character(AbundanceTempLBA$T2M))
+AbundanceTempLBA$N_swd<-as.numeric(as.character(AbundanceTempLBA$N_swd))
+AbundanceTempCM$T2M <- as.numeric(as.character(AbundanceTempCM$T2M))
+AbundanceTempCM$N_swd<-as.numeric(as.character(AbundanceTempCM$N_swd))
+AbundanceTempFrSa$T2M <- as.numeric(as.character(AbundanceTempFrSa$T2M))
+AbundanceTempFrSa$N_swd<-as.numeric(as.character(AbundanceTempFrSa$N_swd))
+AbundanceTempAlBe$T2M <- as.numeric(as.character(AbundanceTempAlBe$T2M))
+AbundanceTempAlBe$N_swd<-as.numeric(as.character(AbundanceTempAlBe$N_swd))
 ```
 
 ```{r}
 # create 50 points of interpolated data for FBF flies
-swd_interpolatedFBF<-approx(y = SWD_dataFBF$N_swd, x = SWD_dataFBF$T2M, method = "linear", n = 50,
+swd_interpolatedFBF<-approx(y = AbundanceTempFBF$N_swd, x = AbundanceTempFBF$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 swd_interpolatedFBF<-data.frame(swd_interpolatedFBF)
 colnames(swd_interpolatedFBF)[colnames(swd_interpolatedFBF) == "x"] <- "T2M" 
 colnames(swd_interpolatedFBF)[colnames(swd_interpolatedFBF) == "y"] <- "N_swd"
+
 # create 50 points of interpolated data for ABF flies
-swd_interpolatedABF<-approx(y = SWD_dataABF$N_swd, x = SWD_dataABF$T2M, method = "linear", n = 50,
+swd_interpolatedABF<-approx(y = AbundanceTempABF$N_swd, x = AbundanceTempABF$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 swd_interpolatedABF<-data.frame(swd_interpolatedABF)
 colnames(swd_interpolatedABF)[colnames(swd_interpolatedABF) == "x"] <- "T2M" 
 colnames(swd_interpolatedABF)[colnames(swd_interpolatedABF) == "y"] <- "N_swd"
+
 # create 50 points of interpolated data for CM flies
-swd_interpolatedCM<-approx(y = SWD_dataCM$N_swd, x = SWD_dataCM$T2M, method = "linear", n = 50,
+swd_interpolatedCM<-approx(y = AbundanceTempCM$N_swd, x = AbundanceTempCM$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 swd_interpolatedCM<-data.frame(swd_interpolatedCM)
 colnames(swd_interpolatedCM)[colnames(swd_interpolatedCM) == "x"] <- "T2M" 
 colnames(swd_interpolatedCM)[colnames(swd_interpolatedCM) == "y"] <- "N_swd"
+
 # create 50 points of interpolated data for LBA flies
-swd_interpolatedLBA<-approx(y = SWD_dataLBA$N_swd, x = SWD_dataLBA$T2M, method = "linear", n = 50,
+swd_interpolatedLBA<-approx(y = AbundanceTempLBA$N_swd, x = AbundanceTempLBA$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 swd_interpolatedLBA<-data.frame(swd_interpolatedLBA)
 colnames(swd_interpolatedLBA)[colnames(swd_interpolatedLBA) == "x"] <- "T2M" 
 colnames(swd_interpolatedLBA)[colnames(swd_interpolatedLBA) == "y"] <- "N_swd"
+
 # create 50 points of interpolated data for AlBe flies
-swd_interpolatedAlBe<-approx(y = SWD_dataAlBe$N_swd, x = SWD_dataAlBe$T2M, method = "linear", n = 50,
+swd_interpolatedAlBe<-approx(y = AbundanceTempAlBe$N_swd, x = AbundanceTempAlBe$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 swd_interpolatedAlBe<-data.frame(swd_interpolatedAlBe)
 colnames(swd_interpolatedAlBe)[colnames(swd_interpolatedAlBe) == "x"] <- "T2M" 
 colnames(swd_interpolatedAlBe)[colnames(swd_interpolatedAlBe) == "y"] <- "N_swd"
+
 # create 50 points of interpolated data for FrSa flies
-swd_interpolatedFrSa<-approx(y = SWD_dataFrSa$N_swd, x = SWD_dataFrSa$T2M, method = "linear", n = 50,
+swd_interpolatedFrSa<-approx(y = AbundanceTempFrSa$N_swd, x = AbundanceTempFrSa$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 swd_interpolatedFrSa<-data.frame(swd_interpolatedFrSa)
 colnames(swd_interpolatedFrSa)[colnames(swd_interpolatedFrSa) == "x"] <- "T2M" 
@@ -198,11 +193,11 @@ colnames(swd_interpolatedFrSa)[colnames(swd_interpolatedFrSa) == "y"] <- "N_swd"
 ```{r}
 #Create a plot with both temp and abundance data for specific farms
 #FULL BELLY FARM
-SWDPlotFBF<-ggplot(data = SWD_dataFBF, aes(x = YYYYMMDD, y = N_swd)) +
+SWDPlotFBF<-ggplot(data = AbundanceTempFBF, aes(x = YYYYMMDD, y = N_swd)) +
   geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
   labs(title = "Full Belly Farm SWD Count Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
-T2MPlotFBF <- ggplot(SWD_dataFBF, aes(x=YYYYMMDD, y=T2M)) +
+T2MPlotFBF <- ggplot(AbundanceTempFBF, aes(x=YYYYMMDD, y=T2M)) +
   geom_line(color = "lightblue") +
   labs(title = "Full Belly Farm Temperature Over Time", x = "Time", y = "Temperature (C)") +
   theme_minimal()
@@ -217,11 +212,11 @@ ccf(swd_interpolatedFBF[["N_swd"]],swd_interpolatedFBF[["T2M"]], ylim = c(-0.5, 
 
 ```{r}
 #ABF
-SWDPlotABF<-ggplot(data = SWD_dataABF, aes(x = YYYYMMDD, y = N_swd)) +
+SWDPlotABF<-ggplot(data = AbundanceTempABF, aes(x = YYYYMMDD, y = N_swd)) +
   geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
   labs(title = "Adam's Berry Farm SWD Count Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
-T2MPlotABF <- ggplot(SWD_dataFBF, aes(x=YYYYMMDD, y=T2M)) +
+T2MPlotABF <- ggplot(AbundanceTempFBF, aes(x=YYYYMMDD, y=T2M)) +
   geom_line(color = "lightblue") +
   labs(title = "Adam's Berry Farm Temperature Over Time", x = "Time", y = "Temperature(C)") +
   theme_minimal()
@@ -236,11 +231,11 @@ ccf(swd_interpolatedABF[["N_swd"]],swd_interpolatedABF[["T2M"]], ylim = c(-0.5, 
 
 ```{r}
 #CM
-SWDPlotCM<-ggplot(data = SWD_dataCM, aes(x = YYYYMMDD, y = N_swd)) +
+SWDPlotCM<-ggplot(data = AbundanceTempCM, aes(x = YYYYMMDD, y = N_swd)) +
   geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
   labs(title = "Carter's Mountain SWD Count Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
-T2MPlotCM <- ggplot(SWD_dataCM, aes(x=YYYYMMDD, y=T2M)) +
+T2MPlotCM <- ggplot(AbundanceTempCM, aes(x=YYYYMMDD, y=T2M)) +
   geom_line(color = "lightblue") +
   labs(title = "Carter's Mountain Temperature Over Time", x = "Time", y = "Temperature (C)") +
   theme_minimal()
@@ -255,11 +250,11 @@ ccf(swd_interpolatedCM[["N_swd"]],swd_interpolatedCM[["T2M"]],ylim = c(-0.5, .5)
 
 ```{r}
 #LBA
-SWDPlotLBA<-ggplot(data = SWD_dataLBA, aes(x = YYYYMMDD, y = N_swd)) +
+SWDPlotLBA<-ggplot(data = AbundanceTempLBA, aes(x = YYYYMMDD, y = N_swd)) +
   geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
   labs(title = "Lexington Bluegrass Airport SWD Count Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
-T2MPlotLBA <- ggplot(SWD_dataLBA, aes(x=YYYYMMDD, y=T2M)) +
+T2MPlotLBA <- ggplot(AbundanceTempLBA, aes(x=YYYYMMDD, y=T2M)) +
   geom_line(color = "lightblue") +
   labs(title = "Lexington Bluegrass Airport Temperature Over Time", x = "Time", y = "Temperature (C)") +
   theme_minimal()
@@ -274,11 +269,11 @@ ccf(swd_interpolatedLBA[["N_swd"]],swd_interpolatedLBA[["T2M"]],ylim = c(-0.5, .
 
 ```{r}
 #AlBe
-SWDPlotAlBe<-ggplot(data = SWD_dataAlBe, aes(x = YYYYMMDD, y = N_swd)) +
+SWDPlotAlBe<-ggplot(data = AbundanceTempAlBe, aes(x = YYYYMMDD, y = N_swd)) +
   geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
   labs(title = "AlBe SWD Count Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
-T2MPlotAlBe<- ggplot(SWD_dataAlBe, aes(x=YYYYMMDD, y=T2M)) +
+T2MPlotAlBe<- ggplot(AbundanceTempAlBe, aes(x=YYYYMMDD, y=T2M)) +
   geom_line(color = "lightblue") +
   labs(title = "AlBe Temperature Over Time", x = "Time", y = "Temperature (C)") +
   theme_minimal()
@@ -293,11 +288,11 @@ ccf(swd_interpolatedAlBe[["N_swd"]],swd_interpolatedAlBe[["T2M"]],ylim = c(-0.5,
 
 ```{r}
 #FrSa
-SWDPlotFrSa<-ggplot(data = SWD_dataFrSa, aes(x = YYYYMMDD, y = N_swd)) +
+SWDPlotFrSa<-ggplot(data = AbundanceTempFrSa, aes(x = YYYYMMDD, y = N_swd)) +
   geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
   labs(title = "FrSa SWD Count Over Time", x = "Time", y = "Population Count") +
   theme_minimal()
-T2MPlotFrSa <- ggplot(SWD_dataFrSa, aes(x=YYYYMMDD, y=T2M)) +
+T2MPlotFrSa <- ggplot(AbundanceTempFrSa, aes(x=YYYYMMDD, y=T2M)) +
   geom_line(color = "lightblue") +
   labs(title = "FrSa Temperature Over Time", x = "Time", y = "Temperature (C)") +
   theme_minimal()
@@ -312,10 +307,11 @@ ccf(swd_interpolatedFrSa[["N_swd"]],swd_interpolatedFrSa[["T2M"]], ylim = c(-0.5
 
 ```{r}
 #this method is easier for me to work out
-cor(SWD_dataABF$N_swd, lag(SWD_dataABF$T2M, 10), use = "complete.obs")
-cor(SWD_dataFBF$N_swd, lag(SWD_dataFBF$T2M, 10), use = "complete.obs")
-cor(SWD_dataLBA$N_swd, lag(SWD_dataLBA$T2M, 10), use = "complete.obs")
-cor(SWD_dataCM$N_swd, lag(SWD_dataCM$T2M, 10), use = "complete.obs")
-cor(SWD_dataFrSa$N_swd, lag(SWD_dataFrSa$T2M, 10), use = "complete.obs")
-cor(SWD_dataAlBe$N_swd, lag(SWD_dataAlBe$T2M, 10), use = "complete.obs")
+cor(AbundanceTempABF$N_swd, lag(AbundanceTempABF$T2M, 10), use = "complete.obs")
+cor(AbundanceTempFBF$N_swd, lag(AbundanceTempFBF$T2M, 10), use = "complete.obs")
+cor(AbundanceTempLBA$N_swd, lag(AbundanceTempLBA$T2M, 10), use = "complete.obs")
+cor(AbundanceTempCM$N_swd, lag(AbundanceTempCM$T2M, 10), use = "complete.obs")
+cor(AbundanceTempFrSa$N_swd, lag(AbundanceTempFrSa$T2M, 10), use = "complete.obs")
+cor(AbundanceTempAlBe$N_swd, lag(AbundanceTempAlBe$T2M, 10), use = "complete.obs")
 ```
+
