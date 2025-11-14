@@ -97,28 +97,28 @@ AlBe_weather$Coordinates<- paste(AlBe_weather$LAT, AlBe_weather$LON,sep=",")
 #Remove columns that we do not need for our analysis. DD,MM,and YYYY are removed because there is already a separate column for DD-MM-YYYY.
 FBF_weather$DD<-NULL
 FBF_weather$MM<-NULL
-FBF_weather$YYYY<-NULL
+FBF_weather$YEAR<-NULL
 FBF_weather$DOY<-NULL
 ABF_weather$DD<-NULL
 ABF_weather$DOY<-NULL
 ABF_weather$MM<-NULL
-ABF_weather$YYYY<-NULL
+ABF_weather$YEAR<-NULL
 FrSa_weather$DD<-NULL
 FrSa_weather$DOY<-NULL
 FrSa_weather$MM<-NULL
-FrSa_weather$YYYY<-NULL
+FrSa_weather$YEAR<-NULL
 AlBe_weather$DD<-NULL
 AlBe_weather$DOY<-NULL
 AlBe_weather$MM<-NULL
-AlBe_weather$YYYY<-NULL
+AlBe_weather$YEAR<-NULL
 LBA_weather$DD<-NULL
 LBA_weather$DOY<-NULL
 LBA_weather$MM<-NULL
-LBA_weather$YYYY<-NULL
+LBA_weather$YEAR<-NULL
 CM_weather$DD<-NULL
 CM_weather$DOY<-NULL
 CM_weather$MM<-NULL
-CM_weather$YYYY<-NULL
+CM_weather$YEAR<-NULL
 
 #save YYYYMMDD as a date 
 SWD_data$YYYYMMDD <-as.Date(SWD_data$YYYYMMDD, format = "%Y-%m-%d")
@@ -154,50 +154,6 @@ AbundanceTempFrSa<-right_join(SWD_data, FrSa_weather, by = c("Coordinates","YYYY
 AbundanceTempAlBe<-right_join(SWD_data, AlBe_weather, by = c("Coordinates","YYYYMMDD"))
 ```
 
-#In order to create a cross-correlation analysis comparing temperature to a lagged version of N_swd, we must generate interpolated values for N_swd based on temperature.
-```{r}
-# create 50 points of interpolated data for FBF flies
-swd_interpolatedFBF<-approx(y = AbundanceTempFBF$N_swd, x = AbundanceTempFBF$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-swd_interpolatedFBF<-data.frame(swd_interpolatedFBF)
-colnames(swd_interpolatedFBF)[colnames(swd_interpolatedFBF) == "x"] <- "T2M"
-colnames(swd_interpolatedFBF)[colnames(swd_interpolatedFBF) == "y"] <- "N_swd"
-
-# create 50 points of interpolated data for ABF flies
-swd_interpolatedABF<-approx(y = AbundanceTempABF$N_swd, x = AbundanceTempABF$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-swd_interpolatedABF<-data.frame(swd_interpolatedABF)
-colnames(swd_interpolatedABF)[colnames(swd_interpolatedABF) == "x"] <- "T2M"
-colnames(swd_interpolatedABF)[colnames(swd_interpolatedABF) == "y"] <- "N_swd"
-
-# create 50 points of interpolated data for CM flies
-swd_interpolatedCM<-approx(y = AbundanceTempCM$N_swd, x = AbundanceTempCM$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-swd_interpolatedCM<-data.frame(swd_interpolatedCM)
-colnames(swd_interpolatedCM)[colnames(swd_interpolatedCM) == "x"] <- "T2M" 
-colnames(swd_interpolatedCM)[colnames(swd_interpolatedCM) == "y"] <- "N_swd"
-
-# create 50 points of interpolated data for LBA flies
-swd_interpolatedLBA<-approx(y = AbundanceTempLBA$N_swd, x = AbundanceTempLBA$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-swd_interpolatedLBA<-data.frame(swd_interpolatedLBA)
-colnames(swd_interpolatedLBA)[colnames(swd_interpolatedLBA) == "x"] <- "T2M"
-colnames(swd_interpolatedLBA)[colnames(swd_interpolatedLBA) == "y"] <- "N_swd"
-
-# create 50 points of interpolated data for AlBe flies
-swd_interpolatedAlBe<-approx(y = AbundanceTempAlBe$N_swd, x = AbundanceTempAlBe$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-swd_interpolatedAlBe<-data.frame(swd_interpolatedAlBe)
-colnames(swd_interpolatedAlBe)[colnames(swd_interpolatedAlBe) == "x"] <- "T2M" 
-colnames(swd_interpolatedAlBe)[colnames(swd_interpolatedAlBe) == "y"] <- "N_swd"
-
-# create 50 points of interpolated data for FrSa flies
-swd_interpolatedFrSa<-approx(y = AbundanceTempFrSa$N_swd, x = AbundanceTempFrSa$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-swd_interpolatedFrSa<-data.frame(swd_interpolatedFrSa)
-colnames(swd_interpolatedFrSa)[colnames(swd_interpolatedFrSa) == "x"] <- "T2M" 
-colnames(swd_interpolatedFrSa)[colnames(swd_interpolatedFrSa) == "y"] <- "N_swd"
-```
 
 #Using charts to visualize the relationship between SWD abundance and NASA temperature data. Stacked line and dot plots visualize temperature (T2M) and SWD population (N_swd) over time. Cross-correlation plots show the strength of correlation between T2M and N_swd at different time points, with tempearture constant (i think) ADD ANALYSIS HERE
 ```{r}
@@ -215,8 +171,8 @@ T2MPlotFBF <- ggplot(AbundanceTempFBF, aes(x=YYYYMMDD, y=T2M)) +
 grid.arrange(SWDPlotFBF, T2MPlotFBF, nrow = 2)
 
 # create a cross correlation for SWD pop over time for Full Belly data
-ccf(swd_interpolatedFBF[["N_swd"]],swd_interpolatedFBF[["T2M"]], ylim = c(-0.5, .5), lag.max = 60, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
+ccf(AbundanceTempFBF[["N_swd"]],AbundanceTempFBF[["T2M"]], ylim = c(-0.5, .5), lag.max = 60, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.pass,
     main = "FBF SWD Population & Temperature cross-correlation")
 ```
 
@@ -236,8 +192,8 @@ T2MPlotABF <- ggplot(AbundanceTempFBF, aes(x=YYYYMMDD, y=T2M)) +
 grid.arrange(SWDPlotABF, T2MPlotABF, nrow = 2)
 
 #create a cross correlation for SWD pop over time for ABF data
-ccf(swd_interpolatedABF[["N_swd"]],swd_interpolatedABF[["T2M"]], ylim = c(-0.5, .5),lag.max = 60, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
+ccf(AbundanceTempABF[["N_swd"]],AbundanceTempABF[["T2M"]], ylim = c(-0.5, .5),lag.max = 60, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.pass,
     main = "ABF SWD Population & Temperature cross-correlation")
 ```
 
@@ -255,8 +211,8 @@ T2MPlotCM <- ggplot(AbundanceTempCM, aes(x=YYYYMMDD, y=T2M)) +
 grid.arrange(SWDPlotCM, T2MPlotCM, nrow = 2)
 
 #create a cross correlation for SWD pop over time for CM
-ccf(swd_interpolatedCM[["N_swd"]],swd_interpolatedCM[["T2M"]],ylim = c(-0.5, .5), lag.max = 60, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
+ccf(AbundanceTempCM[["N_swd"]],AbundanceTempCM[["T2M"]],ylim = c(-0.5, .5), lag.max = 60, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.pass,
     main = "CM SWD Population & Temperature cross-correlation")
 ```
 
@@ -274,8 +230,8 @@ T2MPlotLBA <- ggplot(AbundanceTempLBA, aes(x=YYYYMMDD, y=T2M)) +
 grid.arrange(SWDPlotLBA, T2MPlotLBA, nrow = 2)
 
 #create a cross correlation for SWD pop over time for LBA
-ccf(swd_interpolatedLBA[["N_swd"]],swd_interpolatedLBA[["T2M"]],ylim = c(-0.5, .5), lag.max = 60, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
+ccf(AbundanceTempLBA[["N_swd"]],AbundanceTempLBA[["T2M"]],ylim = c(-0.5, .5), lag.max = 60, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.pass,
     main = "LBA SWD Population & Temperature cross-correlation")
 ```
 
@@ -293,8 +249,8 @@ T2MPlotAlBe<- ggplot(AbundanceTempAlBe, aes(x=YYYYMMDD, y=T2M)) +
 grid.arrange(SWDPlotAlBe, T2MPlotAlBe, nrow = 2)
 
 #create a cross correlation for SWD pop over time for Albe
-ccf(swd_interpolatedAlBe[["N_swd"]],swd_interpolatedAlBe[["T2M"]],ylim = c(-0.5, .5), lag.max = 60, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
+ccf(AbundanceTempAlBe[["N_swd"]],AbundanceTempAlBe[["T2M"]],ylim = c(-0.5, .5), lag.max = 60, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.pass,
     main = "AlBe Population & Temperature cross-correlation")
 ```
 
@@ -311,8 +267,8 @@ T2MPlotFrSa <- ggplot(AbundanceTempFrSa, aes(x=YYYYMMDD, y=T2M)) +
 # Stack plots vertically using patchwork
 grid.arrange(SWDPlotFrSa, T2MPlotFrSa, nrow = 2)
 #create a cross correlation for SWD pop over time for FrSa
-ccf(swd_interpolatedFrSa[["N_swd"]],swd_interpolatedFrSa[["T2M"]], ylim = c(-0.5, .5), lag.max = 60, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
+ccf(AbundanceTempFrSa[["N_swd"]],AbundanceTempFrSa[["T2M"]], ylim = c(-0.5, .5), lag.max = 60, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.pass,
     main = "FrSa Population & Temperature cross-correlation")
 
 ```
@@ -323,8 +279,9 @@ cor(AbundanceTempABF$T2M, lag(AbundanceTempABF$N_swd, 10), use = "complete.obs")
 cor(AbundanceTempFBF$T2M, lag(AbundanceTempFBF$N_swd, 10), use = "complete.obs")
 cor(AbundanceTempLBA$T2M, lag(AbundanceTempLBA$N_swd, 10), use = "complete.obs")
 cor(AbundanceTempCM$T2M, lag(AbundanceTempCM$N_swd, 10), use = "complete.obs")
-cor(AbundanceTempFrSa$T2M, lag(AbundanceTempFrSa$N_swd, 10), use = "complete.obs")
-cor(AbundanceTempAlBe$T2M, lag(AbundanceTempAlBe$N_swd, 10), use = "complete.obs")
+#taking out lag here to test. i think this is right but im going to leave the old code until i confirm. 
+cor(AbundanceTempFrSa$T2M, AbundanceTempFrSa$N_swd, use = "complete.obs")
+cor(AbundanceTempAlBe$T2M, AbundanceTempAlBe$N_swd, use = "complete.obs")
 ```
 
 #ADD MORE ANALYSIS HERE
