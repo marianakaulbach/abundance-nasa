@@ -361,7 +361,7 @@ plot(PRECTOTCORR,N_swd,
     abline(lm(N_swd ~ PRECTOTCORR))
 )
 VTstatsPRECTOTCORR<- lm(N_swd ~ PRECTOTCORR, data = AbundanceTempVT) 
-summary(stats)
+summary(VTstatsPRECTOTCORR)
 #create a scatter plot of T2M against SWD
 attach(AbundanceTempVT)
 plot(T2M,N_swd,
@@ -375,7 +375,7 @@ plot(T2M,N_swd,
      abline(lm(N_swd ~ T2M))
 )
 VTstatsT2M<- lm(N_swd ~ T2M, data = AbundanceTempVT) 
-summary(stats)
+summary(VTstatsT2M)
 #create a scatter plot of RH2M against SWD
 attach(AbundanceTempVT)
 plot(RH2M,N_swd,
@@ -389,7 +389,7 @@ plot(RH2M,N_swd,
      abline(lm(N_swd ~ RH2M))
 )
 VTstatsRH2M<- lm(N_swd ~ RH2M, data = AbundanceTempVT) 
-summary(stats)
+summary(VTstatsRH2M)
 ```
 
 ```{r}
@@ -406,7 +406,7 @@ plot(PRECTOTCORR,N_swd,
      abline(lm(N_swd ~ PRECTOTCORR))
 )
 KYstatsPRECTOTCORR<- lm(N_swd ~ PRECTOTCORR, data = AbundanceTempKY) 
-summary(stats)
+summary(KYstatsPRECTOTCORR)
 #create a scatter plot of T2M against SWD
 attach(AbundanceTempKY)
 plot(T2M,N_swd,
@@ -420,7 +420,7 @@ plot(T2M,N_swd,
      abline(lm(N_swd ~ T2M))
 )
 KYstatsT2M<- lm(N_swd ~ T2M, data = AbundanceTempKY) 
-summary(stats)
+summary(KYstatsT2M)
 #create a scatter plot of RH2M against SWD
 attach(AbundanceTempKY)
 plot(RH2M,N_swd,
@@ -434,7 +434,7 @@ plot(RH2M,N_swd,
      abline(lm(N_swd ~ RH2M))
 )
 KYstatsRH2M<- lm(N_swd ~ RH2M, data = AbundanceTempKY) 
-summary(stats)
+summary(KYstatsRH2M)
 ```
 
 ```{r}
@@ -451,7 +451,7 @@ plot(PRECTOTCORR,N_swd,
      abline(lm(N_swd ~ PRECTOTCORR))
 )
 VAstatsPRECTOTCORR<-lm(N_swd ~ PRECTOTCORR, data = AbundanceTempVA) 
-summary(stats)
+summary(VAstatsPRECTOTCORR)
 #create a scatter plot of T2M against SWD
 attach(AbundanceTempVA)
 plot(T2M, N_swd,
@@ -464,7 +464,7 @@ plot(T2M, N_swd,
      abline(lm(N_swd ~ T2M))
 )
 VAstatsT2M<-lm(N_swd ~ T2M, data = AbundanceTempVA) 
-summary(stats)
+summary(VAstatsT2M)
 #create a scatter plot of RH2M against SWD
 attach(AbundanceTempVA)
 plot(RH2M,N_swd,
@@ -478,7 +478,7 @@ plot(RH2M,N_swd,
      abline(lm(N_swd ~ RH2M))
 )
 VAstatsRH2M<-lm(N_swd ~ RH2M, data = AbundanceTempVA) 
-summary(stats)
+summary(VAstatsRH2M)
 ```
 
 ```{r}
@@ -495,7 +495,7 @@ plot(PRECTOTCORR, N_swd,
      abline(lm(N_swd ~ PRECTOTCORR))
 )
 TotalstatsPRECTOTCORR<-lm(N_swd ~ PRECTOTCORR, data = AbundanceTempTotal) 
-summary(stats)
+summary(TotalstatsPRECTOTCORR)
 #create a scatter plot of T2M against SWD
 attach(AbundanceTempTotal)
 plot(T2M, N_swd,
@@ -509,7 +509,7 @@ plot(T2M, N_swd,
      abline(lm(N_swd ~ T2M))
 )
 TotalstatsT2M<-lm(N_swd ~ T2M, data = AbundanceTempTotal) 
-summary(stats)
+summary(TotalstatsT2M)
 #create a scatter plot of RH2M against SWD
 attach(AbundanceTempTotal)
 plot(RH2M, N_swd,
@@ -523,7 +523,7 @@ plot(RH2M, N_swd,
      abline(lm(N_swd ~ RH2M))
 )
 TotalstatsRH2M<-lm(N_swd ~ RH2M, data = AbundanceTempTotal) 
-summary(stats)
+summary(TotalstatsRH2M)
 ```
 
 ```{r}
