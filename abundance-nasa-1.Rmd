@@ -1,5 +1,5 @@
 ---
-title: "abundance-nasa1"
+title: "abundance-nasa-1"
 output:
   pdf_document: default
   html_document: default
@@ -353,31 +353,43 @@ attach(AbundanceTempVT)
 plot(PRECTOTCORR,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Average total precipitation at surface of Earth",
+     xlim= c(0,30),
      main = " VT Precipitation vs SWD Population",
      pch = 21,
      bg = "darkgreen",
      col = "darkgreen",
+    abline(lm(N_swd ~ PRECTOTCORR))
 )
+VTstatsPRECTOTCORR<- lm(N_swd ~ PRECTOTCORR, data = AbundanceTempVT) 
+summary(stats)
 #create a scatter plot of T2M against SWD
 attach(AbundanceTempVT)
 plot(T2M,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Tempature (degrees C)",
+     xlim= c(0,30),
      main = "VT Temperature vs SWD Population",
      pch = 21,
      bg = "darkgreen",
      col = "darkgreen",
+     abline(lm(N_swd ~ T2M))
 )
+VTstatsT2M<- lm(N_swd ~ T2M, data = AbundanceTempVT) 
+summary(stats)
 #create a scatter plot of RH2M against SWD
 attach(AbundanceTempVT)
 plot(RH2M,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Relative Humidity",
+     xlim= c(55,95),
      main = "VT Relative Humidity vs SWD Population",
      pch = 21,
      bg = "darkgreen",
      col = "darkgreen",
+     abline(lm(N_swd ~ RH2M))
 )
+VTstatsRH2M<- lm(N_swd ~ RH2M, data = AbundanceTempVT) 
+summary(stats)
 ```
 
 ```{r}
@@ -386,31 +398,43 @@ attach(AbundanceTempKY)
 plot(PRECTOTCORR,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Average total precipitation at surface of Earth",
+     xlim= c(0,30),
      main = "KY Precipitation vs SWD Population",
      pch = 21,
      bg = "darkred",
      col = "darkred",
+     abline(lm(N_swd ~ PRECTOTCORR))
 )
+KYstatsPRECTOTCORR<- lm(N_swd ~ PRECTOTCORR, data = AbundanceTempKY) 
+summary(stats)
 #create a scatter plot of T2M against SWD
 attach(AbundanceTempKY)
 plot(T2M,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Tempature (degrees C)",
+     xlim= c(0,30),
      main = "KY Temperature vs SWD Population",
      pch = 21,
      bg = "darkred",
      col = "darkred",
+     abline(lm(N_swd ~ T2M))
 )
+KYstatsT2M<- lm(N_swd ~ T2M, data = AbundanceTempKY) 
+summary(stats)
 #create a scatter plot of RH2M against SWD
 attach(AbundanceTempKY)
 plot(RH2M,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Relative Humidity",
+     xlim= c(55,100),
      main = "KY Relative Humidity vs SWD Population",
      pch = 21,
      bg = "darkred",
      col = "darkred",
+     abline(lm(N_swd ~ RH2M))
 )
+KYstatsRH2M<- lm(N_swd ~ RH2M, data = AbundanceTempKY) 
+summary(stats)
 ```
 
 ```{r}
@@ -420,10 +444,14 @@ plot(PRECTOTCORR,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Average total precipitation at surface of Earth",
      main = "VA Precipitation vs SWD Population",
+    xlim= c(0,30),
      pch = 21,
      bg = "orange",
      col = "orange",
+     abline(lm(N_swd ~ PRECTOTCORR))
 )
+VAstatsPRECTOTCORR<-lm(N_swd ~ PRECTOTCORR, data = AbundanceTempVA) 
+summary(stats)
 #create a scatter plot of T2M against SWD
 attach(AbundanceTempVA)
 plot(T2M, N_swd,
@@ -433,17 +461,24 @@ plot(T2M, N_swd,
      pch = 21,
      bg = "orange",
      col = "orange",
+     abline(lm(N_swd ~ T2M))
 )
+VAstatsT2M<-lm(N_swd ~ T2M, data = AbundanceTempVA) 
+summary(stats)
 #create a scatter plot of RH2M against SWD
 attach(AbundanceTempVA)
 plot(RH2M,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Relative Humidity",
+     xlim= c(55,95),
      main = "VA Relative Humidity vs SWD Population",
      pch = 21,
      bg = "orange",
      col = "orange",
+     abline(lm(N_swd ~ RH2M))
 )
+VAstatsRH2M<-lm(N_swd ~ RH2M, data = AbundanceTempVA) 
+summary(stats)
 ```
 
 ```{r}
@@ -452,31 +487,43 @@ attach(AbundanceTempTotal)
 plot(PRECTOTCORR, N_swd,
      ylab = "Number of SWD Males",
      xlab = "Average total precipitation at surface of Earth",
+     xlim= c(0,30),
      main = "Precipitation vs SWD Population",
      pch = 21,
      bg = "salmon",
      col = "salmon",
+     abline(lm(N_swd ~ PRECTOTCORR))
 )
+TotalstatsPRECTOTCORR<-lm(N_swd ~ PRECTOTCORR, data = AbundanceTempTotal) 
+summary(stats)
 #create a scatter plot of T2M against SWD
 attach(AbundanceTempTotal)
 plot(T2M, N_swd,
      ylab = "Number of SWD Males",
      xlab = "Tempature (degrees C)",
+    xlim= c(0,30),
      main = "Temperature vs SWD Population",
      pch = 21,
      bg = "salmon",
      col = "salmon",
+     abline(lm(N_swd ~ T2M))
 )
+TotalstatsT2M<-lm(N_swd ~ T2M, data = AbundanceTempTotal) 
+summary(stats)
 #create a scatter plot of RH2M against SWD
 attach(AbundanceTempTotal)
 plot(RH2M, N_swd,
      ylab = "Number of SWD Males",
      xlab = "Relative Humidity",
+     xlim= c(55,95),
      main = "Relative Humidity vs SWD Population",
      pch = 21,
      bg = "salmon",
      col = "salmon",
+     abline(lm(N_swd ~ RH2M))
 )
+TotalstatsRH2M<-lm(N_swd ~ RH2M, data = AbundanceTempTotal) 
+summary(stats)
 ```
 
 ```{r}
@@ -757,7 +804,7 @@ ccf(swd_interpolatedAlBe[["N_swd"]],swd_interpolatedAlBe[["T2M"]],ylim = c(-0.5,
     main = "AlBe Population & Temperature cross-correlation")
 
 #create a cross correlation for SWD pop over time for LBA
-ccf(swd_interpolatedLBA[["N_swd"]],swd_interpolatedLBA[["T2M"]],ylim = c(-0.5, .5), lag.max = 160, type = c("correlation", "covariance"),
+ccf(swd_interpolatedLBA[["N_swd"]],swd_interpolatedLBA[["T2M"]],ylim = c(-0.5, .5), lag.max = 30, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
     main = "LBA SWD Population & Temperature cross-correlation")
 
