@@ -84,7 +84,8 @@ FrSa_weather <- get_power(
 )
 ```
 
-#Clean up datasets so that they are streamlined and funcitonal for figure generation 
+
+#Clean up datasets so that they are streamlined and functionlal for figure generation 
 ```{r}
 #CombineLatLon data into one variable "Coordinates", because local SWD collection data is given "Coordinates" while NASA downloaded data is given "LAT" and "LON"
 FBF_weather$Coordinates<- paste(FBF_weather$LAT, FBF_weather$LON,sep=",")
@@ -129,6 +130,20 @@ LBA_weather$YYYYMMDD <- as.Date(LBA_weather$YYYYMMDD, format = "%Y-%m-%d")
 FrSa_weather$YYYYMMDD <- as.Date(FrSa_weather$YYYYMMDD, format = "%Y-%m-%d")
 AlBe_weather$YYYYMMDD <- as.Date(AlBe_weather$YYYYMMDD, format = "%Y-%m-%d")
 
+```
+#
+Combine weather data with abundance data in one dataframe.
+```{r}
+AbundanceTempFBF<-right_join(SWD_data, FBF_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempABF<-right_join(SWD_data, ABF_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempCM<-right_join(SWD_data, CM_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempLBA<-right_join(SWD_data, LBA_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempFrSa<-right_join(SWD_data, FrSa_weather, by = c("Coordinates","YYYYMMDD"))
+AbundanceTempAlBe<-right_join(SWD_data, AlBe_weather, by = c("Coordinates","YYYYMMDD"))
+```
+
+#Clean up datasets so that they are streamlined and functionlal for figure generation 
+```{r}
 #Ensure that variables are factor columns, rather than numeric.
 AbundanceTempFBF$T2M <- as.numeric(as.character(AbundanceTempFBF$T2M))
 AbundanceTempFBF$N_swd<-as.numeric(as.character(AbundanceTempFBF$N_swd))
@@ -275,11 +290,10 @@ ccf(AbundanceTempFrSa[["N_swd"]],AbundanceTempFrSa[["T2M"]], ylim = c(-0.5, .5),
 
 #Calculating the correlation between temperature today and SWD population in 10 time periods.
 ```{r}
-cor(AbundanceTempABF$T2M, lag(AbundanceTempABF$N_swd, 10), use = "complete.obs")
-cor(AbundanceTempFBF$T2M, lag(AbundanceTempFBF$N_swd, 10), use = "complete.obs")
-cor(AbundanceTempLBA$T2M, lag(AbundanceTempLBA$N_swd, 10), use = "complete.obs")
-cor(AbundanceTempCM$T2M, lag(AbundanceTempCM$N_swd, 10), use = "complete.obs")
-#taking out lag here to test. i think this is right but im going to leave the old code until i confirm. 
+cor(AbundanceTempFBF$T2M, AbundanceTempFBF$N_swd, use = "complete.obs")
+cor(AbundanceTempABF$T2M,AbundanceTempABF$N_swd, use = "complete.obs")
+cor(AbundanceTempCM$T2M, AbundanceTempCM$N_swd, use = "complete.obs")
+cor(AbundanceTempLBA$T2M, AbundanceTempLBA$N_swd, use = "complete.obs")
 cor(AbundanceTempFrSa$T2M, AbundanceTempFrSa$N_swd, use = "complete.obs")
 cor(AbundanceTempAlBe$T2M, AbundanceTempAlBe$N_swd, use = "complete.obs")
 ```
