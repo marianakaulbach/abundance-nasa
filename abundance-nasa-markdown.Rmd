@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## R Markdown
 
-#Open packages necessary for this analysis.
+Open packages necessary for this analysis.
 ```{r}
 library(readr)
 library(nasapower)
@@ -24,12 +24,12 @@ library(gridExtra)
 library(forecast)
 ```
  
-#Open the sheet with SWD count data from local folder. 
+Open the sheet with SWD count data from local folder. 
 ```{r}
 SWD_data <- read_csv("C:/Users/maria/OneDrive/Desktop/abundance-nasa/NEW CLEAN EXCEL Nunez SWD Sorting Sheet June 2024 for abundance-nasa(Data).csv")
 ```
 
-#Download NASA data on Temperature (T2M) for locations of interest by using farm coordinates.
+Download NASA data on temperature (T2M) for locations of interest by using farm coordinates.
 ```{r}
 #VT Farms
 ABF_weather <- get_power(
@@ -84,8 +84,7 @@ FrSa_weather <- get_power(
 )
 ```
 
-
-#Clean up datasets so that they are streamlined and functionlal for figure generation 
+Clean up datasets so that they are streamlined and functional for figure generation
 ```{r}
 #CombineLatLon data into one variable "Coordinates", because local SWD collection data is given "Coordinates" while NASA downloaded data is given "LAT" and "LON"
 FBF_weather$Coordinates<- paste(FBF_weather$LAT, FBF_weather$LON,sep=",")
@@ -131,7 +130,7 @@ FrSa_weather$YYYYMMDD <- as.Date(FrSa_weather$YYYYMMDD, format = "%Y-%m-%d")
 AlBe_weather$YYYYMMDD <- as.Date(AlBe_weather$YYYYMMDD, format = "%Y-%m-%d")
 
 ```
-#
+
 Combine weather data with abundance data in one dataframe.
 ```{r}
 AbundanceTempFBF<-right_join(SWD_data, FBF_weather, by = c("Coordinates","YYYYMMDD"))
@@ -142,7 +141,7 @@ AbundanceTempFrSa<-right_join(SWD_data, FrSa_weather, by = c("Coordinates","YYYY
 AbundanceTempAlBe<-right_join(SWD_data, AlBe_weather, by = c("Coordinates","YYYYMMDD"))
 ```
 
-#Clean up datasets so that they are streamlined and functionlal for figure generation 
+Clean up datasets so that they are streamlined and functional for figure generation 
 ```{r}
 #Ensure that variables are factor columns, rather than numeric.
 AbundanceTempFBF$T2M <- as.numeric(as.character(AbundanceTempFBF$T2M))
@@ -159,7 +158,7 @@ AbundanceTempAlBe$T2M <- as.numeric(as.character(AbundanceTempAlBe$T2M))
 AbundanceTempAlBe$N_swd<-as.numeric(as.character(AbundanceTempAlBe$N_swd))
 ```
 
-#Create a dataframe that combines SWD data with weather data for each farm. A right_join is used to maintain all weather data even for dates that do not have N_swd counts, so that T2M remains continous for graphing.
+Create a dataframe that combines SWD data with weather data for each farm. A right_join is used to maintain all weather data even for dates that do not have N_swd counts, so that T2M remains continuous for graphing.
 ```{r}
 AbundanceTempFBF<-right_join(SWD_data, FBF_weather, by = c("Coordinates","YYYYMMDD"))
 AbundanceTempABF<-right_join(SWD_data, ABF_weather, by = c("Coordinates","YYYYMMDD"))
@@ -169,8 +168,11 @@ AbundanceTempFrSa<-right_join(SWD_data, FrSa_weather, by = c("Coordinates","YYYY
 AbundanceTempAlBe<-right_join(SWD_data, AlBe_weather, by = c("Coordinates","YYYYMMDD"))
 ```
 
+Use charts to visualize the relationship between SWD abundance and NASA temperature data. Stacked line and dot plots visualize temperature (T2M) and SWD population (N_swd) over time. Cross-correlation plots show the strength of correlation between T2M and N_swd at different time points, with temperature constant and N_swd lagging.
 
-#Using charts to visualize the relationship between SWD abundance and NASA temperature data. Stacked line and dot plots visualize temperature (T2M) and SWD population (N_swd) over time. Cross-correlation plots show the strength of correlation between T2M and N_swd at different time points, with tempearture constant (i think) ADD ANALYSIS HERE
+For example, if the peak of the graph is a correlation around 10, that tells us that us that the T2M today predicts best what N_swd will be in 10 days. Because the generation time of SWD is around 8-25 days, we expect the highest correlation to fall within that range of lag--N_swd will change in response to T2M, just 8-25 days later. A positive lag indicates that N_swd changes in response to T2M, while a negative lag indicates that N_swd changes before T2M.
+
+Finally, we run an equation equation that calculates the correlation between N_swd and T2M at day zero, showcasing the strength of the relationship with no lag.
 ```{r}
 #Create a plot with both temp and abundance data for specific farms
 #FULL BELLY FARM
@@ -188,10 +190,14 @@ grid.arrange(SWDPlotFBF, T2MPlotFBF, nrow = 2)
 # create a cross correlation for SWD pop over time for Full Belly data
 ccf(AbundanceTempFBF[["N_swd"]],AbundanceTempFBF[["T2M"]], ylim = c(-0.5, .5), lag.max = 60, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.pass,
-    main = "FBF SWD Population & Temperature cross-correlation")
+    main = "FBF SWD Population & Temperature cross-correlation",
+    ylab= "Pearson's Correlation")
+
+#Calculate the correlation between N_swd and T2M with no lag
+cor(AbundanceTempFBF$T2M, AbundanceTempFBF$N_swd, use = "complete.obs")
 ```
 
-#Warnings show up after the creation of graphs because for the N_swd dotplot R is drawing from a dataframe that has NA values for the variable of interest (N_swd) due to merging existing SWD counts with weather data for a continous time period. There are many time points that have T2M but no N_swd value, so this warning lets you know that those are being omitted. 
+Warnings show up after the creation of graphs because for the N_swd dotplot R is drawing from a dataframe that has NA values for the variable of interest (N_swd) due to merging existing SWD counts with weather data for a continuous time period. There are many time points that have T2M but no N_swd value, so this warning lets you know that those are being omitted. 
 
 ```{r}
 #ABF
@@ -209,7 +215,12 @@ grid.arrange(SWDPlotABF, T2MPlotABF, nrow = 2)
 #create a cross correlation for SWD pop over time for ABF data
 ccf(AbundanceTempABF[["N_swd"]],AbundanceTempABF[["T2M"]], ylim = c(-0.5, .5),lag.max = 60, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.pass,
-    main = "ABF SWD Population & Temperature cross-correlation")
+    main = "ABF SWD Population & Temperature cross-correlation",
+    ylab= "Pearson's Correlation")
+
+#Calculate the correlation between N_swd and T2M with no lag
+cor(AbundanceTempABF$T2M,AbundanceTempABF$N_swd, use = "complete.obs")
+
 ```
 
 ```{r}
@@ -228,7 +239,11 @@ grid.arrange(SWDPlotCM, T2MPlotCM, nrow = 2)
 #create a cross correlation for SWD pop over time for CM
 ccf(AbundanceTempCM[["N_swd"]],AbundanceTempCM[["T2M"]],ylim = c(-0.5, .5), lag.max = 60, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.pass,
-    main = "CM SWD Population & Temperature cross-correlation")
+    main = "CM SWD Population & Temperature cross-correlation",
+    ylab= "Pearson's Correlation")
+
+#Calculate the correlation between N_swd and T2M with no lag
+cor(AbundanceTempCM$T2M, AbundanceTempCM$N_swd, use = "complete.obs")
 ```
 
 ```{r}
@@ -247,7 +262,11 @@ grid.arrange(SWDPlotLBA, T2MPlotLBA, nrow = 2)
 #create a cross correlation for SWD pop over time for LBA
 ccf(AbundanceTempLBA[["N_swd"]],AbundanceTempLBA[["T2M"]],ylim = c(-0.5, .5), lag.max = 60, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.pass,
-    main = "LBA SWD Population & Temperature cross-correlation")
+    main = "LBA SWD Population & Temperature cross-correlation",
+     ylab= "Pearson's Correlation")
+
+#Calculate the correlation between N_swd and T2M with no lag
+cor(AbundanceTempLBA$T2M, AbundanceTempLBA$N_swd, use = "complete.obs")
 ```
 
 ```{r}
@@ -266,7 +285,11 @@ grid.arrange(SWDPlotAlBe, T2MPlotAlBe, nrow = 2)
 #create a cross correlation for SWD pop over time for Albe
 ccf(AbundanceTempAlBe[["N_swd"]],AbundanceTempAlBe[["T2M"]],ylim = c(-0.5, .5), lag.max = 60, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.pass,
-    main = "AlBe Population & Temperature cross-correlation")
+    main = "AlBe Population & Temperature cross-correlation",
+    ylab= "Pearson's Correlation")
+
+#Calculate the correlation between N_swd and T2M with no lag
+cor(AbundanceTempAlBe$T2M, AbundanceTempAlBe$N_swd, use = "complete.obs")
 ```
 
 ```{r}
@@ -282,20 +305,11 @@ T2MPlotFrSa <- ggplot(AbundanceTempFrSa, aes(x=YYYYMMDD, y=T2M)) +
 # Stack plots vertically using patchwork
 grid.arrange(SWDPlotFrSa, T2MPlotFrSa, nrow = 2)
 #create a cross correlation for SWD pop over time for FrSa
-ccf(AbundanceTempFrSa[["N_swd"]],AbundanceTempFrSa[["T2M"]], ylim = c(-0.5, .5), lag.max = 60, type = c("correlation", "covariance"),
+a<- ccf(AbundanceTempFrSa$N_swd,AbundanceTempFrSa$T2M, ylim = c(-0.5, .5), lag.max = 60, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.pass,
-    main = "FrSa Population & Temperature cross-correlation")
+    main = "FrSa Population & Temperature cross-correlation", 
+    ylab= "Pearson's Correlation")
 
-```
-
-#Calculating the correlation between temperature today and SWD population in 10 time periods.
-```{r}
-cor(AbundanceTempFBF$T2M, AbundanceTempFBF$N_swd, use = "complete.obs")
-cor(AbundanceTempABF$T2M,AbundanceTempABF$N_swd, use = "complete.obs")
-cor(AbundanceTempCM$T2M, AbundanceTempCM$N_swd, use = "complete.obs")
-cor(AbundanceTempLBA$T2M, AbundanceTempLBA$N_swd, use = "complete.obs")
+#Calculate the correlation between N_swd and T2M with no lag
 cor(AbundanceTempFrSa$T2M, AbundanceTempFrSa$N_swd, use = "complete.obs")
-cor(AbundanceTempAlBe$T2M, AbundanceTempAlBe$N_swd, use = "complete.obs")
 ```
-
-#ADD MORE ANALYSIS HERE
