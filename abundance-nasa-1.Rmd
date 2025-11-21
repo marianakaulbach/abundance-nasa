@@ -78,6 +78,17 @@ SouthFarm_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+BF_weather <- get_power(
+  community = "ag",
+  lonlat = c(-84.3019525,37.590313),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2020-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
+)
+```
+
+```{r}
 CartersMountain_weather <- get_power(
   community = "ag",
   lonlat = c(-78.5447915,37.9740223),
@@ -126,9 +137,6 @@ CrossKeysFarm_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
-```
-
-```{r}
 AlBe_weather <- get_power(
   community = "ag",
   lonlat = c(-79.081904,38.146223),
@@ -271,9 +279,9 @@ NaCa_weather <- get_power(
 #Combine dataframes from all farms in VT
 AllFarmsVT_weather <-rbind(AdamsBerry_weather, CoveredBridge_weather, FullBelly_weather, LastResort_weather, SweetRoots_weather)
 #Combine dataframes from all farms in KY
-AllFarmsKY_weather <-rbind(SouthFarm_weather, CrossKeysFarm_weather, CartersMountain_weather, GreatCountryFarms_weather, LeveringOrchard_weather, CharlottesvilleAlbermarle_weather,ChilesPeachOrchard_weather)
+AllFarmsKY_weather <-rbind(SouthFarm_weather, BF_weather)
 #Combine dataframes from all farms in VA
-AllFarmsVA_weather <-rbind(AlBe_weather,KiBa_weather,JoNu_weather,FeAb_weather,RaPo_weather,WiHa_weather,NoSh_weather,LiBl_weather,GwMe_weather,FrSa_weather,NaMo_weather,AlBr_weather,SiKi_weather,LiHa_weather,DoSc_weather,NaCa_weather)
+AllFarmsVA_weather <-rbind(CrossKeysFarm_weather, CartersMountain_weather, GreatCountryFarms_weather, LeveringOrchard_weather, CharlottesvilleAlbermarle_weather,ChilesPeachOrchard_weather,AlBe_weather,KiBa_weather,JoNu_weather,FeAb_weather,RaPo_weather,WiHa_weather,NoSh_weather,LiBl_weather,GwMe_weather,FrSa_weather,NaMo_weather,AlBr_weather,SiKi_weather,LiHa_weather,DoSc_weather,NaCa_weather)
 #Combine dataframes for all farms 
 AllFarmsTotal_weather<-rbind.data.frame(AllFarmsKY_weather, AllFarmsVT_weather, AllFarmsVA_weather)
 ```
@@ -328,10 +336,10 @@ SWD_dataVT<-SWD_data %>%
     dplyr::filter(Coordinates %in% c("44.5147926,-72.926916", "44.265172,-73.1334011", "44.2661258,-73.1014259", "44.2893745,-73.2420434", "44.29804,-73.1885194"))
 #Create a subset of the SWD data for just VA
 SWD_dataKY<-SWD_data %>% 
-    dplyr::filter(Coordinates %in% c("37.9736587,-84.5348738","37.9740223,-78.5447915","38.0672129,-78.7471497","38.0624585,-78.4638626","36.6500994,-80.6151617","39.1003535,-77.8162521","38.3597327,-78.842056"))
+    dplyr::filter(Coordinates %in% c("37.9736587,-84.5348738","37.590313,-84.3019525"))
 #Create a subset of the SWD data for just KY
 SWD_dataVA<-SWD_data %>% 
-    dplyr::filter(Coordinates %in% c("38.146223,-79.081904","37.8929361,-79.0178402","38.0783378,-78.488982","37.97985,-78.48961","37.9778276,-78.3417122","38.021608,-78.631458","38.3563214,-78.9565994","38.0980496,-78.4915567","39.0444765,-77.49892","38.3967029,-78.8319075","38.0653651,-78.5021388","38.036324,-78.465637","38.291869,-78.42491","37.5825066,-77.45722","38.06808,-78.473266","36.608054,-79.5244928","38.0783378,-78.488982"))
+    dplyr::filter(Coordinates %in% c("37.9740223,-78.5447915","38.0672129,-78.7471497","38.0624585,-78.4638626","36.6500994,-80.6151617","39.1003535,-77.8162521","38.3597327,-78.842056","38.146223,-79.081904","37.8929361,-79.0178402","38.0783378,-78.488982","37.97985,-78.48961","37.9778276,-78.3417122","38.021608,-78.631458","38.3563214,-78.9565994","38.0980496,-78.4915567","39.0444765,-77.49892","38.3967029,-78.8319075","38.0653651,-78.5021388","38.036324,-78.465637","38.291869,-78.42491","37.5825066,-77.45722","38.06808,-78.473266","36.608054,-79.5244928","38.0783378,-78.488982"))
 
 #Create a subset of the SWD data for just the 6 farms of interest 
 SWD_dataFBF<-AbundanceTempVT %>% 
@@ -342,6 +350,8 @@ SWD_dataCM<-AbundanceTempKY %>%
     dplyr::filter(Coordinates %in% c("37.9740223,-78.5447915"))
 SWD_dataSF<-AbundanceTempKY %>% 
     dplyr::filter(Coordinates %in% c("37.9736587,-84.5348738"))
+SWD_dataBF<-AbundanceTempKY %>% 
+    dplyr::filter(Coordinates %in% c("37.590313,-84.3019525"))
 SWD_dataAlBe<-AbundanceTempVA %>% 
     dplyr::filter(Coordinates %in% c("38.146223,-79.081904"))
 SWD_dataFrSa<-AbundanceTempVA %>% 
@@ -439,7 +449,7 @@ summary(KYstatsRH2M)
 ```
 
 ```{r}
-#create a scatter plot of PRECTOTCORR against SWD for KY
+#create a scatter plot of PRECTOTCORR against SWD for VA
 attach(AbundanceTempVA)
 plot(PRECTOTCORR,N_swd,
      ylab = "Number of SWD Males",
@@ -597,6 +607,18 @@ T2MPlotSF <- ggplot(SWD_dataSF, aes(x=YYYYMMDD, y=T2M)) +
 # Stack plots vertically using patchwork
 grid.arrange(SWDPlotSF, T2MPlotSF, nrow = 2)
 
+#BF
+SWDPlotBF<-ggplot(data = SWD_dataBF, aes(x = YYYYMMDD, y = N_swd)) +
+  geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
+  labs(title = "Berea Farm SWD Count Over Time", x = "Time", y = "Population Count") +
+  theme_minimal()
+T2MPlotBF <- ggplot(SWD_dataBF, aes(x=YYYYMMDD, y=T2M)) +
+  geom_line(color = "lightblue") +
+  labs(title = "Berea Farm Temperature Over Time", x = "Time", y = "Temperature (C)") +
+  theme_minimal()
+# Stack plots vertically using patchwork
+grid.arrange(SWDPlotBF, T2MPlotBF, nrow = 2)
+
 #AlBe
 SWDPlotAlBe<-ggplot(data = SWD_dataAlBe, aes(x = YYYYMMDD, y = N_swd)) +
   geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
@@ -692,6 +714,14 @@ swd_interpolated2SF <-data.frame(N_swd_interpolatedSF = N_swd_interpolatedSF, YY
 colnames(swd_interpolated2SF)[colnames(swd_interpolated2SF) == "N_swd_interpolatedSF"] <- "N_swd"
 swd_interpolated2SF<-na.omit(swd_interpolated2SF)
 
+#create interpolated data for BF flies, filling in gaps
+N_swd_interpolatedBF <- na.approx(SWD_dataBF$N_swd, na.rm = TRUE, rule=2,maxgap=60)
+date <- SWD_dataBF$YYYYMMDD
+
+swd_interpolated2BF <-data.frame(N_swd_interpolatedBF = N_swd_interpolatedBF, YYYYMMDD = date)
+colnames(swd_interpolated2BF)[colnames(swd_interpolated2BF) == "N_swd_interpolatedBF"] <- "N_swd"
+swd_interpolated2BF<-na.omit(swd_interpolated2BF)
+
 #create interpolated data for AlBe flies, filling in gaps
 N_swd_interpolatedAlBe <- na.approx(SWD_dataAlBe$N_swd, na.rm = TRUE, rule=2,maxgap=60)
 date <- SWD_dataAlBe$YYYYMMDD
@@ -762,12 +792,18 @@ swd_interpolatedCM<-approx(y = SWD_dataCM$N_swd, x = SWD_dataCM$T2M, method = "l
 swd_interpolatedCM<-data.frame(swd_interpolatedCM)
 colnames(swd_interpolatedCM)[colnames(swd_interpolatedCM) == "x"] <- "T2M" 
 colnames(swd_interpolatedCM)[colnames(swd_interpolatedCM) == "y"] <- "N_swd"
-# create 50 points of interpolated data for LBA flies
+# create 50 points of interpolated data for SF flies
 swd_interpolatedSF<-approx(y = SWD_dataSF$N_swd, x = SWD_dataSF$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
 swd_interpolatedSF<-data.frame(swd_interpolatedSF)
 colnames(swd_interpolatedSF)[colnames(swd_interpolatedSF) == "x"] <- "T2M" 
 colnames(swd_interpolatedSF)[colnames(swd_interpolatedSF) == "y"] <- "N_swd"
+# create 50 points of interpolated data for BF flies
+swd_interpolatedBF<-approx(y = SWD_dataBF$N_swd, x = SWD_dataBF$T2M, method = "linear", n = 50,
+          rule = 1, f = 0, ties = mean, na.rm = TRUE)
+swd_interpolatedBF<-data.frame(swd_interpolatedBF)
+colnames(swd_interpolatedBF)[colnames(swd_interpolatedBF) == "x"] <- "T2M" 
+colnames(swd_interpolatedBF)[colnames(swd_interpolatedBF) == "y"] <- "N_swd"
 # create 50 points of interpolated data for AlBe flies
 swd_interpolatedAlBe<-approx(y = SWD_dataAlBe$N_swd, x = SWD_dataAlBe$T2M, method = "linear", n = 50,
           rule = 1, f = 0, ties = mean, na.rm = TRUE)
@@ -808,6 +844,11 @@ ccf(swd_interpolatedAlBe[["N_swd"]],swd_interpolatedAlBe[["T2M"]],ylim = c(-0.5,
 ccf(swd_interpolatedSF[["N_swd"]],swd_interpolatedSF[["T2M"]],ylim = c(-0.5, .5), lag.max = 30, type = c("correlation", "covariance"),
     plot = TRUE, na.action = na.fail,
     main = "SF SWD Population & Temperature cross-correlation")
+
+#create a cross correlation for SWD pop over time for SF
+ccf(swd_interpolatedBF[["N_swd"]],swd_interpolatedBF[["T2M"]],ylim = c(-0.5, .5), lag.max = 30, type = c("correlation", "covariance"),
+    plot = TRUE, na.action = na.fail,
+    main = "BF SWD Population & Temperature cross-correlation")
 
 #create a cross correlation for SWD pop over time for CM
 ccf(swd_interpolatedCM[["N_swd"]],swd_interpolatedCM[["T2M"]],ylim = c(-0.5, .5), lag.max = 30, type = c("correlation", "covariance"),
