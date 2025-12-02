@@ -346,7 +346,7 @@ SWD_dataFBF<-AbundanceTempVT %>%
     dplyr::filter(Coordinates %in% c("44.265172,-73.1334011"))
 SWD_dataABF<-AbundanceTempVT %>% 
     dplyr::filter(Coordinates %in% c("44.29804,-73.1885194"))
-SWD_dataCM<-AbundanceTempKY %>% 
+SWD_dataCM<-AbundanceTempVA %>% 
     dplyr::filter(Coordinates %in% c("37.9740223,-78.5447915"))
 SWD_dataSF<-AbundanceTempKY %>% 
     dplyr::filter(Coordinates %in% c("37.9736587,-84.5348738"))
