@@ -7,30 +7,44 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## *Below are the steps to perform an analysis on correlation between Spotted Wing Drosophila (SWD) collection data and NASA weather data, particularly considering effect time and lag.*
+
+**(1)** Open packages necessary for this analysis.
 
 ```{r}
 library(readr)
+library(nasapower)
+library(tidyverse)
+library(cowplot)
+```
+
+**(2)** Open the sheet with SWD count data from local folder.
+
+```{r}
 SWD_data <- read_csv("C:/Users/maria/OneDrive/Desktop/abundance-nasa/NEW CLEAN EXCEL Nunez SWD Sorting Sheet June 2024 for abundance-nasa(Data).csv")
 ```
 
-```{r}
-library(nasapower)
-library(tidyverse)
-library(magrittr)
-library(ggplot2)
-```
+*Data sources used to compile into SWD_data for this analysis:*
+
+-   *KY data:* <https://doi.org/10.13023/ent.12>
+
+-   *VT and VA data:* <https://docs.google.com/spreadsheets/d/1VGw4-pGKujTjK-Cw0LBhcxz-A7PahalhZNSw6sqhj7I/edit?usp=sharing>
+
+**(3)** Download NASA data on relative humidity (H2M), temperature (T2M), and precipitation (PRECTOTCORR) for locations of interest by using farm coordinates.
 
 ```{r}
-SweetRoots_weather <- get_power(# choose name; get_power is function from nasapower package
-  # i think
+#Vermont Locations:
+
+#SWEET ROOTS FARM
+SweetRoots_weather <- get_power(
   community = "ag",
-  lonlat = c(-73.2420434,44.2893745),# location of data
+  lonlat = c(-73.2420434,44.2893745),
   pars = c("RH2M", "T2M", "PRECTOTCORR"),
-  dates = c("2022-01-01", # dates of data
+  dates = c("2022-01-01",
             paste(2025, "-08-20", sep = "")),
-  temporal_api = "daily"# frequency of measurements
+  temporal_api = "daily"
 )
+#ADAM'S BERRY FARM
 AdamsBerry_weather <- get_power(
   community = "ag",
   lonlat = c(-73.1885194,44.29804),
@@ -39,6 +53,7 @@ AdamsBerry_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#FULL BELLY FARM
 FullBelly_weather <- get_power(
   community = "ag",
   lonlat = c(-73.1334011,44.265172),
@@ -47,6 +62,7 @@ FullBelly_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#LAST RESORT FARM
 LastResort_weather <- get_power(
   community = "ag",
   lonlat = c(-73.1014259,44.2661258),
@@ -55,6 +71,7 @@ LastResort_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#COVERED BRIDGE FARM
 CoveredBridge_weather <- get_power(
   community = "ag",
   lonlat = c(-72.926916,44.5147926),
@@ -63,9 +80,10 @@ CoveredBridge_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
-```
 
-```{r}
+#Kentucky Locations
+
+#SOUTH FARM
 SouthFarm_weather <- get_power(
   community = "ag",
   lonlat = c(-84.5348738,37.9736587),
@@ -74,6 +92,19 @@ SouthFarm_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#BEREA FARM
+BF_weather <- get_power(
+  community = "ag",
+  lonlat = c(-84.3019525,37.590313),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = c("2020-01-01", 
+            paste(2025, "-08-20", sep = "")),
+  temporal_api = "daily"
+)
+
+#Virginia Locations
+
+#CARTER'S MOUNTAIN
 CartersMountain_weather <- get_power(
   community = "ag",
   lonlat = c(-78.5447915,37.9740223),
@@ -82,6 +113,7 @@ CartersMountain_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#CHILES PEACH ORCHARD
 ChilesPeachOrchard_weather <- get_power(
   community = "ag",
   lonlat = c(-78.7471497,38.0672129),
@@ -90,6 +122,7 @@ ChilesPeachOrchard_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#LEVERING ORCHARD
 LeveringOrchard_weather <- get_power(
   community = "ag",
   lonlat = c(-80.6151617,36.6500994),
@@ -98,6 +131,7 @@ LeveringOrchard_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#CHARLOTTESVILLE ALBERMARLE ELEMENTARY SCHOOL
 CharlottesvilleAlbermarle_weather <- get_power(
   community = "ag",
   lonlat = c(-78.4638626,38.0624585),
@@ -106,6 +140,7 @@ CharlottesvilleAlbermarle_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#GREAT COUNTRY FARM
 GreatCountryFarms_weather <- get_power(
   community = "ag",
   lonlat = c(-77.8162521,39.1003535),
@@ -114,6 +149,7 @@ GreatCountryFarms_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#CROSS KEYS FARM
 CrossKeysFarm_weather <- get_power(
   community = "ag",
   lonlat = c(-78.842056,38.3597327),
@@ -122,9 +158,7 @@ CrossKeysFarm_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
-```
-
-```{r}
+#AlBe - BACKYARD EVOLUTION (citizen science project, backyard sampling)
 AlBe_weather <- get_power(
   community = "ag",
   lonlat = c(-79.081904,38.146223),
@@ -133,6 +167,7 @@ AlBe_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#KiBa - BACKYARD EVOLUTION (citizen science project, backyard sampling)
 KiBa_weather <- get_power(
   community = "ag",
   lonlat = c(-79.017840,37.8929361),
@@ -141,6 +176,7 @@ KiBa_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#JoNu - BACKYARD EVOLUTION (citizen science project, backyard sampling)
 JoNu_weather <- get_power(
   community = "ag",
   lonlat = c(-78.488982,38.0783378),
@@ -149,6 +185,7 @@ JoNu_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#FeAb - BACKYARD EVOLUTION (citizen science project, backyard sampling)
 FeAb_weather <- get_power(
   community = "ag",
   lonlat = c(-78.48961,37.97985),
@@ -157,6 +194,7 @@ FeAb_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#RaPo - BACKYARD EVOLUTION (citizen science project, backyard sampling)
 RaPo_weather <- get_power(
   community = "ag",
   lonlat = c(-78.3417122,37.9778276),
@@ -165,6 +203,7 @@ RaPo_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#WiHa - BACKYARD EVOLUTION (citizen science project, backyard sampling)
 WiHa_weather <- get_power(
   community = "ag",
   lonlat = c(-78.631458,38.021608),
@@ -173,6 +212,7 @@ WiHa_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#NoSh - BACKYARD EVOLUTION (citizen science project, backyard sampling)
 NoSh_weather <- get_power(
   community = "ag",
   lonlat = c(-78.631460,38.021608),
@@ -181,6 +221,7 @@ NoSh_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#LiBl - BACKYARD EVOLUTION (citizen science project, backyard sampling)
 LiBl_weather <- get_power(
   community = "ag",
   lonlat = c(-78.4915567,38.0980496),
@@ -189,6 +230,7 @@ LiBl_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#GwMe - BACKYARD EVOLUTION (citizen science project, backyard sampling)
 GwMe_weather <- get_power(
   community = "ag",
   lonlat = c(-77.49892,39.0444765),
@@ -197,6 +239,7 @@ GwMe_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#FrSa - BACKYARD EVOLUTION (citizen science project, backyard sampling)
 FrSa_weather <- get_power(
   community = "ag",
   lonlat = c(-78.8319075,38.3967029),
@@ -205,14 +248,7 @@ FrSa_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
-AlBe_weather <- get_power(
-  community = "ag",
-  lonlat = c(-79.081904,38.146223),
-  pars = c("RH2M", "T2M", "PRECTOTCORR"),
-  dates = c("2021-01-01", 
-            paste(2025, "-08-20", sep = "")),
-  temporal_api = "daily"
-)
+#NaMo - BACKYARD EVOLUTION (citizen science project, backyard sampling)
 NaMo_weather <- get_power(
   community = "ag",
   lonlat = c(-78.5021388,38.0653651),
@@ -221,6 +257,7 @@ NaMo_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#AlBr - BACKYARD EVOLUTION (citizen science project, backyard sampling)
 AlBr_weather <- get_power(
   community = "ag",
   lonlat = c(-78.465637,38.036324),
@@ -229,6 +266,7 @@ AlBr_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#SiKi - BACKYARD EVOLUTION (citizen science project, backyard sampling)
 SiKi_weather <- get_power(
   community = "ag",
   lonlat = c(-78.42491,38.291869),
@@ -237,6 +275,7 @@ SiKi_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#LiHa - BACKYARD EVOLUTION (citizen science project, backyard sampling)
 LiHa_weather <- get_power(
   community = "ag",
   lonlat = c(-77.45722,37.5825066),
@@ -245,6 +284,7 @@ LiHa_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#DoSc - BACKYARD EVOLUTION (citizen science project, backyard sampling)
 DoSc_weather <- get_power(
   community = "ag",
   lonlat = c(-78.473266,38.06808),
@@ -253,6 +293,7 @@ DoSc_weather <- get_power(
             paste(2025, "-08-20", sep = "")),
   temporal_api = "daily"
 )
+#NaCa - BACKYARD EVOLUTION (citizen science project, backyard sampling)
 NaCa_weather <- get_power(
   community = "ag",
   lonlat = c(-79.5244928,36.608054),
@@ -263,34 +304,47 @@ NaCa_weather <- get_power(
 )
 ```
 
+**(4)** Combine dataframes by state and total to be used for future analysis. - Stacked line and dot plots visualize temperature (T2M) and SWD population (N_swd) over time.
+
 ```{r}
-#Combine dataframes from all farms in VT
+#Combine dataframes from all locations in VT
 AllFarmsVT_weather <-rbind(AdamsBerry_weather, CoveredBridge_weather, FullBelly_weather, LastResort_weather, SweetRoots_weather)
-#Combine dataframes from all farms in KY
-AllFarmsKY_weather <-rbind(SouthFarm_weather, CrossKeysFarm_weather, CartersMountain_weather, GreatCountryFarms_weather, LeveringOrchard_weather, CharlottesvilleAlbermarle_weather,ChilesPeachOrchard_weather)
-#Combine dataframes from all farms in VA
-AllFarmsVA_weather <-rbind(AlBe_weather,KiBa_weather,JoNu_weather,FeAb_weather,RaPo_weather,WiHa_weather,NoSh_weather,LiBl_weather,GwMe_weather,FrSa_weather,NaMo_weather,AlBr_weather,SiKi_weather,LiHa_weather,DoSc_weather,NaCa_weather)
-#Combine dataframes for all farms 
+#Combine dataframes from all locations in KY
+AllFarmsKY_weather <-rbind(SouthFarm_weather, BF_weather)
+#Combine dataframes from all locations in VA
+AllFarmsVA_weather <-rbind(CrossKeysFarm_weather, CartersMountain_weather, GreatCountryFarms_weather, LeveringOrchard_weather, CharlottesvilleAlbermarle_weather,ChilesPeachOrchard_weather,AlBe_weather,KiBa_weather,JoNu_weather,FeAb_weather,RaPo_weather,WiHa_weather,NoSh_weather,LiBl_weather,GwMe_weather,FrSa_weather,NaMo_weather,AlBr_weather,SiKi_weather,LiHa_weather,DoSc_weather,NaCa_weather)
+#Combine dataframes for all locations 
 AllFarmsTotal_weather<-rbind.data.frame(AllFarmsKY_weather, AllFarmsVT_weather, AllFarmsVA_weather)
 ```
 
+**(5)** Clean up datasets so that they are streamlined and functional for figure generation.
+
 ```{r}
-#CombineLatLon data into one variable "Coordinates".
+#CombineLatLon data into one variable "Coordinates", because local SWD collection data is given "Coordinates" while NASA downloaded data is given "LAT" and "LON"
 AllFarmsVT_weather$Coordinates<- paste(AllFarmsVT_weather$LAT, AllFarmsVT_weather$LON,sep=",")
 AllFarmsKY_weather$Coordinates<- paste(AllFarmsKY_weather$LAT, AllFarmsKY_weather$LON,sep=",")
 AllFarmsVA_weather$Coordinates<- paste(AllFarmsVA_weather$LAT, AllFarmsVA_weather$LON,sep=",")
 AllFarmsTotal_weather$Coordinates<- paste(AllFarmsTotal_weather$LAT, AllFarmsTotal_weather$LON,sep=",")
-```
 
-```{r}
+#Remove columns that we do not need for our analysis. DD,MM,and YYYY are removed because there is already a separate column for DD-MM-YYYY.
+
 AllFarmsVT_weather$DD<-NULL
+AllFarmsVT_weather$MM<-NULL
+AllFarmsVT_weather$YYYY<-NULL
 AllFarmsVT_weather$DOY<-NULL
 AllFarmsKY_weather$DD<-NULL
+AllFarmsKY_weather$MM<-NULL
+AllFarmsKY_weather$YYYY<-NULL
 AllFarmsKY_weather$DOY<-NULL
 AllFarmsVA_weather$DD<-NULL
+AllFarmsVA_weather$MM<-NULL
+AllFarmsVA_weather$YYYY<-NULL
 AllFarmsVA_weather$DOY<-NULL
 AllFarmsTotal_weather$DD<-NULL
+AllFarmsTotal_weather$MM<-NULL
+AllFarmsTotal_weather$YYYY<-NULL
 AllFarmsTotal_weather$DOY<-NULL
+
 #save YYYYMMDD as a date 
 AllFarmsTotal_weather$YYYYMMDD <- as.Date(AllFarmsTotal_weather$YYYYMMDD, format = "%Y-%m-%d")
 AllFarmsVA_weather$YYYYMMDD <- as.Date(AllFarmsVA_weather$YYYYMMDD, format = "%Y-%m-%d")
@@ -299,12 +353,16 @@ AllFarmsVT_weather$YYYYMMDD <- as.Date(AllFarmsVT_weather$YYYYMMDD, format = "%Y
 SWD_data$YYYYMMDD <-as.Date(SWD_data$YYYYMMDD, format = "%Y-%m-%d")
 ```
 
+**(6)** Combine weather data with abundance data in one dataframe.
+
 ```{r}
 AbundanceTempVT<-right_join(SWD_data, AllFarmsVT_weather, by = c("Coordinates","YYYYMMDD"))
 AbundanceTempKY<-right_join(SWD_data, AllFarmsKY_weather, by = c("YYYYMMDD","Coordinates"))
 AbundanceTempVA<-right_join(SWD_data, AllFarmsVA_weather, by = c("Coordinates","YYYYMMDD"))
 AbundanceTempTotal<-right_join(SWD_data, AllFarmsTotal_weather, by = c("Coordinates","YYYYMMDD"))
 ```
+
+**(7)** Complete cleaning up datasets so that they are streamlined and functional for figure generation.
 
 ```{r}
 #Ensure that variables are factor columns, rather than numeric.
@@ -318,35 +376,28 @@ AbundanceTempTotal$T2M <- as.numeric(as.character(AbundanceTempTotal$T2M))
 AbundanceTempTotal$N_swd<-as.numeric(as.character(AbundanceTempTotal$N_swd))
 ```
 
+**(8)** Create subsets of SWD data from the SWD count sheet for each state.
+
 ```{r}
 #Create a subset of the SWD data for just VT
 SWD_dataVT<-SWD_data %>% 
     dplyr::filter(Coordinates %in% c("44.5147926,-72.926916", "44.265172,-73.1334011", "44.2661258,-73.1014259", "44.2893745,-73.2420434", "44.29804,-73.1885194"))
 #Create a subset of the SWD data for just VA
 SWD_dataKY<-SWD_data %>% 
-    dplyr::filter(Coordinates %in% c("37.9736587,-84.5348738","37.9740223,-78.5447915","38.0672129,-78.7471497","38.0624585,-78.4638626","36.6500994,-80.6151617","39.1003535,-77.8162521","38.3597327,-78.842056"))
+    dplyr::filter(Coordinates %in% c("37.9736587,-84.5348738","37.590313,-84.3019525"))
 #Create a subset of the SWD data for just KY
 SWD_dataVA<-SWD_data %>% 
-    dplyr::filter(Coordinates %in% c("38.146223,-79.081904","37.8929361,-79.0178402","38.0783378,-78.488982","37.97985,-78.48961","37.9778276,-78.3417122","38.021608,-78.631458","38.3563214,-78.9565994","38.0980496,-78.4915567","39.0444765,-77.49892","38.3967029,-78.8319075","38.0653651,-78.5021388","38.036324,-78.465637","38.291869,-78.42491","37.5825066,-77.45722","38.06808,-78.473266","36.608054,-79.5244928","38.0783378,-78.488982"))
-
-#Create a subset of the SWD data for just the 6 farms of interest 
-SWD_dataFBF<-AbundanceTempVT %>% 
-    dplyr::filter(Coordinates %in% c("44.265172,-73.1334011"))
-SWD_dataABF<-AbundanceTempVT %>% 
-    dplyr::filter(Coordinates %in% c("44.29804,-73.1885194"))
-SWD_dataCM<-AbundanceTempKY %>% 
-    dplyr::filter(Coordinates %in% c("37.9740223,-78.5447915"))
-SWD_dataSF<-AbundanceTempKY %>% 
-    dplyr::filter(Coordinates %in% c("37.9736587,-84.5348738"))
-SWD_dataAlBe<-AbundanceTempVA %>% 
-    dplyr::filter(Coordinates %in% c("38.146223,-79.081904"))
-SWD_dataFrSa<-AbundanceTempVA %>% 
-    dplyr::filter(Coordinates %in% c("38.3967029,-78.8319075"))
+    dplyr::filter(Coordinates %in% c("37.9740223,-78.5447915","38.0672129,-78.7471497","38.0624585,-78.4638626","36.6500994,-80.6151617","39.1003535,-77.8162521","38.3597327,-78.842056","38.146223,-79.081904","37.8929361,-79.0178402","38.0783378,-78.488982","37.97985,-78.48961","37.9778276,-78.3417122","38.021608,-78.631458","38.3563214,-78.9565994","38.0980496,-78.4915567","39.0444765,-77.49892","38.3967029,-78.8319075","38.0653651,-78.5021388","38.036324,-78.465637","38.291869,-78.42491","37.5825066,-77.45722","38.06808,-78.473266","36.608054,-79.5244928","38.0783378,-78.488982"))
 ```
 
+**(8)** Create scatter plots to map weather variables against SWD abundance.
+
+-   First, map precipitation (PRECTOTCORR) against SWD population for all 3 states, and for the total dataset.
+
 ```{r}
+par(mfrow = c(2, 2)) #arrange plots in a 2x2 grid formation for all future graphs. 
 #create a scatter plot of PRECTOTCORR against SWD for VT
-attach(AbundanceTempVT)
+T2Mvt_plot <- attach(AbundanceTempVT)
 plot(PRECTOTCORR,N_swd,
      ylab = "Number of SWD Males",
      xlab = "Average total precipitation at surface of Earth",
@@ -357,22 +408,64 @@ plot(PRECTOTCORR,N_swd,
      col = "darkgreen",
     abline(lm(N_swd ~ PRECTOTCORR))
 )
+#create a scatter plot of PRECTOTCORR against SWD for KY
+T2Mky_plot <- attach(AbundanceTempKY)
+plot(PRECTOTCORR,N_swd,
+     ylab = "Number of SWD Males",
+     xlab = "Average total precipitation at surface of Earth",
+     xlim= c(0,30),
+     main = "KY Precipitation vs SWD Population",
+     pch = 21,
+     bg = "darkred",
+     col = "darkred",
+     abline(lm(N_swd ~ PRECTOTCORR))
+)
+#create a scatter plot of PRECTOTCORR against SWD for KY
+T2Mva_plot <-attach(AbundanceTempVA)
+plot(PRECTOTCORR,N_swd,
+     ylab = "Number of SWD Males",
+     xlab = "Average total precipitation at surface of Earth",
+     main = "VA Precipitation vs SWD Population",
+    xlim= c(0,30),
+     pch = 21,
+     bg = "orange",
+     col = "orange",
+     abline(lm(N_swd ~ PRECTOTCORR))
+)
+#create a scatter plot of PRECTOTCORR against SWD for All Farms 
+T2Mtotal_plot <-attach(AbundanceTempTotal)
+plot(PRECTOTCORR, N_swd,
+     ylab = "Number of SWD Males",
+     xlab = "Average total precipitation at surface of Earth",
+     xlim= c(0,30),
+     main = "Total Precipitation vs SWD Population",
+     pch = 21,
+     bg = "salmon",
+     col = "salmon",
+     abline(lm(N_swd ~ PRECTOTCORR))
+)
+```
+
+-   Then calculate the summary statistics for the two variables. The summary statistics are primarily used for the adjusted R-squared value, which represents how well the regression line matches the empirical data, and the p value, which represents the significance of the relationship.
+
+```{r}
 VTstatsPRECTOTCORR<- lm(N_swd ~ PRECTOTCORR, data = AbundanceTempVT) 
 summary(VTstatsPRECTOTCORR)
-#create a scatter plot of T2M against SWD
-attach(AbundanceTempVT)
-plot(T2M,N_swd,
-     ylab = "Number of SWD Males",
-     xlab = "Tempature (degrees C)",
-     xlim= c(0,30),
-     main = "VT Temperature vs SWD Population",
-     pch = 21,
-     bg = "darkgreen",
-     col = "darkgreen",
-     abline(lm(N_swd ~ T2M))
-)
-VTstatsT2M<- lm(N_swd ~ T2M, data = AbundanceTempVT) 
-summary(VTstatsT2M)
+KYstatsPRECTOTCORR<- lm(N_swd ~ PRECTOTCORR, data = AbundanceTempKY) 
+summary(KYstatsPRECTOTCORR)
+VAstatsPRECTOTCORR<-lm(N_swd ~ PRECTOTCORR, data = AbundanceTempVA) 
+summary(VAstatsPRECTOTCORR)
+TotalstatsPRECTOTCORR<-lm(N_swd ~ PRECTOTCORR, data = AbundanceTempTotal) 
+summary(TotalstatsPRECTOTCORR)
+```
+The R-squared values were close to zero for all of the sampling groups, indicating a low linear fit. The p-values were insignificant for all groups except Kentucky.
+
+
+**(9)**
+
+-   Next, map relative humidity (RH2M) against SWD population for all 3 states, and for the total dataset. Then calculate the summary statistics for the two variables.
+
+```{r}
 #create a scatter plot of RH2M against SWD
 attach(AbundanceTempVT)
 plot(RH2M,N_swd,
@@ -385,39 +478,6 @@ plot(RH2M,N_swd,
      col = "darkgreen",
      abline(lm(N_swd ~ RH2M))
 )
-VTstatsRH2M<- lm(N_swd ~ RH2M, data = AbundanceTempVT) 
-summary(VTstatsRH2M)
-```
-
-```{r}
-#create a scatter plot of PRECTOTCORR against SWD for KY
-attach(AbundanceTempKY)
-plot(PRECTOTCORR,N_swd,
-     ylab = "Number of SWD Males",
-     xlab = "Average total precipitation at surface of Earth",
-     xlim= c(0,30),
-     main = "KY Precipitation vs SWD Population",
-     pch = 21,
-     bg = "darkred",
-     col = "darkred",
-     abline(lm(N_swd ~ PRECTOTCORR))
-)
-KYstatsPRECTOTCORR<- lm(N_swd ~ PRECTOTCORR, data = AbundanceTempKY) 
-summary(KYstatsPRECTOTCORR)
-#create a scatter plot of T2M against SWD
-attach(AbundanceTempKY)
-plot(T2M,N_swd,
-     ylab = "Number of SWD Males",
-     xlab = "Tempature (degrees C)",
-     xlim= c(0,30),
-     main = "KY Temperature vs SWD Population",
-     pch = 21,
-     bg = "darkred",
-     col = "darkred",
-     abline(lm(N_swd ~ T2M))
-)
-KYstatsT2M<- lm(N_swd ~ T2M, data = AbundanceTempKY) 
-summary(KYstatsT2M)
 #create a scatter plot of RH2M against SWD
 attach(AbundanceTempKY)
 plot(RH2M,N_swd,
@@ -430,38 +490,6 @@ plot(RH2M,N_swd,
      col = "darkred",
      abline(lm(N_swd ~ RH2M))
 )
-KYstatsRH2M<- lm(N_swd ~ RH2M, data = AbundanceTempKY) 
-summary(KYstatsRH2M)
-```
-
-```{r}
-#create a scatter plot of PRECTOTCORR against SWD for KY
-attach(AbundanceTempVA)
-plot(PRECTOTCORR,N_swd,
-     ylab = "Number of SWD Males",
-     xlab = "Average total precipitation at surface of Earth",
-     main = "VA Precipitation vs SWD Population",
-    xlim= c(0,30),
-     pch = 21,
-     bg = "orange",
-     col = "orange",
-     abline(lm(N_swd ~ PRECTOTCORR))
-)
-VAstatsPRECTOTCORR<-lm(N_swd ~ PRECTOTCORR, data = AbundanceTempVA) 
-summary(VAstatsPRECTOTCORR)
-#create a scatter plot of T2M against SWD
-attach(AbundanceTempVA)
-plot(T2M, N_swd,
-     ylab = "Number of SWD Males",
-     xlab = "Tempature (degrees C)",
-     main = "VA Temperature vs SWD Population",
-     pch = 21,
-     bg = "orange",
-     col = "orange",
-     abline(lm(N_swd ~ T2M))
-)
-VAstatsT2M<-lm(N_swd ~ T2M, data = AbundanceTempVA) 
-summary(VAstatsT2M)
 #create a scatter plot of RH2M against SWD
 attach(AbundanceTempVA)
 plot(RH2M,N_swd,
@@ -474,39 +502,6 @@ plot(RH2M,N_swd,
      col = "orange",
      abline(lm(N_swd ~ RH2M))
 )
-VAstatsRH2M<-lm(N_swd ~ RH2M, data = AbundanceTempVA) 
-summary(VAstatsRH2M)
-```
-
-```{r}
-#create a scatter plot of PRECTOTCORR against SWD for All Farms 
-attach(AbundanceTempTotal)
-plot(PRECTOTCORR, N_swd,
-     ylab = "Number of SWD Males",
-     xlab = "Average total precipitation at surface of Earth",
-     xlim= c(0,30),
-     main = "Total Precipitation vs SWD Population",
-     pch = 21,
-     bg = "salmon",
-     col = "salmon",
-     abline(lm(N_swd ~ PRECTOTCORR))
-)
-TotalstatsPRECTOTCORR<-lm(N_swd ~ PRECTOTCORR, data = AbundanceTempTotal) 
-summary(TotalstatsPRECTOTCORR)
-#create a scatter plot of T2M against SWD
-attach(AbundanceTempTotal)
-plot(T2M, N_swd,
-     ylab = "Number of SWD Males",
-     xlab = "Tempature (degrees C)",
-    xlim= c(0,30),
-     main = "Total Temperature vs SWD Population",
-     pch = 21,
-     bg = "salmon",
-     col = "salmon",
-     abline(lm(N_swd ~ T2M))
-)
-TotalstatsT2M<-lm(N_swd ~ T2M, data = AbundanceTempTotal) 
-summary(TotalstatsT2M)
 #create a scatter plot of RH2M against SWD
 attach(AbundanceTempTotal)
 plot(RH2M, N_swd,
@@ -519,308 +514,86 @@ plot(RH2M, N_swd,
      col = "salmon",
      abline(lm(N_swd ~ RH2M))
 )
+```
+The R-squared values were close to zero for all of the sampling groups, indicating a low linear fit. The p-values were insignificant as well. This indicates a lack of relationship between humidity and SWD abundance.
+
+-   Then calculate the summary statistics for the two variables.
+
+```{r}
+VTstatsRH2M<- lm(N_swd ~ RH2M, data = AbundanceTempVT) 
+summary(VTstatsRH2M)
+KYstatsRH2M<- lm(N_swd ~ RH2M, data = AbundanceTempKY) 
+summary(KYstatsRH2M)
+VAstatsRH2M<-lm(N_swd ~ RH2M, data = AbundanceTempVA) 
+summary(VAstatsRH2M)
 TotalstatsRH2M<-lm(N_swd ~ RH2M, data = AbundanceTempTotal) 
 summary(TotalstatsRH2M)
 ```
 
-```{r}
-coeff <-10
-library(ggplot2)
-#make a ggplot line chart to plot population over time
-#NEED TO FIGURE OUT HOW TO REMOVE OUTLIER
-ggplot(AbundanceTempTotal, aes(x = YYYYMMDD, y = N_swd)) +
-  geom_line() +
-  labs(title = "Population Over Time", x = "Year", y = "Population Count") +
-  theme_minimal()
-```
+**(10)**
 
-
-AbundanceAllTempVT<-right_join(SWD_data, AllFarmsVT_weather, by = c("Coordinates","YYYYMMDD"))
-AbundanceAllTempKY<-right_join(SWD_data, AllFarmsKY_weather, by = c("YYYYMMDD","Coordinates"))
-AbundanceAllTempVA<-right_join(SWD_data, AllFarmsVA_weather, by = c("Coordinates","YYYYMMDD"))
-AbundanceAllTempTotal<-right_join(SWD_data, AllFarmsTotal_weather, by = c("Coordinates","YYYYMMDD"))
-
+-   Finally, map temperature (T2M) against SWD population for all 3 states, and for the total dataset. Then calculate the summary statistics for the two variables.
 
 ```{r}
-#Create a plot with both temp and abundance data for specific farms
-library(ggplot2)
-library(gridExtra)
-#FULL BELLY FARM
-SWDPlotFBF<-ggplot(data = SWD_dataFBF, aes(x = YYYYMMDD, y = N_swd)) +
-  geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
-  labs(title = "Full Belly Farm SWD Count Over Time", x = "Time", y = "Population Count") +
-  theme_minimal()
-T2MPlotFBF <- ggplot(SWD_dataFBF, aes(x=YYYYMMDD, y=T2M)) +
-  geom_line(color = "lightblue") +
-  labs(title = "Full Belly Farm Temperature Over Time", x = "Time", y = "Temperature (C)") +
-  theme_minimal()
-# Stack plots vertically using patchwork
-grid.arrange(SWDPlotFBF, T2MPlotFBF, nrow = 2)
-
-#ABF
-SWDPlotABF<-ggplot(data = SWD_dataABF, aes(x = YYYYMMDD, y = N_swd)) +
-  geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
-  labs(title = "Adam's Berry Farm SWD Count Over Time", x = "Time", y = "Population Count") +
-  theme_minimal()
-T2MPlotABF <- ggplot(SWD_dataFBF, aes(x=YYYYMMDD, y=T2M)) +
-  geom_line(color = "lightblue") +
-  labs(title = "Adam's Berry Farm Temperature Over Time", x = "Time", y = "Temperature(C)") +
-  theme_minimal()
-# Stack plots vertically using patchwork
-grid.arrange(SWDPlotABF, T2MPlotABF, nrow = 2)
-
-#CM
-SWDPlotCM<-ggplot(data = SWD_dataCM, aes(x = YYYYMMDD, y = N_swd)) +
-  geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
-  labs(title = "Carter's Mountain SWD Count Over Time", x = "Time", y = "Population Count") +
-  theme_minimal()
-T2MPlotCM <- ggplot(SWD_dataCM, aes(x=YYYYMMDD, y=T2M)) +
-  geom_line(color = "lightblue") +
-  labs(title = "Carter's Mountain Temperature Over Time", x = "Time", y = "Temperature (C)") +
-  theme_minimal()
-# Stack plots vertically using patchwork
-grid.arrange(SWDPlotCM, T2MPlotCM, nrow = 2)
-
-#SF
-SWDPlotSF<-ggplot(data = SWD_dataSF, aes(x = YYYYMMDD, y = N_swd)) +
-  geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
-  labs(title = "South Farm SWD Count Over Time", x = "Time", y = "Population Count") +
-  theme_minimal()
-T2MPlotSF <- ggplot(SWD_dataSF, aes(x=YYYYMMDD, y=T2M)) +
-  geom_line(color = "lightblue") +
-  labs(title = "South Farm Temperature Over Time", x = "Time", y = "Temperature (C)") +
-  theme_minimal()
-# Stack plots vertically using patchwork
-grid.arrange(SWDPlotSF, T2MPlotSF, nrow = 2)
-
-#AlBe
-SWDPlotAlBe<-ggplot(data = SWD_dataAlBe, aes(x = YYYYMMDD, y = N_swd)) +
-  geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
-  labs(title = "AlBe SWD Count Over Time", x = "Time", y = "Population Count") +
-  theme_minimal()
-T2MPlotAlBe<- ggplot(SWD_dataAlBe, aes(x=YYYYMMDD, y=T2M)) +
-  geom_line(color = "lightblue") +
-  labs(title = "AlBe Temperature Over Time", x = "Time", y = "Temperature (C)") +
-  theme_minimal()
-# Stack plots vertically using patchwork
-grid.arrange(SWDPlotAlBe, T2MPlotAlBe, nrow = 2)
-
-#FrSa
-SWDPlotFrSa<-ggplot(data = SWD_dataFrSa, aes(x = YYYYMMDD, y = N_swd)) +
-  geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
-  labs(title = "FrSa SWD Count Over Time", x = "Time", y = "Population Count") +
-  theme_minimal()
-T2MPlotFrSa <- ggplot(SWD_dataFrSa, aes(x=YYYYMMDD, y=T2M)) +
-  geom_line(color = "lightblue") +
-  labs(title = "FrSa Temperature Over Time", x = "Time", y = "Temperature (C)") +
-  theme_minimal()
-# Stack plots vertically using patchwork
-grid.arrange(SWDPlotFrSa, T2MPlotFrSa, nrow = 2)
-
+#create a scatter plot of T2M against SWD
+attach(AbundanceTempVT)
+plot(T2M,N_swd,
+     ylab = "Number of SWD Males",
+     xlab = "Tempature (degrees C)",
+     xlim= c(0,30),
+     main = "VT Temperature vs SWD Population",
+     pch = 21,
+     bg = "darkgreen",
+     col = "darkgreen",
+     abline(lm(N_swd ~ T2M))
+)
+#create a scatter plot of T2M against SWD
+attach(AbundanceTempKY)
+plot(T2M,N_swd,
+     ylab = "Number of SWD Males",
+     xlab = "Tempature (degrees C)",
+     xlim= c(0,30),
+     main = "KY Temperature vs SWD Population",
+     pch = 21,
+     bg = "darkred",
+     col = "darkred",
+     abline(lm(N_swd ~ T2M))
+)
+#create a scatter plot of T2M against SWD
+attach(AbundanceTempVA)
+plot(T2M, N_swd,
+     ylab = "Number of SWD Males",
+     xlab = "Tempature (degrees C)",
+     main = "VA Temperature vs SWD Population",
+     pch = 21,
+     bg = "orange",
+     col = "orange",
+     abline(lm(N_swd ~ T2M))
+)
+#create a scatter plot of T2M against SWD
+attach(AbundanceTempTotal)
+plot(T2M, N_swd,
+     ylab = "Number of SWD Males",
+     xlab = "Tempature (degrees C)",
+    xlim= c(0,30),
+     main = "Total Temperature vs SWD Population",
+     pch = 21,
+     bg = "salmon",
+     col = "salmon",
+     abline(lm(N_swd ~ T2M))
+)
 ```
 
+-   Then calculate the summary statistics for the two variables.
 
 ```{r}
-library(dplyr)
-library(zoo)
-#i want to fill 45181 values of NA with interpolated data, then remove it in the sampling gaps
-#create interpolated data for full dataset, filling in gaps and renaming the swd column to be "N_swd" for later merging 
-N_swd_interpolated <- na.approx(AbundanceTempTotal$N_swd, na.rm = TRUE, rule=2,maxgap=60)
-date <- AbundanceTempTotal$YYYYMMDD
-
-swd_interpolated2 <-data.frame(N_swd_interpolated = N_swd_interpolated, YYYYMMDD = date)
-colnames(swd_interpolated2)[colnames(swd_interpolated2) == "N_swd_interpolatedVT"] <- "N_swd"
-swd_interpolated2<-na.omit(swd_interpolated2)
-
-#create interpolated data for VT flies, filling in gaps
-swd_interpolated2VT <- na.approx(AbundanceTempVT$N_swd, na.rm = TRUE, rule=2,maxgap=60)
-date <- AbundanceTempVT$YYYYMMDD
-
-N_swd_interpolated2VT <-data.frame(swd_interpolated2VT = swd_interpolated2VT, YYYYMMDD = date)
-colnames(N_swd_interpolated2VT)[colnames(N_swd_interpolated2VT) == "N_swd_interpolatedVT"] <- "N_swd"
-swd_interpolated2VT<-na.omit(N_swd_interpolated2VT)
-
-#create interpolated data for KY flies, filling in gaps
-N_swd_interpolatedKY <- na.approx(AbundanceTempKY$N_swd, na.rm = TRUE, rule=2,maxgap=60)
-date <- AbundanceTempKY$YYYYMMDD
-
-swd_interpolated2KY <-data.frame(N_swd_interpolatedKY = N_swd_interpolatedKY, YYYYMMDD = date)
-colnames(swd_interpolated2KY)[colnames(swd_interpolated2KY) == "N_swd_interpolatedKY"] <- "N_swd"
-swd_interpolated2KY<-na.omit(swd_interpolated2KY)
-
-#create interpolated data for VA flies, filling in gaps
-N_swd_interpolatedVA <- na.approx(AbundanceTempVA$N_swd, na.rm = TRUE, rule=2,maxgap=60)
-date <- AbundanceTempVA$YYYYMMDD
-
-swd_interpolated2VA <-data.frame(N_swd_interpolatedVA = N_swd_interpolatedVA, YYYYMMDD = date)
-colnames(swd_interpolated2VA)[colnames(swd_interpolated2VA) == "N_swd_interpolatedVA"] <- "N_swd"
-swd_interpolated2VA<-na.omit(swd_interpolated2VA)
-
-#create interpolated data for FBF flies, filling in gaps
-N_swd_interpolatedFBF <- na.approx(SWD_dataFBF$N_swd, na.rm = TRUE, rule=2,maxgap=60)
-date <- SWD_dataFBF$YYYYMMDD
-
-swd_interpolated2FBF <-data.frame(N_swd_interpolatedFBF = N_swd_interpolatedFBF, YYYYMMDD = date)
-colnames(swd_interpolated2FBF)[colnames(swd_interpolated2FBF) == "N_swd_interpolatedFBF"] <- "N_swd"
-swd_interpolated2FBF<-na.omit(swd_interpolated2FBF)
-
-#create interpolated data for ABF flies, filling in gaps
-N_swd_interpolatedABF <- na.approx(SWD_dataABF$N_swd, na.rm = TRUE, rule=2,maxgap=60)
-date <- SWD_dataABF$YYYYMMDD
-
-swd_interpolated2ABF <-data.frame(N_swd_interpolatedABF = N_swd_interpolatedABF, YYYYMMDD = date)
-colnames(swd_interpolated2ABF)[colnames(swd_interpolated2ABF) == "N_swd_interpolatedABF"] <- "N_swd"
-swd_interpolated2ABF<-na.omit(swd_interpolated2ABF)
-
-#create interpolated data for CM flies, filling in gaps
-N_swd_interpolatedCM <- na.approx(SWD_dataCM$N_swd, na.rm = TRUE, rule=2,maxgap=60)
-date <- SWD_dataCM$YYYYMMDD
-
-swd_interpolated2CM <-data.frame(N_swd_interpolatedCM = N_swd_interpolatedCM, YYYYMMDD = date)
-colnames(swd_interpolated2CM)[colnames(swd_interpolated2CM) == "N_swd_interpolatedCM"] <- "N_swd"
-swd_interpolated2CM<-na.omit(swd_interpolated2CM)
-
-#create interpolated data for LBA flies, filling in gaps
-N_swd_interpolatedSF <- na.approx(SWD_dataSF$N_swd, na.rm = TRUE, rule=2,maxgap=60)
-date <- SWD_dataSF$YYYYMMDD
-
-swd_interpolated2SF <-data.frame(N_swd_interpolatedSF = N_swd_interpolatedSF, YYYYMMDD = date)
-colnames(swd_interpolated2SF)[colnames(swd_interpolated2SF) == "N_swd_interpolatedSF"] <- "N_swd"
-swd_interpolated2SF<-na.omit(swd_interpolated2SF)
-
-#create interpolated data for AlBe flies, filling in gaps
-N_swd_interpolatedAlBe <- na.approx(SWD_dataAlBe$N_swd, na.rm = TRUE, rule=2,maxgap=60)
-date <- SWD_dataAlBe$YYYYMMDD
-
-swd_interpolated2AlBe <-data.frame(N_swd_interpolatedAlBe = N_swd_interpolatedAlBe, YYYYMMDD = date)
-colnames(swd_interpolated2AlBe)[colnames(swd_interpolated2AlBe) == "N_swd_interpolatedAlBe"] <- "N_swd"
-swd_interpolated2AlBe<-na.omit(swd_interpolated2AlBe)
-
-#create interpolated data for FrSa flies, filling in gaps
-N_swd_interpolatedFrSa <- na.approx(SWD_dataFrSa$N_swd, na.rm = TRUE, rule=2,maxgap=60)
-date <- SWD_dataFrSa$YYYYMMDD
-
-swd_interpolated2FrSa <-data.frame(N_swd_interpolatedFrSa = N_swd_interpolatedFrSa, YYYYMMDD = date)
-colnames(swd_interpolated2FrSa)[colnames(swd_interpolated2FrSa) == "N_swd_interpolatedFrSa"] <- "N_swd"
-swd_interpolated2FrSa<-na.omit(swd_interpolated2FrSa)
-
+VTstatsT2M<- lm(N_swd ~ T2M, data = AbundanceTempVT) 
+summary(VTstatsT2M)
+KYstatsT2M<- lm(N_swd ~ T2M, data = AbundanceTempKY) 
+summary(KYstatsT2M)
+VAstatsT2M<-lm(N_swd ~ T2M, data = AbundanceTempVA) 
+summary(VAstatsT2M)
+TotalstatsT2M<-lm(N_swd ~ T2M, data = AbundanceTempTotal) 
+summary(TotalstatsT2M)
 ```
-
-```{r}
-InterpolatedAbundanceTempFBF<-merge(SWD_dataFBF, swd_interpolated2FBF, by = c("YYYYMMDD"),all.x=TRUE)
-
-AbundanceTempKY<-right_join(SWD_data, AllFarmsKY_weather, by = c("YYYYMMDD","Coordinates"))
-AbundanceTempVA<-right_join(SWD_data, AllFarmsVA_weather, by = c("Coordinates","YYYYMMDD"))
-AbundanceTempTotal<-right_join(SWD_data, AllFarmsTotal_weather, by = c("Coordinates","YYYYMMDD"))
-```
-
-
-```{r}
-#create 50 points of interpolated data for full dataset 
-swd_interpolatedTotal<-approx(y = AbundanceTempTotal$N_swd, x = AbundanceTempTotal$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-swd_interpolatedTotal<-data.frame(swd_interpolatedTotal)
-colnames(swd_interpolatedTotal)[colnames(swd_interpolatedTotal) == "x"] <- "T2M" 
-colnames(swd_interpolatedTotal)[colnames(swd_interpolatedTotal) == "y"] <- "N_swd"
-#create 50 points of interpolated data for VT flies 
-swd_interpolatedVT<-approx(y = AbundanceTempVT$N_swd, x = AbundanceTempVT$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-swd_interpolatedVT<-data.frame(swd_interpolatedVT)
-colnames(swd_interpolatedVT)[colnames(swd_interpolatedVT) == "x"] <- "T2M" 
-colnames(swd_interpolatedVT)[colnames(swd_interpolatedVT) == "y"] <- "N_swd"
-#create 50 points of interpolated data for VA flies
-swd_interpolatedVA<-approx(y = AbundanceTempVA$N_swd, x = AbundanceTempVA$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-swd_interpolatedVA<-data.frame(swd_interpolatedVA)
-colnames(swd_interpolatedVA)[colnames(swd_interpolatedVA) == "x"] <- "T2M" 
-colnames(swd_interpolatedVA)[colnames(swd_interpolatedVA) == "y"] <- "N_swd"
-#create 50 points of interpolated data for KY flies
-swd_interpolatedKY<-approx(y = AbundanceTempKY$N_swd, x = AbundanceTempKY$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-swd_interpolatedKY<-data.frame(swd_interpolatedKY)
-colnames(swd_interpolatedKY)[colnames(swd_interpolatedKY) == "x"] <- "T2M" 
-colnames(swd_interpolatedKY)[colnames(swd_interpolatedKY) == "y"] <- "N_swd"
-# create 50 points of interpolated data for FBF flies
-swd_interpolatedFBF<-approx(y = SWD_dataFBF$N_swd, x = SWD_dataFBF$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-swd_interpolatedFBF<-data.frame(swd_interpolatedFBF)
-colnames(swd_interpolatedFBF)[colnames(swd_interpolatedFBF) == "x"] <- "T2M" 
-colnames(swd_interpolatedFBF)[colnames(swd_interpolatedFBF) == "y"] <- "N_swd"
-# create 50 points of interpolated data for ABF flies
-swd_interpolatedABF<-approx(y = SWD_dataABF$N_swd, x = SWD_dataABF$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-swd_interpolatedABF<-data.frame(swd_interpolatedABF)
-colnames(swd_interpolatedABF)[colnames(swd_interpolatedABF) == "x"] <- "T2M" 
-colnames(swd_interpolatedABF)[colnames(swd_interpolatedABF) == "y"] <- "N_swd"
-# create 50 points of interpolated data for CM flies
-swd_interpolatedCM<-approx(y = SWD_dataCM$N_swd, x = SWD_dataCM$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-swd_interpolatedCM<-data.frame(swd_interpolatedCM)
-colnames(swd_interpolatedCM)[colnames(swd_interpolatedCM) == "x"] <- "T2M" 
-colnames(swd_interpolatedCM)[colnames(swd_interpolatedCM) == "y"] <- "N_swd"
-# create 50 points of interpolated data for LBA flies
-swd_interpolatedSF<-approx(y = SWD_dataSF$N_swd, x = SWD_dataSF$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-swd_interpolatedSF<-data.frame(swd_interpolatedSF)
-colnames(swd_interpolatedSF)[colnames(swd_interpolatedSF) == "x"] <- "T2M" 
-colnames(swd_interpolatedSF)[colnames(swd_interpolatedSF) == "y"] <- "N_swd"
-# create 50 points of interpolated data for AlBe flies
-swd_interpolatedAlBe<-approx(y = SWD_dataAlBe$N_swd, x = SWD_dataAlBe$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-swd_interpolatedAlBe<-data.frame(swd_interpolatedAlBe)
-colnames(swd_interpolatedAlBe)[colnames(swd_interpolatedAlBe) == "x"] <- "T2M" 
-colnames(swd_interpolatedAlBe)[colnames(swd_interpolatedAlBe) == "y"] <- "N_swd"
-# create 50 points of interpolated data for FrSa flies
-swd_interpolatedFrSa<-approx(y = SWD_dataFrSa$N_swd, x = SWD_dataFrSa$T2M, method = "linear", n = 50,
-          rule = 1, f = 0, ties = mean, na.rm = TRUE)
-swd_interpolatedFrSa<-data.frame(swd_interpolatedFrSa)
-colnames(swd_interpolatedFrSa)[colnames(swd_interpolatedFrSa) == "x"] <- "T2M" 
-colnames(swd_interpolatedFrSa)[colnames(swd_interpolatedFrSa) == "y"] <- "N_swd"
-```
-
-```{r}
-library(forecast)
-#create a cross correlation for SWD pop over time for FrSa
-ccf(swd_interpolatedFrSa[["N_swd"]],swd_interpolatedFrSa[["T2M"]], ylim = c(-0.5, .5), lag.max = 30, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
-    main = "FrSa Population & Temperature cross-correlation")
-
-#create a cross correlation for SWD pop over time for Albe
-ccf(swd_interpolatedAlBe[["N_swd"]],swd_interpolatedAlBe[["T2M"]],ylim = c(-0.5, .5), lag.max = 30, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
-    main = "AlBe Population & Temperature cross-correlation")
-
-#create a cross correlation for SWD pop over time for SF
-ccf(swd_interpolatedSF[["N_swd"]],swd_interpolatedSF[["T2M"]],ylim = c(-0.5, .5), lag.max = 30, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
-    main = "SF SWD Population & Temperature cross-correlation")
-
-#create a cross correlation for SWD pop over time for CM
-ccf(swd_interpolatedCM[["N_swd"]],swd_interpolatedCM[["T2M"]],ylim = c(-0.5, .5), lag.max = 30, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
-    main = "CM SWD Population & Temperature cross-correlation")
-
-#create a cross correlation for SWD pop over time for ABF data
-ccf(swd_interpolatedABF[["N_swd"]],swd_interpolatedABF[["T2M"]], ylim = c(-0.5, .5),lag.max = 60, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
-    main = "ABF SWD Population & Temperature cross-correlation")
-
-# create a cross correlation for SWD pop over time for Full Belly data
-ccf(swd_interpolatedFBF[["N_swd"]],swd_interpolatedFBF[["T2M"]], ylim = c(-0.5, .5), lag.max = 30, type = c("correlation", "covariance"),
-    plot = TRUE, na.action = na.fail,
-    main = "FBF SWD Population & Temperature cross-correlation")
-
-```
-
-```{r}
-# If X was temp and Y was Drosh
-cor(SWD_dataABF$T2M[1:18],SWD_dataABF$N_swd[11:28]) #lag of +10 (temp today vs. Dros in 10 days)
-
-#this method is easier for me to work out
-ABFcor<-cor(SWD_dataABF$N_swd, lag(SWD_dataABF$T2M, 10), use = "complete.obs")
-FBFcor<-cor(SWD_dataFBF$N_swd, lag(SWD_dataFBF$T2M, 10), use = "complete.obs")
-SFcor<-cor(SWD_dataSF$N_swd, lag(SWD_dataSF$T2M, 10), use = "complete.obs")
-CMcor<-cor(SWD_dataCM$N_swd, lag(SWD_dataCM$T2M, 10), use = "complete.obs")
-FrSacor<-cor(SWD_dataFrSa$N_swd, lag(SWD_dataFrSa$T2M, 10), use = "complete.obs")
-AlBecor<-cor(SWD_dataAlBe$N_swd, lag(SWD_dataAlBe$T2M, 10), use = "complete.obs")
-```
+The R-squared values were close to zero for all of the sampling groups, indicating a low linear fit. The p-values signficant for all sampling groups except for Vermont. It is notable though to consider that Vermont had the least variable temperature data over the short sampling period.
