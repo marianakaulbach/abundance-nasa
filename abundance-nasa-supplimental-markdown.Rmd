@@ -1,13 +1,15 @@
 ---
 title: "abundance-nasa-supplimental-markdown"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## *Below are the steps to perform an analysis on correlation between Spotted Wing Drosophila (SWD) collection data and NASA weather data, particularly considering effect time and lag.*
+## *Below are the steps to perform an analysis on correlation between Spotted Wing Drosophila (SWD) collection data and NASA weather data, considering the relationship bewteen SWD abundance and precipitation, relative humdity, and temperature.*
 
 **(1)** Open packages necessary for this analysis.
 
@@ -376,7 +378,7 @@ AbundanceTempTotal$T2M <- as.numeric(as.character(AbundanceTempTotal$T2M))
 AbundanceTempTotal$N_swd<-as.numeric(as.character(AbundanceTempTotal$N_swd))
 ```
 
-**(8)** Create subsets of SWD data from the SWD count sheet for each state.
+**(8)** Create subsets of SWD data from the SWD count sheet for each state using the coordinates for individual farms.
 
 ```{r}
 #Create a subset of the SWD data for just VT
@@ -446,6 +448,8 @@ plot(PRECTOTCORR, N_swd,
 )
 ```
 
+*Analysis: There is a visible trend between precipitation and SWD population, with higher SWD counts clustering closer to zero precipitation.*
+
 -   Then calculate the summary statistics for the two variables. The summary statistics are primarily used for the adjusted R-squared value, which represents how well the regression line matches the empirical data, and the p value, which represents the significance of the relationship.
 
 ```{r}
@@ -458,8 +462,8 @@ summary(VAstatsPRECTOTCORR)
 TotalstatsPRECTOTCORR<-lm(N_swd ~ PRECTOTCORR, data = AbundanceTempTotal) 
 summary(TotalstatsPRECTOTCORR)
 ```
-The R-squared values were close to zero for all of the sampling groups, indicating a low linear fit. The p-values were insignificant for all groups except Kentucky.
 
+*Analysis: The R-squared values were close to zero for all of the sampling groups, indicating a low linear fit. The p-values were insignificant for all groups except Kentucky.*
 
 **(9)**
 
@@ -515,7 +519,8 @@ plot(RH2M, N_swd,
      abline(lm(N_swd ~ RH2M))
 )
 ```
-The R-squared values were close to zero for all of the sampling groups, indicating a low linear fit. The p-values were insignificant as well. This indicates a lack of relationship between humidity and SWD abundance.
+
+*Analysis: There is little visible trend in any of the sampling groups between relative humdity and SWD abundance.*
 
 -   Then calculate the summary statistics for the two variables.
 
@@ -529,6 +534,8 @@ summary(VAstatsRH2M)
 TotalstatsRH2M<-lm(N_swd ~ RH2M, data = AbundanceTempTotal) 
 summary(TotalstatsRH2M)
 ```
+
+*Analysis: The R-squared values were close to zero for all of the sampling groups, indicating a low linear fit. The p-values were insignificant as well. This indicates a lack of relationship between humidity and SWD abundance.*
 
 **(10)**
 
@@ -584,6 +591,8 @@ plot(T2M, N_swd,
 )
 ```
 
+*Analysis: We can see SWD abundances peaking at different times for each state. SWD populations peak around 20 degrees C in VT, 7 degrees C in KY, and 25 degrees C in VA.*
+
 -   Then calculate the summary statistics for the two variables.
 
 ```{r}
@@ -596,4 +605,5 @@ summary(VAstatsT2M)
 TotalstatsT2M<-lm(N_swd ~ T2M, data = AbundanceTempTotal) 
 summary(TotalstatsT2M)
 ```
-The R-squared values were close to zero for all of the sampling groups, indicating a low linear fit. The p-values signficant for all sampling groups except for Vermont. It is notable though to consider that Vermont had the least variable temperature data over the short sampling period.
+
+*Analysis: The R-squared values were close to zero for all of the sampling groups, indicating a low linear fit. The p-values significant for all sampling groups except for Vermont. It is notable though to consider that Vermont had the least variable temperature data over the short sampling period.*
