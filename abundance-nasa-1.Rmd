@@ -19,10 +19,14 @@ SWD_data <- read_csv("C:/Users/maria/OneDrive/Desktop/abundance-nasa/NEW CLEAN E
 ```
 
 ```{r}
+library(readr)
 library(nasapower)
 library(tidyverse)
 library(magrittr)
 library(ggplot2)
+library(dplyr)
+library(gridExtra)
+library(forecast)
 ```
 
 ```{r}
@@ -571,6 +575,7 @@ T2MPlotFBF <- ggplot(SWD_dataFBF, aes(x=YYYYMMDD, y=T2M)) +
 # Stack plots vertically using patchwork
 grid.arrange(SWDPlotFBF, T2MPlotFBF, nrow = 2)
 
+
 #ABF
 SWDPlotABF<-ggplot(data = SWD_dataABF, aes(x = YYYYMMDD, y = N_swd)) +
   geom_point(color = "orange", size = 1.5, shape =16, alpha = 0.7) +
@@ -873,6 +878,8 @@ cor(SWD_dataABF$T2M[1:18],SWD_dataABF$N_swd[11:28]) #lag of +10 (temp today vs. 
 
 #this method is easier for me to work out
 ABFcor<-cor(SWD_dataABF$N_swd, lag(SWD_dataABF$T2M, 10), use = "complete.obs")
+ABFcorStats<- lm(N_swd ~ T2M, data = SWD_dataABF) 
+summary(ABFcorStats)
 FBFcor<-cor(SWD_dataFBF$N_swd, lag(SWD_dataFBF$T2M, 10), use = "complete.obs")
 SFcor<-cor(SWD_dataSF$N_swd, lag(SWD_dataSF$T2M, 10), use = "complete.obs")
 CMcor<-cor(SWD_dataCM$N_swd, lag(SWD_dataCM$T2M, 10), use = "complete.obs")
