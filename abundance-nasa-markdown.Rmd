@@ -14,6 +14,7 @@ sessionInfo()
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
 ## *Below are the steps to perform an analysis on correlation between Spotted Wing Drosophila (SWD) collection data and NASA weather data, particularly considering effect time and lag.*
 
 **(1)** Open packages necessary for this analysis.
